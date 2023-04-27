@@ -1,0 +1,31 @@
+name: Create release
+
+on:
+  pull_request:
+    types: [opened]
+    branches: [main, 'v**']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.11'
+    - name: Save version
+      run: |
+          echo "RELEASE_VERSION=$(python -c "config = open('Cargo.toml'); print(config.read().splitlines()[3]); config.close()" >> $GITHUB_ENV
+    - name: Create release
+      uses: marvinpinto/action-automatic-releases@latest
+      if: ${{ startsWith(github.event.pull_request.title, '[UPDATE]') }}
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        draft: true
+        automatic_release_tag: v${{ env.RELEASE_VERSION }}
+        title: v${{ env.RELEASE_VERSION }}
+        files: |
+          .github/README.md
+          LICENSE
+          *.exe

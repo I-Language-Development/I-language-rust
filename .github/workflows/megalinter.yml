@@ -1,0 +1,32 @@
+name: MegaLinter
+
+on:
+  push:
+  pull_request:
+    branches: [main]
+
+env:
+  APPLY_FIXES: VALIDATE_ALL_CODEBASE
+  APPLY_FIXES_EVENT: all
+  APPLY_FIXES_MODE: commit
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: MegaLinter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+      - name: MegaLinter
+        id: ml
+        uses: oxsecurity/megalinter@v6
+        env:
+          VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
