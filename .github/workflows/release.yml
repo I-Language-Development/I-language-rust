@@ -1,6 +1,6 @@
 ---
 name: Create release
-permissions: write-all
+permissions: read-all
 
 on:
     pull_request:
@@ -23,7 +23,7 @@ jobs:
               uses: marvinpinto/action-automatic-releases@latest # cspell:disable-line
               if: ${{ startsWith(github.event.pull_request.title, '[UPDATE]') }} # cspell:disable-line
               with:
-                  repo_token: ${{ secrets.GITHUB_TOKEN }} # cspell:disable-line
+                  repo_token: ${{ secrets.PAT }} # cspell:disable-line
                   draft: true
                   automatic_release_tag: v${{ env.RELEASE_VERSION }}
                   title: v${{ env.RELEASE_VERSION }}
