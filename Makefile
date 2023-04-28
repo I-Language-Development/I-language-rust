@@ -1,3 +1,6 @@
+all: run help
+.PHONY: all
+
 run:
 	cargo run
 
