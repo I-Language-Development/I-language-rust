@@ -17,17 +17,17 @@ jobs:
               with:
                   python-version: "3.11"
             - name: Save version
-              run: |
-                  echo "RELEASE_VERSION=$(python -c "config = open('Cargo.toml'); print(config.read().splitlines()[3]); config.close()" >> $GITHUB_ENV
+              run: | # cspell:disable-next-line
+                  echo "RELEASE_VERSION=$(python Tools/get_release_version.py)" >> $GITHUB_ENV
             - name: Create release
-              uses: marvinpinto/action-automatic-releases@latest
-              if: ${{ startsWith(github.event.pull_request.title, '[UPDATE]') }}
+              uses: marvinpinto/action-automatic-releases@latest # cspell:disable-line
+              if: ${{ startsWith(github.event.pull_request.title, '[UPDATE]') }} # cspell:disable-line
               with:
-                  repo_token: ${{ secrets.GITHUB_TOKEN }}
+                  repo_token: ${{ secrets.GITHUB_TOKEN }} # cspell:disable-line
                   draft: true
                   automatic_release_tag: v${{ env.RELEASE_VERSION }}
                   title: v${{ env.RELEASE_VERSION }}
-                  files: |
+                  files: | # cspell:disable-next-line
                       .github/README.md
                       LICENSE
                       *.exe
