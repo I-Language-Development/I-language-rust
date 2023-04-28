@@ -8,7 +8,7 @@
 ---
 name: Labeler
 permissions:
-    pull-request: write
+    pull-requests: write
 
 on: [pull_request_target]
 
