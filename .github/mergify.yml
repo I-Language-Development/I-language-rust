@@ -12,10 +12,9 @@ pull_request_rules:
         message: |
           # Merging pull request
 
-          | Name | Status |
-          |------|--------|
+          Successful checks:
           {% for check in check_success %}
-          | {{check}} | :white_check_mark: |
+          - {{check}}
           {% endfor %}
       merge:
         commit_message_template: |
@@ -50,10 +49,9 @@ pull_request_rules:
         message: |
           # Merging pull request
 
-          | Name | Status |
-          |------|--------|
+          Successful checks:
           {% for check in check_success %}
-          | {{check}} | :white_check_mark: |
+          - {{check}}
           {% endfor %}
       merge:
         commit_message_template: |
@@ -119,8 +117,7 @@ pull_request_rules:
         message: |
           # Checks failed
 
-          | Name | Status |
-          |------|--------|
+          Failed checks:
           {% for check in check_failure %}
-          | {{check}} | :negative_squared_cross_mark: |
+          - {{check}}
           {% endfor %}
