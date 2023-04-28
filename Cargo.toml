@@ -17,7 +17,7 @@ license-file = "LICENSE"
 keywords = ["i", "i-language", "programming-language", "language", "compiler"]
 categories = [
 	"compilers",
-	"development-tools",	
+	"development-tools",
 ]
 
 [dependencies]

@@ -3,15 +3,12 @@ repos:
       rev: v4.4.0
       hooks:
           - id: check-added-large-files
-          - id: check-docstring-first
           - id: check-executables-have-shebangs
           - id: check-json
           - id: check-merge-conflict
           - id: check-shebang-scripts-are-executable
           - id: check-toml
           - id: check-yaml
-          - id: name-tests-test
-            args: [--pytest-test-first]
           - id: pretty-format-json
             args: [--autofix]
           - id: requirements-txt-fixer
@@ -21,4 +18,10 @@ repos:
       hooks:
           - id: fmt
           - id: cargo-check
+    - repo: local
+      hooks:
           - id: clippy
+            name: Run clippy linter
+            entry: cargo clippy -- -A non_snake_case
+            language: system
+            pass_filenames: false

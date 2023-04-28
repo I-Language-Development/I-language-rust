@@ -1,4 +1,6 @@
 docs:
-  - Docs
+  - "Docs"
 module:
-  - Modules
+  - "Modules/*"
+dependency:
+  - "dev-requirements.txt"

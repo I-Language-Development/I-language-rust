@@ -2,6 +2,4 @@
 
 */
 
-fn main() {
-    
-}
+fn main() {}
