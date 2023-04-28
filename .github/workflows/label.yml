@@ -6,17 +6,19 @@
 # https://github.com/actions/labeler
 
 name: Labeler
+permissions:
+    pull-request: write
+
 on: [pull_request_target]
 
 jobs:
-  label:
+    label:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            pull-requests: write
 
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-
-    steps:
-    - uses: actions/labeler@v4
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        steps:
+            - uses: actions/labeler@v4
+              with:
+                  repo-token: "${{ secrets.GITHUB_TOKEN }}"
