@@ -27,7 +27,7 @@ repos:
             language: system
             pass_filenames: false
 ci:
-  skip:
-   - fmt
-   - cargo-check
-   - clippy
+    skip:
+        - fmt
+        - cargo-check
+        - clippy
