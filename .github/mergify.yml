@@ -1,3 +1,4 @@
+---
 pull_request_rules:
   - name: Merge trusted bot updates, no conflicts are present and approved
     conditions:
