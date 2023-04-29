@@ -1,0 +1,7 @@
+DISABLE_ERRORS_LINTERS:
+    - SPELL_CSPELL
+FILTER_REGEX_EXCLUDE: .*mypy.* # cspell:disable-line
+PLUGINS:
+    - https://raw.githubusercontent.com/shiranr/linkcheck/main/mega-linter-plugin-linkcheck/linkcheck.megalinter-descriptor.yml
+REPORT_OUTPUT_FOLDER: none
+SHOW_ELAPSED_TIME: true
