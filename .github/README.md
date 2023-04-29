@@ -33,3 +33,6 @@ the `.il` file extension.
 4. You should see "Hello world!" in your terminal.
 
 That's it! It's literally so easy.
+
+## Contributing
+To contribute to this project, read the [contributing guide](CONTRIBUTING.md).
