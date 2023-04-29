@@ -28,13 +28,10 @@ DEALINGS IN THE SOFTWARE.
 # IMPORTS #
 ###########
 
-import os
+import shutil
 
 ########
 # MAIN #
 ########
 
-if os.name == "nt":
-    os.system("cd .. & del target /Q")
-else:
-    os.system("cd .. & rm target -r -f")
+shutil.rmtree('target')
