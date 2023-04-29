@@ -1,6 +1,6 @@
 """
 I Language clean tool.
-Version: 1.0.0
+Version: 1.1.0
 
 Copyright (c) 2023-present I Language Development.
 
@@ -35,6 +35,6 @@ import os
 ########
 
 if os.name == "nt":
-    os.system("cd .. & del target")
+    os.system("cd .. & del target /Q")
 else:
-    os.system("cd .. & rm target")
+    os.system("cd .. & rm target -r -f")
