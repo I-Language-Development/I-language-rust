@@ -77,8 +77,8 @@ pull_request_rules:
   - name: Add review requested label and request label
     conditions:
       - or:
-        - "#approved-reviews-by=0"
-        - "-label~=Approved"
+          - "#approved-reviews-by=0"
+          - "-label~=Approved"
       - "-title~=^[WIP].*"
       - "-label~=Declined"
       - "-label~=Review requested"
