@@ -4,10 +4,10 @@ permissions: read-all
 
 on:
     push:
-        paths: ["dev-requirements.txt"]
+        paths: ["dev-requirements.txt", "Docs/requirements.txt"]
 
     pull_request:
-        paths: ["dev-requirements.txt"]
+        paths: ["dev-requirements.txt", "Docs/requirements.txt"]
 
 jobs:
     install-dependencies:
@@ -25,6 +25,7 @@ jobs:
               run: |
                   python -m pip install --upgrade pip
                   pip install -r dev-requirements.txt
+                  pip install -r Docs/requirements.txt
     dependency-review:
         runs-on: ubuntu-latest
         steps:
