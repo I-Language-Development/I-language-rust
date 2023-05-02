@@ -3,5 +3,6 @@ docs:
   - "Docs"
 module:
   - "Modules/*"
-dependency:
+dependencies:
   - "dev-requirements.txt"
+  - "Docs/requirements.txt"
