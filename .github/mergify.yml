@@ -2,7 +2,9 @@
 pull_request_rules:
   - name: Merge trusted bot updates, no conflicts are present and approved
     conditions:
-      - "label~=Approved"
+      - or:
+          - "label~=Approved"
+          - "-#approved-reviews-by=0"
       - "-conflict"
       - "-draft"
       - "-locked"
