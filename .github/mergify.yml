@@ -39,7 +39,9 @@ pull_request_rules:
       delete_head_branch:
   - name: Merge if approved, no conflicts are present and it's not a WIP
     conditions:
-      - "label~=Approved"
+      - or:
+          - "-#approved-reviews-by=0"
+          - "label~=Approved"
       - "label~=Able to merge"
       - "-conflict"
       - "-draft"
