@@ -34,4 +34,4 @@ import shutil
 # MAIN #
 ########
 
-shutil.rmtree('target')
+shutil.rmtree("target")
