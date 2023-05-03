@@ -31,7 +31,7 @@ jobs:
         steps:
             - name: Checkout Repository
               uses: actions/checkout@v3
-              if: ${{ env.GITHUB_EVENT_NAME != 'push' }}
+              if: ${{ github.event_name != 'push' }}
             - name: Dependency Review
-              if: ${{ env.GITHUB_EVENT_NAME != 'push' }}
+              if: ${{ github.event_name != 'push' }}
               uses: actions/dependency-review-action@v3
