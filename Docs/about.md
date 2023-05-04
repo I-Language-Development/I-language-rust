@@ -1,6 +1,6 @@
 # About
 
-We always had a dream of programming in a language, designed like we wanted to. [ElBe](https://github.com/ElBe-Plaq) first created "ElBlang", stored in a private repository and not being capable of doing anything. After a disscussion with a different developer, [MasterOkatagon](https://github.com/MasterOkatagon), they wanted to create their own language. ElBe created the project outline, whilst MasterOkatagon was busy making the lexer. [Ranastra](https://github.com/Ranastra) joined shortly after. They together created a parser, but quickly realized that doing this in python was not a good idea. So they archived the repository and made a new one, this time in rust.
+We always had a dream of programming in a language, designed like we wanted to. [ElBe](https://github.com/ElBe-Plaq) first created "ElBlang", stored in a private repository and not being capable of doing anything. After a disscussion with a different developer, [MasterOkatagon](https://github.com/MasterOktagon), they wanted to create their own language. ElBe created the project outline, whilst MasterOkatagon was busy making the lexer. [Ranastra](https://github.com/Ranastra) joined shortly after. They together created a parser, but quickly realized that doing this in python was not a good idea. So they archived the repository and made a new one, this time in rust.
 
 ## Team
 
