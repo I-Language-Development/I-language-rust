@@ -1,6 +1,6 @@
 """
 I Language replace version tool.
-Version: 1.1.0
+Version: 1.2.0
 
 Copyright (c) 2023-present I Language Development.
 
@@ -28,12 +28,13 @@ DEALINGS IN THE SOFTWARE.
 # IMPORTS #
 ###########
 
-import subprocess
 from typing import (
     Any,
     Dict,
     Optional,
 )
+
+import Tools.get_release_version
 
 
 ########
@@ -53,9 +54,5 @@ def on_page_markdown(markdown: str, **kwargs: Optional[Dict[Any, Any]]) -> str:
 
     return markdown.replace(
         "{{VERSION}}",
-        subprocess.check_output(
-            ["python", "Tools/get_release_version.py"], shell=False
-        )
-        .decode("utf-8")
-        .replace("\r\n", ""),
+        Tools.get_release_version.main()
     )

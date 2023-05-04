@@ -1,6 +1,6 @@
 """
 I Language release version tool.
-Version: 1.0.0
+Version: 1.1.0
 
 Copyright (c) 2023-present I Language Development.
 
@@ -30,9 +30,21 @@ DEALINGS IN THE SOFTWARE.
 
 import tomllib
 
+
 ########
 # MAIN #
 ########
 
-with open("Cargo.toml", "rb") as file:
-    print(tomllib.load(file)["package"]["version"])
+def main() -> str:
+    """Returns the version from the Cargo.toml file.
+
+    Returns:
+        str: Version as a string.
+    """
+
+    with open("Cargo.toml", "rb") as file:
+        return tomllib.load(file)["package"]["version"]
+
+
+if __name__ == "__main__":
+    print(main())
