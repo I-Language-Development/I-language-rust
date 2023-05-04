@@ -31,7 +31,7 @@ Navigate to the releases tab and select the newest release. Download the version
 
 To clone the repository locally using git run `git clone https://github.com/I-Language-Development/I-language-rust.git`.
 
-> **Warning:**
+> **Warning**
 > Running `git clone https://github.com/I-Language-Development/I-Language.git` will work, but give you the archived python version. Remember to clone from `https://github.com/I-Language-Development/I-language-rust.git` instead.
 
 ## Your first program
