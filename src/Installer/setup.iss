@@ -62,10 +62,12 @@ Name: fileassoc; Description: "{cm:AssocFileExtension,I Language,.il}"; Check: n
 Type: files; Name: {autodesktop}\I Language.lnk; Tasks: not desktopicon; Check: not PortableCheck
 Type: filesandordirs; Name: "{app}\src\Installer"
 Type: filesandordirs; Name: "{app}\Translations\Installer"
+Type: filesandordirs; Name: "{app}\.github"
+Type: filesandordirs; Name: "{app}\.vscode"
 
 [Files]
 Source: "LICENSE"; DestDir: "{app}"; Flags: ignoreversion touch
-; Todo (ElBe): Make README html
+Source: ".github\logo.ico"; DestDir: "{app}"; Flags: ignoreversion touch
 Source: ".github\README.md"; DestDir: "{app}"; Flags: ignoreversion touch isreadme
 Source: "Modules\*"; DestDir: "{app}\Modules\stdlib"; Flags: ignoreversion touch
 Source: "Docs\*"; DestDir: "{app}\Docs"; Flags: ignoreversion touch

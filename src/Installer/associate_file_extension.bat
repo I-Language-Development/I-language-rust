@@ -32,7 +32,7 @@ set registry_path="HKEY_LOCAL_MACHINE\Software\CLASSES"
 rem Add file extension to registry
 reg add "%registry_path%\ILanguage" /d "I Language File" /f
 reg add "%registry_path%\ILanguage" /v "AppUserModelID" /d "ILanguage.ILanguage" /f
-reg add "%registry_path%\ILanguage\DefaultIcon" /d "%PROGRAMFILES%\ilanguage\file_icon.ico" /f
+reg add "%registry_path%\ILanguage\DefaultIcon" /d "%PROGRAMFILES%\ilanguage\icon.ico" /f
 reg add "%registry_path%\ILanguage\Shell\open\command" /d "%PROGRAMFILES%\ilanguage\shell.exe" /f
 reg add "%registry_path%\.il" /d "ILanguage" /f
 reg add "%registry_path%\.il" /v "Content Type" /d "text/plain" /f
