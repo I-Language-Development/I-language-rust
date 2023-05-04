@@ -6,6 +6,7 @@ site_author: I-Language-Development
 copyright: >
     Copyright (c) 2023-present I Language Development.
     <a href="#__consent">Change cookie settings</a>
+docs_dir: Docs
 
 nav:
     - Home: index.md
