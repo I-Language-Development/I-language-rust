@@ -1,0 +1,9 @@
+a.md-logo img {
+	border: 0px solid transparent !important;
+	border-radius: 50% !important;
+}
+
+button,
+label.md-button {
+	border-radius: 7.5px !important;
+}

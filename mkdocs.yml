@@ -3,19 +3,51 @@ site_name: I Language
 repo_url: https://github.com/I-Language-Development/I-Language-Rust
 site_description: The I programming language is a high level programming language written in rust.
 site_author: I-Language-Development
-copyright: Copyright (c) 2023-present I Language Development.
+copyright: >
+  Copyright (c) 2023-present I Language Development.
+  <a href="#__consent">Change cookie settings</a>
+
 nav:
     - Home: index.md
     - About: about.md
+    - I Language Enhancement Proposals:
+        - Intro:
+          - Index: ILEPs/Intro/001.md
+          - What is this language?: ILEPs/Intro/002.md
+          - What is this language not?: ILEPs/Intro/003.md
+          - (Built-in) Modules: ILEPs/Intro/004.md
+          - Examples: ILEPs/Intro/005.md
+          - Contributing: ILEPs/Intro/006.md
+          - Decisions: ILEPs/Intro/007.md
+          - Style guide: ILEPs/Intro/008.md
+          - Comments and documentation: ILEPs/Intro/009.md
+        - Implement asyncio: ILEPs/Main/011.md
     - Issues: https://github.com/I-Language-Development/I-Language-Rust/issues
+
 theme:
   name: material
+  favicon: ../.github/logo.ico
   icon:
       repo: fontawesome/brands/github
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
   features:
     - announce.dismiss
     - content.code.copy
-  logo: .github/logo.png
+    - toc.integrate
+    - navigation.footer
+  logo: https://github.com/I-Language-Development/I-language-rust/blob/main/.github/logo.png?raw=true
+  custom_dir: Docs/overrides/
+
 markdown_extensions:
   - admonition
   - pymdownx.highlight:
@@ -26,9 +58,28 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.superfences
   - pymdownx.keys
+
 hooks:
     - Tools/Docs/replace_variables.py
+
 plugins:
   - search
   - git-revision-date-localized
   - macros
+
+extra_css:
+  - extra.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/I-Language-Development/I-Language-Rust
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/JVyyDukQqV
+  consent:
+    title: Cookie consent
+    description: >
+      We use cookies to recognize your repeated visits and preferences, as well
+      as to measure the effectiveness of our documentation and whether users
+      find what they're searching for. With your consent, you're helping us to
+      make our documentation better.
