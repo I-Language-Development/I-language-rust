@@ -53,7 +53,9 @@ def on_page_markdown(markdown: str, **kwargs: Optional[Dict[Any, Any]]) -> str:
 
     return markdown.replace(
         "{{VERSION}}",
-        subprocess.check_output(["python", "Tools/get_release_version.py"])
+        subprocess.check_output(
+            ["python", "Tools/get_release_version.py"], shell=False
+        )
         .decode("utf-8")
         .replace("\r\n", ""),
     )
