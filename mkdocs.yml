@@ -13,14 +13,22 @@ theme:
   icon:
       repo: fontawesome/brands/github
   features:
+    - announce.dismiss
     - content.code.copy
+  logo: .github/logo.png
 markdown_extensions:
   - admonition
-  - pymdownx.highlight
+  - pymdownx.highlight:
+      auto_title: true
+      linenums: true
+      anchor_linenums: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
   - pymdownx.keys
 hooks:
     - Tools/Docs/replace_variables.py
-
+plugins:
+  - search
+  - git-revision-date-localized
+  - macros
