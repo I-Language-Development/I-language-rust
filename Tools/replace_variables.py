@@ -28,13 +28,18 @@ DEALINGS IN THE SOFTWARE.
 # IMPORTS #
 ###########
 
+import os
+import sys
 from typing import (
     Any,
     Dict,
     Optional,
 )
 
-import Tools.get_release_version
+sys.path.append(os.path.dirname(__file__))  # When using MkDocs, the code is accessed outside of
+                                            # this directory, making it not able to import the necessary tool.
+                                            # This ensures "get_release_version" can be imported
+import get_release_version  # pylint: disable=C0413
 
 
 ########
@@ -54,5 +59,5 @@ def on_page_markdown(markdown: str, **kwargs: Optional[Dict[Any, Any]]) -> str:
 
     return markdown.replace(
         "{{VERSION}}",
-        Tools.get_release_version.main()
+        get_release_version.main()
     )

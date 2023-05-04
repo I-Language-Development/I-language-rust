@@ -61,7 +61,7 @@ markdown_extensions:
     - pymdownx.keys
 
 hooks:
-    - Tools/Docs/replace_variables.py
+    - Tools/replace_variables.py
 
 plugins:
     - search
