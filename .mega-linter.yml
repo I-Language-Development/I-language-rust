@@ -3,6 +3,7 @@ DISABLE_ERRORS_LINTERS:
     - SPELL_CSPELL
     - REPOSITORY_DEVSKIM  # cspell:disable-line
     - MAKEFILE_CHECKMAKE # cspell:disable-line
+    - HTML_HTMLHINT # cspell:disable-line
 FILTER_REGEX_EXCLUDE: .*mypy.* # cspell:disable-line
 PLUGINS:
     - https://raw.githubusercontent.com/shiranr/linkcheck/main/mega-linter-plugin-linkcheck/linkcheck.megalinter-descriptor.yml
