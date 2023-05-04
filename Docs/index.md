@@ -24,15 +24,15 @@ Here is the power of some of the best languages combined.
 
 Navigate to the releases tab and select the newest release. Download the version fitting your OS and run the installer.
 
-> **Note**
-> Pre-releases may not work properly. Please create an [issue](https://github.com/I-Language-Development/I-language-rust/issues) when an error occurs. You may prefer to use stable releases.
+!!! info
+    Pre-releases may not work properly. Please create an [issue](https://github.com/I-Language-Development/I-language-rust/issues) when an error occurs. You may prefer to use stable releases.
 
 ### Git
 
 To clone the repository locally using git run `git clone https://github.com/I-Language-Development/I-language-rust.git`.
 
-> **Warning:**
-> Running `git clone https://github.com/I-Language-Development/I-Language.git` will work, but give you the archived python version. Remember to clone from `https://github.com/I-Language-Development/I-language-rust.git` instead.
+!!! warning
+    Running `git clone https://github.com/I-Language-Development/I-Language.git` will work, but give you the archived python version. Remember to clone from `https://github.com/I-Language-Development/I-language-rust.git` instead.
 
 ## Your first program
 
@@ -40,7 +40,7 @@ To make a simple hello world program follow the instructions below:
 
 1. Create a file named `hello.il`.
 2. Open the file and write the following lines to it.
-```
+``` py title="hello.il"
 output("Hello world!");
 ```
 3. Open the path of the file in your terminal and type `ilanguage hello.il`
