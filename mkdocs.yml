@@ -7,6 +7,7 @@ copyright: >
     Copyright (c) 2023-present I Language Development.
     <a href="#__consent">Change cookie settings</a>
 docs_dir: Docs
+site_url: https://raw.githubusercontent.com/I-Language-Development/I-language-rust/main/.github/logo.ico
 
 nav:
     - Home: index.md
@@ -27,7 +28,7 @@ nav:
 
 theme:
     name: material
-    favicon: ../.github/logo.ico
+    favicon: https://raw.githubusercontent.com/I-Language-Development/I-language-rust/main/.github/logo.ico
     icon:
         repo: fontawesome/brands/github
     palette:
