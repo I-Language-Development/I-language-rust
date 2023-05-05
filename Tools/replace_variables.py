@@ -36,10 +36,12 @@ from typing import (
     Optional,
 )
 
-sys.path.append(os.path.dirname(__file__))  # When using MkDocs, the code is accessed outside of
-                                            # this directory, making it not able to import the necessary tool.
-                                            # This ensures "get_release_version" can be imported
-import get_release_version  # pylint: disable=C0413
+sys.path.append(
+    os.path.dirname(__file__)
+)  # When using MkDocs, the code is accessed outside of
+# this directory, making it not able to import the necessary tool.
+# This ensures "get_release_version" can be imported
+import get_release_version  # pylint: disable=C0413  # noqa
 
 
 ########
@@ -57,7 +59,4 @@ def on_page_markdown(markdown: str, **kwargs: Optional[Dict[Any, Any]]) -> str:
        str: Modified markdown.
     """
 
-    return markdown.replace(
-        "{{VERSION}}",
-        get_release_version.main()
-    )
+    return markdown.replace("{{VERSION}}", get_release_version.main())

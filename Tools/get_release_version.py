@@ -35,6 +35,7 @@ import tomllib
 # MAIN #
 ########
 
+
 def main() -> str:
     """Returns the version from the Cargo.toml file.
 
