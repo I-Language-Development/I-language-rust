@@ -7,7 +7,7 @@ copyright: >
     Copyright (c) 2023-present I Language Development.
     <a href="#__consent">Change cookie settings</a>
 docs_dir: Docs
-site_url: https://i-language-rust.readthedocs.io
+site_url: https://i-language-rust.readthedocs.io/en/latest/
 
 nav:
     - Home: index.md
