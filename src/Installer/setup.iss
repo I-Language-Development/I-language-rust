@@ -82,7 +82,7 @@ Type: filesandordirs; Name: "{app}\Modules"
 
 [Icons]
 ; Todo (ElBe): Add icons
-; Comming soon
+; Coming soon...
 
 [Run]
 Filename: "{app}\associate_file_extension.bat"; StatusMsg: "{cm:AssocingFileExtension,I Language,.il}"; Tasks: fileassoc
