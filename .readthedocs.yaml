@@ -14,6 +14,11 @@ build:
 mkdocs:
   configuration: mkdocs.yml
 
+submodules:
+  include: all
+  recursive: true
+
+
 # Optionally declare the Python requirements required to build your docs
 python:
   install:
