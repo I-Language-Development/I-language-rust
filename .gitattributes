@@ -1,0 +1,13 @@
+# Binary diff for executables
+*.bin binary
+*.deb binary
+*.exe binary
+*.rpm binary
+*.gz binary
+
+# Binary diff for archives
+*.7z binary
+*.iso binary
+*.rar binary
+*.tar binary
+*.zip binary
