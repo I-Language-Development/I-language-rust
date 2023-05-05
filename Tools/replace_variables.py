@@ -53,10 +53,10 @@ def on_page_markdown(markdown: str, **kwargs: Optional[Dict[Any, Any]]) -> str:
     """Replaces variables defined as `{{NAME}}` with their values.
 
     Args:
-       markdown (str): Original markdown.
+        markdown (str): Original markdown.
 
     Returns:
-       str: Modified markdown.
+        str: Modified markdown.
     """
 
     return markdown.replace("{{VERSION}}", get_release_version.main())
