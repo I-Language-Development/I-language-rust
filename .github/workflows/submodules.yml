@@ -1,0 +1,20 @@
+---
+name: Submodule Sync
+on:
+  schedule:
+    - cron: "0 * * * *"  # Every hour
+
+jobs:
+  submodule-sync:
+    name: Submodule Sync
+    runs-on: ubuntu-latest
+    steps:
+      - name: Submodule Sync
+        uses: mheap/submodule-sync-action@v1
+        with:
+          path: Docs\ILEPs
+          ref: main
+          pr_branch: submodule-update
+          target_branch: main
+          base_branch: main
+          pr_body: "Updates following git sumbodule: [I-Language-Enhancement-Proposals](https://github.com/I-Language-Development/I-Language-Enhancement-Proposals)."
