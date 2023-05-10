@@ -12,6 +12,7 @@ site_url: https://i-language-rust.readthedocs.io/en/latest/
 nav:
     - Home: index.md
     - About: about.md
+    - Installation: install.md
     - I Language Enhancement Proposals:
           - Intro:
                 - Index: ILEPs/Intro/001.md
