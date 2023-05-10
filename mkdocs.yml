@@ -23,7 +23,6 @@ nav:
                 - Decisions: ILEPs/Intro/007.md
                 - Style guide: ILEPs/Intro/008.md
                 - Comments and documentation: ILEPs/Intro/009.md
-          - Implement asyncio: ILEPs/Main/011.md
     - Issues: https://github.com/I-Language-Development/I-Language-Rust/issues
 
 theme:
