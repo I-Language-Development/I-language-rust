@@ -738,7 +738,7 @@ Theme for [MkDocs](#mkdocs).
 
     ```
 
-### [MkDocs](https://mkdocs.org)
+### [MkDocs](https://mkdocs.org/)
 
 Makes HTML documents from documentation written in markdown.
 
