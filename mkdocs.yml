@@ -14,7 +14,9 @@ nav:
     - About: about.md
     - Installation: install.md
     - I Language Enhancement Proposals:
+          - ILEPs/Intro/001.md
           - Intro:
+                - ILEPs/Intro/001.md
                 - Index: ILEPs/Intro/001.md
                 - What is this language?: ILEPs/Intro/002.md
                 - What is this language not?: ILEPs/Intro/003.md
@@ -70,6 +72,7 @@ plugins:
     - git-revision-date-localized:
           type: timeago
     - macros
+    - section-index
 
 extra_css:
     - extra.css
