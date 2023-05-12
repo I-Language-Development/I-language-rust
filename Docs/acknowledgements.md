@@ -39,7 +39,6 @@ Runs several linters and style checker in one place.
 !!! info
     This license does not contain the licenses of the linters themselves. To view a list of linters included visit [https://megalinter.io/latest/all_linters/](https://megalinter.io/latest/all_linters/).
 
-
 ??? license "MegaLinter License"
     ``` text title="AGPL-3.0 License"
 
