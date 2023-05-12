@@ -5,8 +5,7 @@ DISABLE_ERRORS_LINTERS:
     - MAKEFILE_CHECKMAKE # cspell:disable-line
     - HTML_HTMLHINT # cspell:disable-line
 FILTER_REGEX_EXCLUDE: .*mypy.* # cspell:disable-line
-EDITORCONFIG_EDITORCONFIG_CHECKER_FILTER_REGEX_EXCLUDE: "Docs\acknowledgements.md"
-PLUGINS:
-    - https://raw.githubusercontent.com/shiranr/linkcheck/main/mega-linter-plugin-linkcheck/linkcheck.megalinter-descriptor.yml
+EDITORCONFIG_EDITORCONFIG_CHECKER_FILTER_REGEX_EXCLUDE: "Docs/acknowledgements.md"
+MARKDOWN_MARKDOWN_LINK_CHECK_FILTER_REGEX_INCLUDE: "Docs/acknowledgements.md"
 REPORT_OUTPUT_FOLDER: none
 SHOW_ELAPSED_TIME: true
