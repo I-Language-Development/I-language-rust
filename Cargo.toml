@@ -1,7 +1,10 @@
+# Note:
+# All edits to this file, for example rust version updates, should be committed only on a new release.
+
 [package]
 name = "I-Language-Rust"
 description = "The I programming language is a high level programming language written in rust."
-version = "0.1.0"
+version = "1.0.0-alpha"
 authors = [
 	"ElBe-Plaq <elbe.dev.plaq@gmail.com>",
 	"MasterOktagon",
