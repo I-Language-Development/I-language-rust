@@ -4,7 +4,7 @@
 [package]
 name = "I-Language-Rust"
 description = "The I programming language is a high level programming language written in rust."
-version = "1.0.0-alpha"
+version = "1.0.0-alpha1"
 authors = [
 	"ElBe-Plaq <elbe.dev.plaq@gmail.com>",
 	"MasterOktagon",
