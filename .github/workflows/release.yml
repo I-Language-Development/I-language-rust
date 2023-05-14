@@ -5,7 +5,7 @@ permissions: read-all
 on:
     pull_request:
         types: [opened]
-        branches: [main, "v**"]
+        branches: [main]
 
 jobs:
     build:
