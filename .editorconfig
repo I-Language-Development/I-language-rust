@@ -10,7 +10,7 @@ insert_final_newline = true
 tab_width = 4
 trim_trailing_whitespace = true
 
-[*.{html,md,py}]
+[*.{html,md,py,rs}]
 indent_size = 4
 indent_style = space
 
