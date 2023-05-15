@@ -46,7 +46,7 @@ SolidCompression=yes
 ;Uninstallable=not PortableCheck
 UninstallDisplayIcon={app}/Uninstall.exe
 UsePreviousLanguage=no
-LicenseFile="../../../LICENSE"
+LicenseFile="../../../LICENSE.txt"
 ShowLanguageDialog=yes
 
 [Languages]
@@ -66,7 +66,7 @@ Type: filesandordirs; Name: "{app}/.github"
 Type: filesandordirs; Name: "{app}/.vscode"
 
 [Files]
-Source: "../../../LICENSE"; DestDir: "{app}"; Flags: ignoreversion touch
+Source: "../../../LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion touch
 Source: "../../../.github/logo.ico"; DestDir: "{app}"; Flags: ignoreversion touch
 Source: "../../../.github/README.md"; DestDir: "{app}/Docs"; Flags: ignoreversion touch isreadme
 Source: "../../../Modules/*"; DestDir: "{app}/Modules/stdlib"; Flags: ignoreversion touch
