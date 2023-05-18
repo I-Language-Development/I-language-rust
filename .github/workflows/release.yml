@@ -29,4 +29,5 @@ jobs:
                   files: | # cspell:disable-next-line
                       .github/README.md
                       LICENSE
+                      src/Installer/Linux/install.bash
                       *.exe
