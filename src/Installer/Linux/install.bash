@@ -38,7 +38,7 @@ echo "    This will install the I programming language on your computer."
 echo "    Existing installations will be replaced and configuration will be overwritten."
 echo ""
 echo -e -n "    \033[30;107m[ ]\033[0m Continue? (Ctrl-C to cancel)"
-read -n 1 -s
+read -n 1 -r -s
 echo -e -n "\e[2K\r"
 echo -e "    \033[30;107m[x]\033[0m Continue? (Ctrl-C to cancel)"
 
@@ -78,7 +78,7 @@ fi
 # Ask where to install the I programming language
 while :; do
 	echo ""
-	read -p "    Where do you want to install the I programming language? (Default: \"/usr/bin\") " installLocation
+	read -p "    Where do you want to install the I programming language? (Default: \"/usr/bin\") " -r installLocation
 
 	if [ "$installLocation." == "." ]; then
 		installLocation="/usr/bin"
