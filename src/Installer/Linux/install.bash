@@ -38,12 +38,12 @@ echo "    This will install the I programming language on your computer."
 echo "    Existing installations will be replaced and configuration will be overwritten."
 echo ""
 echo -e -n "    \033[30;107m[ ]\033[0m Continue? (Ctrl-C to cancel)"
-read -n 1 -s installerContinue
+read -n 1 -s
 echo -e -n "\e[2K\r"
 echo -e "    \033[30;107m[x]\033[0m Continue? (Ctrl-C to cancel)"
 
 # Raise error when the OS is not linux
-if [[ !"$OSTYPE" == "linux-gnu"* ]]; then
+if [[ ! "$OSTYPE" == "linux-gnu"* ]]; then
 	echo ""
 	echo -e "\033[31;1mError\033[0m"
 	echo "    Currently only linux is supported."
@@ -52,8 +52,7 @@ if [[ !"$OSTYPE" == "linux-gnu"* ]]; then
 fi
 
 # Test for git
-git --version &> /dev/null
-if [ $? -gt 0 ]; then
+if ! git --version &> /dev/null; then
 	echo ""
 	echo -e "\033[31;1mError\033[0m"
 	echo "    Git seems not to be installed properly."
@@ -62,10 +61,8 @@ if [ $? -gt 0 ]; then
 fi
 
 # Test for python and get edition
-python3 --version &> /dev/null
-if [ $? -gt 0 ]; then
-	python --version &> /dev/null
-	if [ $? -gt 0 ]; then
+if ! python3 --version &> /dev/null; then
+	if ! python --version &> /dev/null; then
 		echo ""
 		echo -e "\033[31;1mError\033[0m"
 		echo "    Python seems not to be installed properly."
@@ -88,13 +85,13 @@ while :; do
 		break
 	fi
 
-	if [ ! -d $installLocation ]; then
+	if [ ! -d "$installLocation" ]; then
 		echo ""
 		echo -e "\033[31;1mError\033[0m"
 		echo "    $installLocation does not exist."
 		echo "    Please create the directory if wanted and try again."
 		sleep 3
-		for i in {1..6}; do printf "\e[A\e[K"; done
+		for _ in {1..6}; do printf "\e[A\e[K"; done
 		continue
 	fi
 
@@ -109,7 +106,7 @@ latestRelease="https://raw.githubusercontent.com/I-Language-Development/I-langua
 
 echo -e -n "    [\033[34;1m...\033[0m] Installing latest release from $latestRelease (v$($python -c "exec(\"import tomllib\nfrom urllib import request\nwith request.urlopen('$cargoTomlUrl') as file: print(tomllib.loads(file.read().decode())['package']['version'])\")"))"
 
-cd $installLocation
-curl -s "https://raw.githubusercontent.com/I-Language-Development/I-language-rust/releases/$latestReleaseVersion" > ilang
+cd "$installLocation" || exit 3
+curl -s "https://raw.githubusercontent.com/I-Language-Development/I-language-rust/releases/$latestRelease" > ilang
 echo -e -n "\e[2K\r"
 echo -e "    [\033[32;1m✓\033[0m] Installing latest release from $latestRelease (v$($python -c "exec(\"import tomllib\nfrom urllib import request\nwith request.urlopen('$cargoTomlUrl') as file: print(tomllib.loads(file.read().decode())['package']['version'])\")"))"
