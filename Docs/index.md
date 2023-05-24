@@ -10,7 +10,9 @@
     <img src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit">
 </p>
 
-<img src="https://github.com/I-Language-Development/I-language-rust/blob/main/.github/example-syntax.png?raw=true" width="500px"/>
+<p align="center">
+    <img src="https://github.com/I-Language-Development/I-language-rust/blob/main/.github/example-syntax.png?raw=true" width="500px"/>
+</p>
 
 ## About this project
 
