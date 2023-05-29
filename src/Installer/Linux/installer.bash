@@ -51,15 +51,6 @@ if [[ ! "$OSTYPE" == "linux-gnu"* ]]; then
 	exit 2
 fi
 
-# Test for git
-if ! git --version &> /dev/null; then
-	echo ""
-	echo -e "\033[31;1mError\033[0m"
-	echo "    Git seems not to be installed properly."
-	echo "    Please install git and try again."
-	exit 1
-fi
-
 # Test for python and get edition
 if ! python3 --version &> /dev/null; then
 	if ! python --version &> /dev/null; then
