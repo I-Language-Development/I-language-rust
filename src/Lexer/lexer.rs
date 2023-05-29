@@ -30,6 +30,7 @@ use std;
 
 const VERSION: &str = "0.1.0";
 
+#[derive(Debug)]
 enum Mark {
     Equal,
     Greater,
@@ -76,6 +77,7 @@ enum Mark {
     ShiftRightAssign,
 }
 
+#[derive(Debug)]
 enum Keyword {
     Class,
     Function,
@@ -98,6 +100,7 @@ enum Keyword {
     While,
 }
 
+#[derive(Debug)]
 enum BaseType {
     Integer,
     Float,
@@ -105,6 +108,7 @@ enum BaseType {
     Char,
 }
 
+#[derive(Debug)]
 enum CompoundType {
     //Array(BaseType),
     //DynamicArray(BaseType),
@@ -114,6 +118,7 @@ enum CompoundType {
     //Tuple,
 }
 
+#[derive(Debug)]
 enum TokenType {
     BaseType(BaseType),
     Keyword(Keyword),
@@ -122,6 +127,7 @@ enum TokenType {
     Identifier,
 }
 
+#[derive(Debug)]
 struct Token {
     _type: TokenType,
     value: Option<String>,
@@ -631,6 +637,7 @@ fn lex(text: String) -> Vec<Token> {
     loop {
         if let Some(c) = last_char {
             character = Some(c);
+            last_char = None;
         } else {
             character = chars.next();
             column_number += 1;
@@ -906,14 +913,11 @@ fn lex(text: String) -> Vec<Token> {
                     result.push(Token::new_mark(Mark::BitXor));
                 }
             } else {
-                    lexer_errors::unwrap::<()>(Err(
-                        lexer_errors::LexerError::unexpected_character(
-                            line_number,
-                            column_number,
-                            c,
-                        ),
-                    ));
-                
+                lexer_errors::unwrap::<()>(Err(lexer_errors::LexerError::unexpected_character(
+                    line_number,
+                    column_number,
+                    c,
+                )));
             }
         } else {
             break;
@@ -923,10 +927,16 @@ fn lex(text: String) -> Vec<Token> {
 }
 
 fn main() {
-    let (lex_options, path) = match_cli_argument();
-    let text = open_file(&path);
-    let tokens = lex(text);
+    //let (lex_options, path) = match_cli_argument();
+    //let text = open_file(&path);
+    //let tokens = lex(text);
     // let a: Result<(), lexer_errors::LexerError> =
     //     Err(lexer_errors::LexerError::string_not_closed(1, 1));
     // lexer_errors::unwrap(a);
+    let string = "function test() { 
+        a= 4.5; a+=2; return a;
+    }"
+    .to_string();
+    let tokens_test = lex(string);
+    println!("{:?}", tokens_test);
 }
