@@ -22,12 +22,8 @@ Here is the power of some of the best languages combined.
 
 ## Installing
 
-### Download from releases
-
-Navigate to the releases tab and select the newest release. Download the version fitting your OS and run the installer.
-
-!!! info
-    Pre-releases may not work properly. Please create an [issue](https://github.com/I-Language-Development/I-language-rust/issues) when an error occurs. You may prefer to use stable releases.
+!!! note
+    See [here](https://i-language-rust.readthedocs.io/en/latest/install/) for how to install the I programming language.
 
 ### Git
 
