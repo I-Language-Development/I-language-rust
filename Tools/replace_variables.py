@@ -59,4 +59,4 @@ def on_page_markdown(markdown: str, **kwargs: Optional[Dict[Any, Any]]) -> str:
         str: Modified markdown.
     """
 
-    return markdown.replace("{{VERSION}}", get_release_version.main())
+    return markdown.replace("{{ VERSION }}", get_release_version.main())
