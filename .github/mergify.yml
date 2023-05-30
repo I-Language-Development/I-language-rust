@@ -15,9 +15,9 @@ pull_request_rules:
         message: |
           # Merging pull request
 
-          Successful checks:
-          {% for check in check_success %}
-          - {{check}}
+          Checks:
+          | Name | Status |
+          {% for check in check_success %}| {{check}} | :white_check_mark: |
           {% endfor %}
       merge:
         commit_message_template: |
@@ -26,15 +26,13 @@ pull_request_rules:
           {{title}} in #{{number}} by @{{author}}, contributing to {{milestone}}
 
           Changed files:
-          {% for file in files %}
-            - '{{file}}'
+          {% for file in files %}- '{{file}}'
           {% endfor %}
 
           Approved by: @{{ approved_reviews_by | join(', @') }}
 
 
-          {% for commit in commits %}
-          Co-authored-by: {{commit.author}} <{{commit.email_author}}>
+          {% for commit in commits %}Co-authored-by: {{commit.author}} <{{commit.email_author}}>
           {% endfor %}
         method:
           merge
@@ -54,9 +52,9 @@ pull_request_rules:
         message: |
           # Merging pull request
 
-          Successful checks:
-          {% for check in check_success %}
-          - {{check}}
+          Checks:
+          | Name | Status |
+          {% for check in check_success %}| {{check}} | :white_check_mark: |
           {% endfor %}
       merge:
         commit_message_template: |
@@ -65,15 +63,13 @@ pull_request_rules:
           {{title}} in #{{number}} by @{{author}}, contributing to {{milestone}}
 
           Changed files:
-          {% for file in files %}
-            - '{{file}}'
+          {% for file in files %}- '{{file}}'
           {% endfor %}
 
           Approved by: @{{ approved_reviews_by | join(', @') }}
 
 
-          {% for commit in commits %}
-          Co-authored-by: {{commit.author}} <{{commit.email_author}}>
+          {% for commit in commits %}Co-authored-by: {{commit.author}} <{{commit.email_author}}>
           {% endfor %}
         method:
           merge
@@ -124,10 +120,10 @@ pull_request_rules:
         message: |
           # Checks failed
 
-          Failed checks:
-          {% for check in check_failure %}
-          - {{check}}
-          {% endfor %}
+          Checks:
+          | Name | Status |
+          {% for check in check_success %}| {{check}} | :white_check_mark: |{% endfor %}
+          {% for check in check_failure %}| {{check}} | :x: |{% endfor %}
   - name: Add reviewers and label on update
     conditions:
       - head~=^v\d+\.\d+\.\d+(-(alpha|beta|pr|test)\d+)?$
