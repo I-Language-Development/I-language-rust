@@ -933,7 +933,7 @@ fn main() {
     // let a: Result<(), lexer_errors::LexerError> =
     //     Err(lexer_errors::LexerError::string_not_closed(1, 1));
     // lexer_errors::unwrap(a);
-    let string = "function test() { 
+    let string = "function test() {
         a= 4.5; a+=2; return a;
     }"
     .to_string();
