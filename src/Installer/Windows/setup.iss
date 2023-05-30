@@ -85,7 +85,7 @@ Type: filesandordirs; Name: "{app}/Modules"
 [Run]
 Filename: "{app}/Tools/add_desktop_icon.bat"; StatusMsg: "{cm:CreatingDesktopIcon}"; Parameters: {app}; Tasks: createDesktopIcon; Flags: runhidden
 Filename: "{app}/Tools/associate_file_extension.bat"; StatusMsg: "{cm:AssociatingFileExtension,.il,I Language}"; Tasks: associateFileExtension; Flags: runhidden
-Filename: "{app}/Tools/add_to_path.bat"; StatusMsg: "{cm:AddingToPath,I Language}"; Tasks: addToPath; Flags: runhidden
+Filename: "{app}/Tools/add_to_path.bat"; StatusMsg: "{cm:AddingToPath,I Language}"; Parameters: {app}; Tasks: addToPath; Flags: runhidden
 
 [UninstallRun]
 Filename: "{app}/Tools/unassociate_file_extension.bat"; RunOnceId: "{cm:UnassociatingFileExtension,.il,I Language}"; Tasks: associateFileExtension; Flags: runhidden

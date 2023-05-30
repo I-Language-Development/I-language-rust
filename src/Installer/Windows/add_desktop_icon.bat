@@ -27,7 +27,7 @@
 SETLOCAL ENABLEDELAYEDEXPANSION
 SET LinkName=I Language Shell
 SET Esc_LinkDest=%%HOMEDRIVE%%%%HOMEPATH%%\Desktop\!LinkName!.lnk
-SET Esc_LinkTarget=%%SYSTEMROOT%%\notepad.exe
+SET Esc_LinkTarget=%1
 SET cSctVBS=CreateShortcut.vbs
 SET LOG=".\%~N0_runtime.log"
 ((
