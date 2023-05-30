@@ -171,7 +171,7 @@ mod lexer_errors {
         CharNotClosed(CharNotClosed),
         UnknownEscapeSequence(UnknownEscapeSequence),
         MultilineCommentNotClosed(MultilineCommentNotClosed),
-        // TODO (Ranastra): Add Paranthesis / Brackets not closed error
+        // TODO (Ranastra): Add Parenthesis / Brackets not closed error
         UnexpectedCharacter(UnexpectedCharacter),
     }
 
