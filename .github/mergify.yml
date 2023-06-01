@@ -17,6 +17,7 @@ pull_request_rules:
 
           Checks:
           | Name | Status |
+          |------|--------|
           {% for check in check_success %}| {{check}} | :white_check_mark: |
           {% endfor %}
       merge:
@@ -54,6 +55,7 @@ pull_request_rules:
 
           Checks:
           | Name | Status |
+          |------|--------|
           {% for check in check_success %}| {{check}} | :white_check_mark: |
           {% endfor %}
       merge:
@@ -122,8 +124,11 @@ pull_request_rules:
 
           Checks:
           | Name | Status |
-          {% for check in check_success %}| {{check}} | :white_check_mark: |{% endfor %}
-          {% for check in check_failure %}| {{check}} | :x: |{% endfor %}
+          |------|--------|
+          {% for check in check_success %}| {{check}} | :white_check_mark: |
+          {% endfor %}
+          {% for check in check_failure %}| {{check}} | :x: |
+          {% endfor %}
   - name: Add reviewers and label on update
     conditions:
       - head~=^v\d+\.\d+\.\d+(-(alpha|beta|pr|test)\d+)?$
