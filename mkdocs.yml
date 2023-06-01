@@ -13,6 +13,7 @@ nav:
     - Home: index.md
     - About: about.md
     - Installation: install.md
+    - Changelog: CHANGELOG.md
     - I Language Enhancement Proposals:
           - ILEPs/Intro/001.md
           - Intro:

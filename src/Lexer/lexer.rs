@@ -1,34 +1,49 @@
-// I Language lexer.
-// Version: 0.1.0
+/*
+I Language lexer.
+Version: 0.1.0
 
-// Copyright (c) 2023-present I Language Development.
+Copyright (c) 2023-present I Language Development.
 
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the 'Software'),
-// to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense,
-// and/or sell copies of the Software, and to permit persons to whom the
-// Software is furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the 'Software'),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
 
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-// DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+*/
+
+////////////////////////////////
+// IMPORTS AND USE STATEMENTS //
+////////////////////////////////
 
 use std;
 
-//const DIGITS_AS_STRINGS: [char; 10] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+///////////////
+// CONSTANTS //
+///////////////
+
+//const DIGITS_AS_CHARS: [char; 10] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 //const WHITE_SPACES: [char; 3] = [' ', '\t', '\n'];
 
-//const STRING_ESCAPE_CHARACTERS: [char; 5] = ['"', '\\', 'n', 't', 'r'];
+//const ESCAPE_CHARACTERS: [char; 5] = ['"', '\\', 'n', 't', 'r'];
 
+// Version of the lexer
 const VERSION: &str = "0.1.0";
+
+//////////////////
+// LEXER TOKENS //
+//////////////////
 
 #[derive(Debug)]
 enum Mark {
@@ -111,7 +126,7 @@ enum BaseType {
 #[derive(Debug)]
 enum CompoundType {
     //Array(BaseType),
-    //DynamicArray(BaseType),
+    //DynamicArray(BaseType), // Call it list?
     String,
     //HashTable(BaseType),
     //HashMap(BaseType, BaseType),
@@ -131,16 +146,20 @@ enum TokenType {
 struct Token {
     _type: TokenType,
     value: Option<String>,
+    // arguments: Option<Vec<String>>,
 }
 
 mod lexer_errors {
     // https://doc.rust-lang.org/std/error/trait.Error.html ... TODO
     // haha get that boring try catch!!
 
+    // TODO (Ranastra): Improve visuals of errors and put them in their own file
+
     pub fn unwrap<T>(result: Result<T, LexerError>) -> T {
         match result {
             Ok(value) => value,
             Err(err) => {
+                println!("\x1b[31;1mError\x1b[0m");
                 println!("{:?}", err);
                 std::process::exit(1);
             }
@@ -152,6 +171,7 @@ mod lexer_errors {
         CharNotClosed(CharNotClosed),
         UnknownEscapeSequence(UnknownEscapeSequence),
         MultilineCommentNotClosed(MultilineCommentNotClosed),
+        // TODO (Ranastra): Add Parenthesis / Brackets not closed error
         UnexpectedCharacter(UnexpectedCharacter),
     }
 
@@ -164,7 +184,7 @@ mod lexer_errors {
         fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
             write!(
                 f,
-                "lexer error at line {} collumn {}",
+                "Lexer error at line {} column {}",
                 self.line_number, self.column_number
             )?;
             match self._error {
@@ -268,6 +288,7 @@ mod lexer_errors {
 
 impl Token {
     fn new_base_type(base_type: BaseType, value: String) -> Token {
+        // Is base type necessary for identifiers?
         Token {
             _type: TokenType::BaseType(base_type),
             value: Some(value),
@@ -307,6 +328,7 @@ mod comment {
             character = chars.next();
             if let Some(c) = character {
                 if c == '\n' {
+                    // TODO (ElBe): Find better variable names
                     return;
                 }
             } else {
@@ -370,6 +392,7 @@ impl BaseType {
                 *column_number += 1;
                 if let Some(c) = character {
                     match c {
+                        // TODO (ElBe): 0x, 0b, 033, etc.
                         'n' => result = '\n',
                         't' => result = '\t',
                         'r' => result = '\r',
@@ -476,6 +499,7 @@ impl CompoundType {
                     *column_number += 2;
                     if let Some(c) = character {
                         match c {
+                            // See above
                             'n' => string.push('\n'),
                             't' => string.push('\t'),
                             'r' => string.push('\r'),
@@ -546,6 +570,7 @@ impl Keyword {
     }
 
     fn match_keyword(word: &String) -> Option<Keyword> {
+        // Bad name, not to confuse with the actual match statement (or keyword?)
         match word.as_str() {
             "else" => Some(Keyword::Else),
             "class" => Some(Keyword::Class),
@@ -580,8 +605,9 @@ struct LexOptions {
 fn print_help_message() {
     println!("Usage: lexer.py [PATH] [-h] [-v] [--types] [--values] [--no-split]");
     println!("Lexer of the I-programming language.");
+    println!("");
     println!("Options:");
-    println!("    -h, --help             Shows this help and exits.");
+    println!("    -h, --help             Shows this message and exits.");
     println!("    -v, --version          Shows the version of the lexer and exits.");
     println!("    --types                Only print the types of the tokens.");
     println!("    --values               Only print the values of the tokens.");
@@ -601,7 +627,7 @@ fn match_cli_argument() -> (LexOptions, String) {
     };
     let args: Vec<String> = std::env::args().collect();
     if args.len() < 2 {
-        // not my problem TODO
+        // not my problem TODO // wdym?
         print_help_message();
         std::process::exit(0);
     }
@@ -622,15 +648,18 @@ fn match_cli_argument() -> (LexOptions, String) {
             lex_options.no_split = true;
         } else {
             println!("Unknown argument: {}", arg);
-            std::process::exit(0);
+            println!("");
+            print_help_message();
+            std::process::exit(0); // TODO (ElBe): Find exit codes
         }
     }
     (lex_options, args[1].clone())
 }
 
 fn lex(text: String) -> Vec<Token> {
+    // Bad name?
     let mut result: Vec<Token> = Vec::new();
-    let (mut line_number, mut column_number) = (1, 1);
+    let (mut line_number, mut column_number) = (1, 1); // Start with 0 for REPL?
     let mut character: Option<char>;
     let mut chars = text.chars();
     let mut last_char: Option<char> = None;
@@ -648,7 +677,7 @@ fn lex(text: String) -> Vec<Token> {
             } else if c.is_alphabetic() {
                 let word = Keyword::get_word(&mut chars, c, &mut last_char, &mut column_number);
                 if word == "true" || word == "false" {
-                    result.push(Token::new_base_type(BaseType::Boolean, word));
+                    result.push(Token::new_base_type(BaseType::Boolean, word)); // Don't give it the string, but rather the 1/0 or bool value
                 } else {
                     if let Some(keyword) = Keyword::match_keyword(&word) {
                         result.push(Token::new_keyword(keyword));
@@ -679,7 +708,7 @@ fn lex(text: String) -> Vec<Token> {
                         result.push(Token::new_mark(Mark::Set));
                     }
                 } else {
-                    result.push(Token::new_mark(Mark::Set));
+                    result.push(Token::new_mark(Mark::Set)); // Decrease column number?
                 }
             } else if c == '\'' {
                 let val = lexer_errors::unwrap(BaseType::get_character(
@@ -696,7 +725,7 @@ fn lex(text: String) -> Vec<Token> {
                 ));
                 result.push(Token::new_compound_type(CompoundType::String, val));
             } else if c == '/' {
-                // variants //, /*, /, /=
+                // variants //, /*, /, /= // what should /= be?
                 character = chars.next();
                 column_number += 1;
                 if let Some(c) = character {
@@ -735,11 +764,11 @@ fn lex(text: String) -> Vec<Token> {
             } else if c == ',' {
                 result.push(Token::new_mark(Mark::Comma));
             } else if c == '?' {
-                result.push(Token::new_mark(Mark::QuestionMark));
+                result.push(Token::new_mark(Mark::QuestionMark)); // Ternary operator
             } else if c == ':' {
                 result.push(Token::new_mark(Mark::Colon));
             } else if c == '%' {
-                // variants %, %=
+                // variants %, %= // What should %= be?
                 character = chars.next();
                 column_number += 1;
                 if let Some(c) = character {
@@ -753,7 +782,8 @@ fn lex(text: String) -> Vec<Token> {
                     result.push(Token::new_mark(Mark::Modulo));
                 }
             } else if c == '*' {
-                // variants *, *=
+                // variants *, *= // What should *= be? Should that multiply with self?
+                // Don't forget */!!!
                 character = chars.next();
                 column_number += 1;
                 if let Some(c) = character {
@@ -774,7 +804,7 @@ fn lex(text: String) -> Vec<Token> {
                     if c == '|' {
                         result.push(Token::new_mark(Mark::Or));
                     } else if c == '=' {
-                        result.push(Token::new_mark(Mark::BitOrAssign));
+                        result.push(Token::new_mark(Mark::BitOrAssign)); // WTF?
                     } else {
                         last_char = Some(c);
                         result.push(Token::new_mark(Mark::BitOr));
@@ -790,7 +820,7 @@ fn lex(text: String) -> Vec<Token> {
                     if c == '&' {
                         result.push(Token::new_mark(Mark::And));
                     } else if c == '=' {
-                        result.push(Token::new_mark(Mark::BitAndAssign));
+                        result.push(Token::new_mark(Mark::BitAndAssign)); //???
                     } else {
                         last_char = Some(c);
                         result.push(Token::new_mark(Mark::BitAnd));
@@ -843,6 +873,7 @@ fn lex(text: String) -> Vec<Token> {
                         if let Some(c) = character {
                             if c == '=' {
                                 result.push(Token::new_mark(Mark::ShiftRightAssign));
+                            // We don't really need it
                             } else {
                                 last_char = Some(c);
                                 result.push(Token::new_mark(Mark::ShiftRight));
@@ -893,12 +924,13 @@ fn lex(text: String) -> Vec<Token> {
                         result.push(Token::new_mark(Mark::NotEqual));
                     } else {
                         last_char = Some(c);
-                        result.push(Token::new_mark(Mark::Bang));
+                        result.push(Token::new_mark(Mark::Bang)); // Use case
                     }
                 } else {
                     result.push(Token::new_mark(Mark::Bang));
                 }
             } else if c == '^' {
+                // Exponential operator?
                 // variants ^, ^=
                 character = chars.next();
                 column_number += 1;

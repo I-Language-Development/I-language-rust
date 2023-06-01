@@ -10,7 +10,9 @@
     <img src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit">
 </p>
 
-<img src="https://github.com/I-Language-Development/I-language-rust/blob/main/.github/example-syntax.png?raw=true" width="500px"/>
+<p align="center">
+    <img src="https://github.com/I-Language-Development/I-language-rust/blob/main/.github/example-syntax.png?raw=true" width="500px"/>
+</p>
 
 ## About this project
 
@@ -20,12 +22,8 @@ Here is the power of some of the best languages combined.
 
 ## Installing
 
-### Download from releases
-
-Navigate to the releases tab and select the newest release. Download the version fitting your OS and run the installer.
-
-!!! info
-    Pre-releases may not work properly. Please create an [issue](https://github.com/I-Language-Development/I-language-rust/issues) when an error occurs. You may prefer to use stable releases.
+!!! note
+    See [here](https://i-language-rust.readthedocs.io/en/latest/install/) for how to install the I programming language.
 
 ### Git
 
