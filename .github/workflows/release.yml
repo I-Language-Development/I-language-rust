@@ -28,6 +28,7 @@ jobs:
                   title: v${{ env.RELEASE_VERSION }}
                   files: | # cspell:disable-next-line
                       .github/README.md
-                      LICENSE
-                      src/Installer/Linux/install.bash
+                      LICENSE.txt
+                      src/Installer/Linux/installer.bash
+                      src/Installer/Windows/Server/installer.bat
                       *.exe
