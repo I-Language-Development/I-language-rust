@@ -294,10 +294,10 @@ impl Token {
             value: Some(value),
         }
     }
-    fn new_identifier(value: String) -> Token {
+    fn new_identifier(name: String) -> Token {
         Token {
             _type: TokenType::Identifier,
-            value: Some(value),
+            value: Some(name),
         }
     }
     fn new_keyword(keyword: Keyword) -> Token {
@@ -611,7 +611,7 @@ fn print_help_message() {
     println!("    -v, --version          Shows the version of the lexer and exits.");
     println!("    --types                Only print the types of the tokens.");
     println!("    --values               Only print the values of the tokens.");
-    println!("    --no-split             Prints the tokens in a list.");
+    println!("    --no-split             Prints the tokens in a list, instead of line by line.");
 }
 
 fn open_file(path: &str) -> String {
@@ -659,7 +659,7 @@ fn match_cli_argument() -> (LexOptions, String) {
 fn lex(text: String) -> Vec<Token> {
     // Bad name?
     let mut result: Vec<Token> = Vec::new();
-    let (mut line_number, mut column_number) = (1, 1); // Start with 0 for REPL?
+    let (mut line_number, mut column_number) = (1, 1); // Start with 0?
     let mut character: Option<char>;
     let mut chars = text.chars();
     let mut last_char: Option<char> = None;
@@ -725,7 +725,7 @@ fn lex(text: String) -> Vec<Token> {
                 ));
                 result.push(Token::new_compound_type(CompoundType::String, val));
             } else if c == '/' {
-                // variants //, /*, /, /= // what should /= be?
+                // variants //, /*, /, /= // what should /= be? Divide equals?
                 character = chars.next();
                 column_number += 1;
                 if let Some(c) = character {
@@ -924,13 +924,13 @@ fn lex(text: String) -> Vec<Token> {
                         result.push(Token::new_mark(Mark::NotEqual));
                     } else {
                         last_char = Some(c);
-                        result.push(Token::new_mark(Mark::Bang)); // Use case
+                        result.push(Token::new_mark(Mark::Bang)); // Use case?
                     }
                 } else {
                     result.push(Token::new_mark(Mark::Bang));
                 }
             } else if c == '^' {
-                // Exponential operator?
+                // Exponential operator? Or **?
                 // variants ^, ^=
                 character = chars.next();
                 column_number += 1;
