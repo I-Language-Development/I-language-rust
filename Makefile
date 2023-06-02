@@ -11,9 +11,9 @@ test:
 	cargo check
 
 help:
-	echo "Usage: make [run]"
+	echo "Usage: make [command]"
 	echo ""
-	echo "Options:"
+	echo "Commands:"
 	echo "    clean: Removes the 'target' directory and all files inside"
 	echo "    help: Shows this message"
 	echo "    run: Compiles and executes the main.rs file"

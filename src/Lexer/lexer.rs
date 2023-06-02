@@ -36,20 +36,20 @@ use std;
 //const DIGITS_AS_CHARS: [char; 10] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 //const WHITE_SPACES: [char; 3] = [' ', '\t', '\n'];
 
-//const ESCAPE_CHARACTERS: [char; 5] = ['"', '\\', 'n', 't', 'r'];
+//const ESCAPE_CHARACTERS: [char; 5] = ['"', '\\', 'n', 't', 'r']; // Does "'" not count?
 
 // Version of the lexer
-const VERSION: &str = "0.1.0";
+const VERSION: &str = "0.1.1";
 
 //////////////////
 // LEXER TOKENS //
 //////////////////
 
 #[derive(Debug)]
-enum Mark {
-    Equal,
-    Greater,
-    Less,
+enum Mark { // Put it all into mark or create a operator enum?
+    Equal, // Equality
+    Greater, // GreaterThan
+    Less, // LessThan
     NotEqual,
     LessEqual,
     GreaterEqual,
@@ -57,7 +57,7 @@ enum Mark {
     Decrease,
     And,
     Or,
-    Bang,
+    Bang, // Use case?
     Semicolon,
     Colon,
     Dot,
@@ -69,7 +69,7 @@ enum Mark {
     BracketClose,
     ParenthesisOpen,
     ParenthesisClose,
-    QuestionMark,
+    QuestionMark, // Ternary operator?
     Add,
     AddAssign,
     Subtract,
@@ -79,33 +79,33 @@ enum Mark {
     Divide,
     DivideAssign,
     Modulo,
-    ModuloAssign,
+    ModuloAssign, // Does it return an array? 
     BitOr,
-    BitOrAssign,
+    BitOrAssign, // Does it return an array?
     BitAnd,
-    BitAndAssign,
+    BitAndAssign, // Does it return an array?
     BitXor,
-    BitXorAssign,
+    BitXorAssign, // Does it return the true value? (Would make sense)
     ShiftLeft,
-    ShiftLeftAssign,
+    ShiftLeftAssign, // ???
     ShiftRight,
-    ShiftRightAssign,
+    ShiftRightAssign, // ???
 }
 
 #[derive(Debug)]
 enum Keyword {
     Class,
-    Function,
+    Function, // Re: `(func[tion]|TYPE)`?
     Use,
     Import,
-    If,
+    If, // TODO (ElBe): Add elseif
     Else,
     Match,
     Case,
-    Default,
-    For,
+    Default, // Seems to be already in use by rust -> _Default? Also, what should this be?
+    For, // TODO (ElBe): Add in
     Return,
-    Delete,
+    Delete, // Rename to del or remove? Can stay this way though.
     Break,
     Continue,
     Try,
@@ -130,7 +130,8 @@ enum CompoundType {
     String,
     //HashTable(BaseType),
     //HashMap(BaseType, BaseType),
-    //Tuple,
+    //Tuple, // Replaceable by array
+    // Dict? Would be cool the way JS has it right now
 }
 
 #[derive(Debug)]
@@ -184,7 +185,7 @@ mod lexer_errors {
         fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
             write!(
                 f,
-                "Lexer error at line {} column {}",
+                "Lexer error at line {} column {}", // Error number, traceback
                 self.line_number, self.column_number
             )?;
             match self._error {
@@ -251,7 +252,7 @@ mod lexer_errors {
     }
     impl std::fmt::Display for UnknownEscapeSequence {
         fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(f, "unknown escape sequence: '\\{}'", self.character)
+            write!(f, "unknown escape sequence: '\\{}'", self.character) // Other quote type
         }
     }
 
@@ -288,7 +289,6 @@ mod lexer_errors {
 
 impl Token {
     fn new_base_type(base_type: BaseType, value: String) -> Token {
-        // Is base type necessary for identifiers?
         Token {
             _type: TokenType::BaseType(base_type),
             value: Some(value),
@@ -392,7 +392,7 @@ impl BaseType {
                 *column_number += 1;
                 if let Some(c) = character {
                     match c {
-                        // TODO (ElBe): 0x, 0b, 033, etc.
+                        // TODO (ElBe): \0x..., \0b..., \033[..., \u..., etc.
                         'n' => result = '\n',
                         't' => result = '\t',
                         'r' => result = '\r',
@@ -603,6 +603,9 @@ struct LexOptions {
 }
 
 fn print_help_message() {
+    println!("\x1b[93mError:\x1b[0m"); // Red
+    println!("    Currently the CLI does not work.");
+    println!("");
     println!("Usage: lexer.py [PATH] [-h] [-v] [--types] [--values] [--no-split]");
     println!("Lexer of the I-programming language.");
     println!("");
@@ -610,8 +613,11 @@ fn print_help_message() {
     println!("    -h, --help             Shows this message and exits.");
     println!("    -v, --version          Shows the version of the lexer and exits.");
     println!("    --types                Only print the types of the tokens.");
+    println!("                           Incompatible with: --values");
     println!("    --values               Only print the values of the tokens.");
-    println!("    --no-split             Prints the tokens in a list, instead of line by line.");
+    println!("                           Incompatible with: --types");
+    println!("    --no-split             Prints the tokens in a list, instead of line");
+    println!("                           by line.");
 }
 
 fn open_file(path: &str) -> String {
@@ -623,7 +629,7 @@ fn match_cli_argument() -> (LexOptions, String) {
     let mut lex_options: LexOptions = LexOptions {
         types: false,
         values: false,
-        no_split: false,
+        no_split: false, // Currently the default
     };
     let args: Vec<String> = std::env::args().collect();
     if args.len() < 2 {
@@ -640,17 +646,18 @@ fn match_cli_argument() -> (LexOptions, String) {
         } else if arg == "-v" || arg == "--version" {
             println!("Version: {}", VERSION);
             std::process::exit(0);
-        } else if arg == "--types" {
-            lex_options.types = true;
-        } else if arg == "--values" {
+        } else if arg == "--types" && !lex_options.values {
+                lex_options.types = true;
+        } else if arg == "--values" && !lex_options.types {
             lex_options.values = true;
         } else if arg == "--no-split" {
             lex_options.no_split = true;
         } else {
-            println!("Unknown argument: {}", arg);
+            println!("\x1b[93mError:\x1b[0m");
+            println!("    Unknown argument: {}", arg);
             println!("");
             print_help_message();
-            std::process::exit(0); // TODO (ElBe): Find exit codes
+            std::process::exit(1); // TODO (ElBe): Find exit codes
         }
     }
     (lex_options, args[1].clone())
@@ -725,7 +732,7 @@ fn lex(text: String) -> Vec<Token> {
                 ));
                 result.push(Token::new_compound_type(CompoundType::String, val));
             } else if c == '/' {
-                // variants //, /*, /, /= // what should /= be? Divide equals?
+                // variants //, /*, /, /=
                 character = chars.next();
                 column_number += 1;
                 if let Some(c) = character {
@@ -768,7 +775,7 @@ fn lex(text: String) -> Vec<Token> {
             } else if c == ':' {
                 result.push(Token::new_mark(Mark::Colon));
             } else if c == '%' {
-                // variants %, %= // What should %= be?
+                // variants %, %=
                 character = chars.next();
                 column_number += 1;
                 if let Some(c) = character {
@@ -782,8 +789,8 @@ fn lex(text: String) -> Vec<Token> {
                     result.push(Token::new_mark(Mark::Modulo));
                 }
             } else if c == '*' {
-                // variants *, *= // What should *= be? Should that multiply with self?
-                // Don't forget */!!!
+                // variants *, *=
+                // Don't forget */!!! Or is that handled by the comment lex thing?
                 character = chars.next();
                 column_number += 1;
                 if let Some(c) = character {
@@ -804,7 +811,7 @@ fn lex(text: String) -> Vec<Token> {
                     if c == '|' {
                         result.push(Token::new_mark(Mark::Or));
                     } else if c == '=' {
-                        result.push(Token::new_mark(Mark::BitOrAssign)); // WTF?
+                        result.push(Token::new_mark(Mark::BitOrAssign));
                     } else {
                         last_char = Some(c);
                         result.push(Token::new_mark(Mark::BitOr));
@@ -820,7 +827,7 @@ fn lex(text: String) -> Vec<Token> {
                     if c == '&' {
                         result.push(Token::new_mark(Mark::And));
                     } else if c == '=' {
-                        result.push(Token::new_mark(Mark::BitAndAssign)); //???
+                        result.push(Token::new_mark(Mark::BitAndAssign));
                     } else {
                         last_char = Some(c);
                         result.push(Token::new_mark(Mark::BitAnd));
@@ -873,7 +880,6 @@ fn lex(text: String) -> Vec<Token> {
                         if let Some(c) = character {
                             if c == '=' {
                                 result.push(Token::new_mark(Mark::ShiftRightAssign));
-                            // We don't really need it
                             } else {
                                 last_char = Some(c);
                                 result.push(Token::new_mark(Mark::ShiftRight));
@@ -924,7 +930,7 @@ fn lex(text: String) -> Vec<Token> {
                         result.push(Token::new_mark(Mark::NotEqual));
                     } else {
                         last_char = Some(c);
-                        result.push(Token::new_mark(Mark::Bang)); // Use case?
+                        result.push(Token::new_mark(Mark::Bang));
                     }
                 } else {
                     result.push(Token::new_mark(Mark::Bang));
@@ -965,8 +971,11 @@ fn main() {
     // let a: Result<(), lexer_errors::LexerError> =
     //     Err(lexer_errors::LexerError::string_not_closed(1, 1));
     // lexer_errors::unwrap(a);
-    let string = "function test() {
-        a= 4.5; a+=2; return a;
+    let string = "Integer test() {
+        //test
+        a = 4.5;
+        a += 2;
+        return a;
     }"
     .to_string();
     let tokens_test = lex(string);
