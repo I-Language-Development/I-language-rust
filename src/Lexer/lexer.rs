@@ -46,10 +46,11 @@ const VERSION: &str = "0.1.1";
 //////////////////
 
 #[derive(Debug)]
-enum Mark { // Put it all into mark or create a operator enum?
-    Equal, // Equality
+enum Mark {
+    // Put it all into mark or create a operator enum?
+    Equal,   // Equality
     Greater, // GreaterThan
-    Less, // LessThan
+    Less,    // LessThan
     NotEqual,
     LessEqual,
     GreaterEqual,
@@ -79,7 +80,7 @@ enum Mark { // Put it all into mark or create a operator enum?
     Divide,
     DivideAssign,
     Modulo,
-    ModuloAssign, // Does it return an array? 
+    ModuloAssign, // Does it return an array?
     BitOr,
     BitOrAssign, // Does it return an array?
     BitAnd,
@@ -103,7 +104,7 @@ enum Keyword {
     Match,
     Case,
     Default, // Seems to be already in use by rust -> _Default? Also, what should this be?
-    For, // TODO (ElBe): Add in
+    For,     // TODO (ElBe): Add in
     Return,
     Delete, // Rename to del or remove? Can stay this way though.
     Break,
@@ -647,7 +648,7 @@ fn match_cli_argument() -> (LexOptions, String) {
             println!("Version: {}", VERSION);
             std::process::exit(0);
         } else if arg == "--types" && !lex_options.values {
-                lex_options.types = true;
+            lex_options.types = true;
         } else if arg == "--values" && !lex_options.types {
             lex_options.values = true;
         } else if arg == "--no-split" {
