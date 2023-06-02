@@ -14,6 +14,10 @@ repos:
             args: [--autofix]
           - id: requirements-txt-fixer
           - id: trailing-whitespace
+    - repo: https://github.com/jorisroovers/gitlint
+      rev: v0.19.1
+      hooks:
+          - id: gitlint
     - repo: https://github.com/doublify/pre-commit-rust
       rev: v1.0
       hooks:
