@@ -7,9 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### [`v1.0.0-alpha3`](https://github.com/I-Language-Development/I-language-rust/releases/tag/v1.0.0-alpha3)
+
+> 7/1/2023 - 8/2/2023
+
+Currently in development.
+
+## Released
+
 ### [`v1.0.0-alpha2`](https://github.com/I-Language-Development/I-language-rust/releases/tag/v1.0.0-alpha2)
 
-> 6/1/2023 - 7/1/2023
+> 6/1/2023 - 7/2/2023
 
 Added lexer.
 
@@ -41,8 +49,6 @@ Added lexer.
 
 - Fixed jinja templates
 - Fixed variable replacement in the documentation
-
-## Released
 
 ### [`v1.0.0-alpha1`](https://github.com/I-Language-Development/I-language-rust/releases/tag/v1.0.0-alpha1)
 
