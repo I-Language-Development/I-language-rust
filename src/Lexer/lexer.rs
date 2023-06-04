@@ -1,27 +1,25 @@
-/*
-I Language lexer.
-Version: 0.1.0
+// I Language lexer.
+// Version: 0.1.0
 
-Copyright (c) 2023-present I Language Development.
+// Copyright (c) 2023-present I Language Development.
 
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this software and associated documentation files (the 'Software'),
-to deal in the Software without restriction, including without limitation
-the rights to use, copy, modify, merge, publish, distribute, sublicense,
-and/or sell copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following conditions:
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the 'Software'),
+// to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the
+// Software is furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS
-OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-DEALINGS IN THE SOFTWARE.
-*/
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+// DEALINGS IN THE SOFTWARE.
 
 ////////////////////////////////
 // IMPORTS AND USE STATEMENTS //
@@ -33,7 +31,7 @@ use std;
 // CONSTANTS //
 ///////////////
 
-//const DIGITS_AS_CHARS: [char; 10] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+//const DIGITS_AS_STRINGS: [char; 10] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 //const WHITE_SPACES: [char; 3] = [' ', '\t', '\n'];
 
 //const ESCAPE_CHARACTERS: [char; 5] = ['"', '\\', 'n', 't', 'r']; // Does "'" not count?
@@ -127,7 +125,8 @@ enum BaseType {
 #[derive(Debug)]
 enum CompoundType {
     //Array(BaseType),
-    //DynamicArray(BaseType), // Call it list?
+    //DynamicArray(BaseType),
+    //List(BaseType),
     String,
     //HashTable(BaseType),
     //HashMap(BaseType, BaseType),
@@ -148,142 +147,84 @@ enum TokenType {
 struct Token {
     _type: TokenType,
     value: Option<String>,
-    // arguments: Option<Vec<String>>,
 }
 
 mod lexer_errors {
-    // https://doc.rust-lang.org/std/error/trait.Error.html ... TODO
-    // haha get that boring try catch!!
-
+    // https://doc.rust-lang.org/std/error/trait.Error.html ... TODO (Ranastra)
     // TODO (Ranastra): Improve visuals of errors and put them in their own file
 
     pub fn unwrap<T>(result: Result<T, LexerError>) -> T {
         match result {
             Ok(value) => value,
             Err(err) => {
-                println!("\x1b[31;1mError\x1b[0m");
                 println!("{:?}", err);
                 std::process::exit(1);
             }
         }
     }
 
-    enum _LexerError {
-        StringNotClosed(StringNotClosed),
-        CharNotClosed(CharNotClosed),
-        UnknownEscapeSequence(UnknownEscapeSequence),
-        MultilineCommentNotClosed(MultilineCommentNotClosed),
-        // TODO (Ranastra): Add Parenthesis / Brackets not closed error
-        UnexpectedCharacter(UnexpectedCharacter),
+    enum LexerErrorType {
+        StringNotClosed,
+        CharNotClosed,
+        UnknownEscapeSequence(char),
+        MultilineCommentNotClosed,
+        UnexpectedCharacter(char),
     }
 
     pub struct LexerError {
-        _error: _LexerError,
-        line_number: usize,
-        column_number: usize,
+        _error: LexerErrorType,
+        position: super::Position,
     }
     impl std::fmt::Debug for LexerError {
         fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(
-                f,
-                "Lexer error at line {} column {}", // Error number, traceback
-                self.line_number, self.column_number
-            )?;
+            write!(f, "Lexer error at {}\n", self.position)?; // Error number, traceback, is column included?
+
             match self._error {
-                _LexerError::StringNotClosed(ref err) => write!(f, ": {}", err),
-                _LexerError::CharNotClosed(ref err) => write!(f, ": {}", err),
-                _LexerError::UnknownEscapeSequence(ref err) => write!(f, ": {}", err),
-                _LexerError::MultilineCommentNotClosed(ref err) => write!(f, ": {}", err),
-                _LexerError::UnexpectedCharacter(ref err) => write!(f, ": {}", err),
+                LexerErrorType::StringNotClosed => write!(f, "string not closed"),
+                LexerErrorType::CharNotClosed => write!(f, "char not closed or to many chars"),
+                LexerErrorType::UnknownEscapeSequence(c) => {
+                    write!(f, "unknown escape sequenz: \"\\{}\"", c)
+                }
+                LexerErrorType::MultilineCommentNotClosed => {
+                    write!(f, "multiline comment not closed")
+                }
+                LexerErrorType::UnexpectedCharacter(c) => {
+                    write!(f, "unexpected characeter: '{}'", c)
+                }
             }
         }
     }
 
     impl LexerError {
-        pub fn string_not_closed(line_number: usize, column_number: usize) -> LexerError {
+        pub fn string_not_closed(position: super::Position) -> LexerError {
             LexerError {
-                _error: _LexerError::StringNotClosed(StringNotClosed {}),
-                line_number,
-                column_number,
+                _error: LexerErrorType::StringNotClosed,
+                position,
             }
         }
-        pub fn char_not_closed(line_number: usize, column_number: usize) -> LexerError {
+        pub fn char_not_closed(position: super::Position) -> LexerError {
             LexerError {
-                _error: _LexerError::CharNotClosed(CharNotClosed {}),
-                line_number,
-                column_number,
+                _error: LexerErrorType::CharNotClosed,
+                position,
             }
         }
-        pub fn unknown_escape_sequence(
-            line_number: usize,
-            column_number: usize,
-            character: char,
-        ) -> LexerError {
+        pub fn unknown_escape_sequence(position: super::Position, character: char) -> LexerError {
             LexerError {
-                _error: _LexerError::UnknownEscapeSequence(UnknownEscapeSequence { character }),
-                line_number,
-                column_number,
+                _error: LexerErrorType::UnknownEscapeSequence(character),
+                position,
             }
         }
-        pub fn multiline_comment_not_closed(
-            line_number: usize,
-            column_number: usize,
-        ) -> LexerError {
+        pub fn multiline_comment_not_closed(position: super::Position) -> LexerError {
             LexerError {
-                _error: _LexerError::MultilineCommentNotClosed(MultilineCommentNotClosed {}),
-                line_number,
-                column_number,
+                _error: LexerErrorType::MultilineCommentNotClosed,
+                position,
             }
         }
-        pub fn unexpected_character(
-            line_number: usize,
-            column_number: usize,
-            character: char,
-        ) -> LexerError {
+        pub fn unexpected_character(position: super::Position, character: char) -> LexerError {
             LexerError {
-                _error: _LexerError::UnexpectedCharacter(UnexpectedCharacter { character }),
-                line_number,
-                column_number,
+                _error: LexerErrorType::UnexpectedCharacter(character),
+                position,
             }
-        }
-    }
-
-    struct UnknownEscapeSequence {
-        character: char,
-    }
-    impl std::fmt::Display for UnknownEscapeSequence {
-        fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(f, "unknown escape sequence: '\\{}'", self.character) // Other quote type
-        }
-    }
-
-    struct CharNotClosed {}
-    impl std::fmt::Display for CharNotClosed {
-        fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(f, "char not closed or to many chars")
-        }
-    }
-
-    struct StringNotClosed {}
-    impl std::fmt::Display for StringNotClosed {
-        fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(f, "string not closed")
-        }
-    }
-
-    struct MultilineCommentNotClosed {}
-    impl std::fmt::Display for MultilineCommentNotClosed {
-        fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(f, "multiline comment not closed")
-        }
-    }
-
-    struct UnexpectedCharacter {
-        character: char,
-    }
-    impl std::fmt::Display for UnexpectedCharacter {
-        fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(f, "unexpected character: '{}'", self.character)
         }
     }
 }
@@ -322,7 +263,6 @@ impl Token {
 }
 
 mod comment {
-    use super::*;
     pub fn remove_single_line_comment(chars: &mut std::str::Chars) {
         let mut character: Option<char>;
         loop {
@@ -341,8 +281,8 @@ mod comment {
         chars: &mut std::str::Chars,
         line_number: &mut usize,
         column_number: &mut usize,
-    ) -> Result<(), lexer_errors::LexerError> {
-        let start_position = (*line_number, *column_number);
+        start_position: &super::Position,
+    ) -> Result<(), super::lexer_errors::LexerError> {
         let mut character: Option<char>;
         loop {
             character = chars.next();
@@ -356,23 +296,23 @@ mod comment {
                             return Ok(());
                         } else if c == '\n' {
                             *line_number += 1;
-                            *column_number = 1;
+                            *column_number = 0;
                         }
                     } else {
-                        return Err(lexer_errors::LexerError::multiline_comment_not_closed(
-                            start_position.0,
-                            start_position.1,
-                        ));
+                        return Err(
+                            super::lexer_errors::LexerError::multiline_comment_not_closed(
+                                *start_position,
+                            ),
+                        );
                     }
                 } else if c == '\n' {
                     *line_number += 1;
-                    *column_number = 1;
+                    *column_number = 0;
                 }
             } else {
-                return Err(lexer_errors::LexerError::multiline_comment_not_closed(
-                    start_position.0,
-                    start_position.1,
-                ));
+                return Err(
+                    super::lexer_errors::LexerError::multiline_comment_not_closed(*start_position),
+                );
             }
         }
     }
@@ -381,8 +321,8 @@ mod comment {
 impl BaseType {
     fn get_character(
         chars: &mut std::str::Chars,
-        line_number: usize,
         column_number: &mut usize,
+        start_position: Position,
     ) -> Result<String, lexer_errors::LexerError> {
         let mut character = chars.next();
         *column_number += 1;
@@ -401,17 +341,13 @@ impl BaseType {
                         '\'' => result = '\'',
                         _ => {
                             return Err(lexer_errors::LexerError::unknown_escape_sequence(
-                                line_number,
-                                *column_number,
+                                start_position,
                                 c,
                             ));
                         }
                     }
                 } else {
-                    return Err(lexer_errors::LexerError::char_not_closed(
-                        line_number,
-                        *column_number,
-                    ));
+                    return Err(lexer_errors::LexerError::char_not_closed(start_position));
                 }
             } else {
                 result = c;
@@ -422,22 +358,13 @@ impl BaseType {
                 if c == '\'' {
                     Ok(result.to_string())
                 } else {
-                    Err(lexer_errors::LexerError::char_not_closed(
-                        line_number,
-                        *column_number,
-                    ))
+                    Err(lexer_errors::LexerError::char_not_closed(start_position))
                 }
             } else {
-                Err(lexer_errors::LexerError::char_not_closed(
-                    line_number,
-                    *column_number,
-                ))
+                Err(lexer_errors::LexerError::char_not_closed(start_position))
             }
         } else {
-            Err(lexer_errors::LexerError::char_not_closed(
-                line_number,
-                *column_number,
-            ))
+            Err(lexer_errors::LexerError::char_not_closed(start_position))
         }
     }
 
@@ -488,19 +415,19 @@ impl CompoundType {
         chars: &mut std::str::Chars,
         line_number: &mut usize,
         column_number: &mut usize,
+        start_position: Position,
     ) -> Result<String, lexer_errors::LexerError> {
         let mut string = String::new();
-        let mut character: Option<char>;
+        let mut character;
         loop {
             character = chars.next();
 
             if let Some(c) = character {
                 if c == '\\' {
                     character = chars.next();
-                    *column_number += 2;
+                    *column_number += 1;
                     if let Some(c) = character {
                         match c {
-                            // See above
                             'n' => string.push('\n'),
                             't' => string.push('\t'),
                             'r' => string.push('\r'),
@@ -508,35 +435,25 @@ impl CompoundType {
                             '"' => string.push('"'),
                             _ => {
                                 return Err(lexer_errors::LexerError::unknown_escape_sequence(
-                                    *line_number,
-                                    *column_number,
+                                    start_position,
                                     c,
                                 ));
                             }
                         }
                     } else {
-                        return Err(lexer_errors::LexerError::string_not_closed(
-                            *line_number,
-                            *column_number,
-                        ));
+                        return Err(lexer_errors::LexerError::string_not_closed(start_position));
                     }
                 } else if c == '"' {
                     *line_number += 1;
                     break;
                 } else {
                     if c == '\n' {
-                        return Err(lexer_errors::LexerError::string_not_closed(
-                            *line_number,
-                            *column_number,
-                        ));
+                        return Err(lexer_errors::LexerError::string_not_closed(start_position));
                     }
                     string.push(c);
                 }
             } else {
-                return Err(lexer_errors::LexerError::string_not_closed(
-                    *line_number,
-                    *column_number,
-                ));
+                return Err(lexer_errors::LexerError::string_not_closed(start_position));
             }
         }
         Ok(string)
@@ -570,8 +487,7 @@ impl Keyword {
         word
     }
 
-    fn match_keyword(word: &String) -> Option<Keyword> {
-        // Bad name, not to confuse with the actual match statement (or keyword?)
+    fn identify_keyword(word: &String) -> Option<Keyword> {
         match word.as_str() {
             "else" => Some(Keyword::Else),
             "class" => Some(Keyword::Class),
@@ -609,9 +525,8 @@ fn print_help_message() {
     println!("");
     println!("Usage: lexer.py [PATH] [-h] [-v] [--types] [--values] [--no-split]");
     println!("Lexer of the I-programming language.");
-    println!("");
     println!("Options:");
-    println!("    -h, --help             Shows this message and exits.");
+    println!("    -h, --help             Shows this help and exits.");
     println!("    -v, --version          Shows the version of the lexer and exits.");
     println!("    --types                Only print the types of the tokens.");
     println!("                           Incompatible with: --values");
@@ -627,18 +542,17 @@ fn open_file(path: &str) -> String {
 }
 
 fn match_cli_argument() -> (LexOptions, String) {
-    let mut lex_options: LexOptions = LexOptions {
+    let mut lex_options = LexOptions {
         types: false,
         values: false,
         no_split: false, // Currently the default
     };
     let args: Vec<String> = std::env::args().collect();
     if args.len() < 2 {
-        // not my problem TODO // wdym?
         print_help_message();
         std::process::exit(0);
     }
-    let mut arg: String;
+    let mut arg;
     for ind in 2..args.len() {
         arg = args[ind].to_lowercase();
         if arg == "-h" || arg == "--help" {
@@ -664,13 +578,45 @@ fn match_cli_argument() -> (LexOptions, String) {
     (lex_options, args[1].clone())
 }
 
-fn lex(text: String) -> Vec<Token> {
+#[derive(Clone, Copy)]
+pub struct Position {
+    line_number: usize,
+    column_number: usize,
+}
+
+impl Position {
+    fn new(line_number: usize, column_number: usize) -> Position {
+        Position {
+            line_number,
+            column_number,
+        }
+    }
+}
+
+impl std::fmt::Display for Position {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(
+            f,
+            "line: {}, column: {}",
+            self.line_number, self.column_number
+        )
+    }
+}
+
+impl std::fmt::Debug for Position {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "({}|{})", self.line_number, self.column_number)
+    }
+}
+
+fn lex(text: String) -> Vec<(Position, Token)> {
     // Bad name?
-    let mut result: Vec<Token> = Vec::new();
-    let (mut line_number, mut column_number) = (1, 1); // Start with 0?
-    let mut character: Option<char>;
+    let mut result: Vec<(Position, Token)> = Vec::new();
+    let (mut line_number, mut column_number) = (1, 0); // Start with line 1?
+    let mut character;
     let mut chars = text.chars();
-    let mut last_char: Option<char> = None;
+    let mut last_char = None;
+    let mut current_position: Position;
     loop {
         if let Some(c) = last_char {
             character = Some(c);
@@ -679,59 +625,67 @@ fn lex(text: String) -> Vec<Token> {
             character = chars.next();
             column_number += 1;
         }
+        current_position = Position::new(line_number, column_number);
         if let Some(c) = character {
-            if c.is_whitespace() {
+            if c == '\n' {
+                line_number += 1;
+                column_number = 0;
+            } else if c.is_whitespace() {
                 continue;
-            } else if c.is_alphabetic() {
+            } else if c.is_alphabetic() || c == '_' {
                 let word = Keyword::get_word(&mut chars, c, &mut last_char, &mut column_number);
                 if word == "true" || word == "false" {
-                    result.push(Token::new_base_type(BaseType::Boolean, word)); // Don't give it the string, but rather the 1/0 or bool value
+                    result.push((
+                        current_position,
+                        Token::new_base_type(BaseType::Boolean, word),
+                    ));
                 } else {
-                    if let Some(keyword) = Keyword::match_keyword(&word) {
-                        result.push(Token::new_keyword(keyword));
+                    if let Some(keyword) = Keyword::identify_keyword(&word) {
+                        result.push((current_position, Token::new_keyword(keyword)));
                     } else {
-                        result.push(Token::new_identifier(word));
+                        result.push((current_position, Token::new_identifier(word)));
                     }
                 }
-            } else if c == '\n' {
-                line_number += 1;
-                column_number = 1;
             } else if c == '{' {
-                result.push(Token::new_mark(Mark::BraceOpen));
+                result.push((current_position, Token::new_mark(Mark::BraceOpen)));
             } else if c == '}' {
-                result.push(Token::new_mark(Mark::BraceClose));
+                result.push((current_position, Token::new_mark(Mark::BraceClose)));
             } else if c.is_numeric() {
                 let (num, num_type) =
                     BaseType::get_number(&mut chars, c, &mut last_char, &mut column_number);
-                result.push(Token::new_base_type(num_type, num));
+                result.push((current_position, Token::new_base_type(num_type, num)));
             } else if c == '=' {
                 // variants =, ==
                 character = chars.next();
                 column_number += 1;
                 if let Some(c) = character {
                     if c == '=' {
-                        result.push(Token::new_mark(Mark::Equal));
+                        result.push((current_position, Token::new_mark(Mark::Equal)));
                     } else {
                         last_char = Some(c);
-                        result.push(Token::new_mark(Mark::Set));
+                        result.push((current_position, Token::new_mark(Mark::Set)));
                     }
                 } else {
-                    result.push(Token::new_mark(Mark::Set)); // Decrease column number?
+                    result.push((current_position, Token::new_mark(Mark::Set)));
                 }
             } else if c == '\'' {
                 let val = lexer_errors::unwrap(BaseType::get_character(
                     &mut chars,
-                    line_number,
                     &mut column_number,
+                    current_position,
                 ));
-                result.push(Token::new_base_type(BaseType::Char, val));
+                result.push((current_position, Token::new_base_type(BaseType::Char, val)));
             } else if c == '"' {
                 let val = lexer_errors::unwrap(CompoundType::get_string(
                     &mut chars,
                     &mut line_number,
                     &mut column_number,
+                    current_position,
                 ));
-                result.push(Token::new_compound_type(CompoundType::String, val));
+                result.push((
+                    current_position,
+                    Token::new_compound_type(CompoundType::String, val),
+                ));
             } else if c == '/' {
                 // variants //, /*, /, /=
                 character = chars.next();
@@ -740,69 +694,70 @@ fn lex(text: String) -> Vec<Token> {
                     if c == '/' {
                         comment::remove_single_line_comment(&mut chars);
                         line_number += 1;
-                        column_number = 1;
+                        column_number = 0;
                     } else if c == '*' {
                         lexer_errors::unwrap(comment::remove_multi_line_comment(
                             &mut chars,
                             &mut line_number,
                             &mut column_number,
+                            &current_position,
                         ));
                     } else if c == '=' {
-                        result.push(Token::new_mark(Mark::DivideAssign));
+                        result.push((current_position, Token::new_mark(Mark::DivideAssign)));
                     } else {
-                        result.push(Token::new_mark(Mark::Divide));
+                        result.push((current_position, Token::new_mark(Mark::Divide)));
                         last_char = Some(c);
                     }
                 } else {
-                    result.push(Token::new_mark(Mark::Divide));
+                    result.push((current_position, Token::new_mark(Mark::Divide)));
                     break;
                 }
             } else if c == ';' {
-                result.push(Token::new_mark(Mark::Semicolon));
+                result.push((current_position, Token::new_mark(Mark::Semicolon)));
             } else if c == '[' {
-                result.push(Token::new_mark(Mark::BracketOpen));
+                result.push((current_position, Token::new_mark(Mark::BracketOpen)));
             } else if c == ']' {
-                result.push(Token::new_mark(Mark::BracketClose));
+                result.push((current_position, Token::new_mark(Mark::BracketClose)));
             } else if c == '(' {
-                result.push(Token::new_mark(Mark::ParenthesisOpen));
+                result.push((current_position, Token::new_mark(Mark::ParenthesisOpen)));
             } else if c == ')' {
-                result.push(Token::new_mark(Mark::ParenthesisClose));
+                result.push((current_position, Token::new_mark(Mark::ParenthesisClose)));
             } else if c == '.' {
-                result.push(Token::new_mark(Mark::Dot));
+                result.push((current_position, Token::new_mark(Mark::Dot)));
             } else if c == ',' {
-                result.push(Token::new_mark(Mark::Comma));
+                result.push((current_position, Token::new_mark(Mark::Comma)));
             } else if c == '?' {
-                result.push(Token::new_mark(Mark::QuestionMark)); // Ternary operator
+                result.push((current_position, Token::new_mark(Mark::QuestionMark)));
             } else if c == ':' {
-                result.push(Token::new_mark(Mark::Colon));
+                result.push((current_position, Token::new_mark(Mark::Colon)));
             } else if c == '%' {
                 // variants %, %=
                 character = chars.next();
                 column_number += 1;
                 if let Some(c) = character {
                     if c == '=' {
-                        result.push(Token::new_mark(Mark::ModuloAssign));
+                        result.push((current_position, Token::new_mark(Mark::ModuloAssign)));
                     } else {
                         last_char = Some(c);
-                        result.push(Token::new_mark(Mark::Modulo));
+                        result.push((current_position, Token::new_mark(Mark::Modulo)));
                     }
                 } else {
-                    result.push(Token::new_mark(Mark::Modulo));
+                    result.push((current_position, Token::new_mark(Mark::Modulo)));
                 }
             } else if c == '*' {
                 // variants *, *=
-                // Don't forget */!!! Or is that handled by the comment lex thing?
+                // TODO (ElBe): Add **
                 character = chars.next();
                 column_number += 1;
                 if let Some(c) = character {
                     if c == '=' {
-                        result.push(Token::new_mark(Mark::MultiplyAssign));
+                        result.push((current_position, Token::new_mark(Mark::MultiplyAssign)));
                     } else {
                         last_char = Some(c);
-                        result.push(Token::new_mark(Mark::Multiply));
+                        result.push((current_position, Token::new_mark(Mark::Multiply)));
                     }
                 } else {
-                    result.push(Token::new_mark(Mark::Multiply));
+                    result.push((current_position, Token::new_mark(Mark::Multiply)));
                 }
             } else if c == '|' {
                 // variants |, |=, ||
@@ -810,15 +765,15 @@ fn lex(text: String) -> Vec<Token> {
                 column_number += 1;
                 if let Some(c) = character {
                     if c == '|' {
-                        result.push(Token::new_mark(Mark::Or));
+                        result.push((current_position, Token::new_mark(Mark::Or)));
                     } else if c == '=' {
-                        result.push(Token::new_mark(Mark::BitOrAssign));
+                        result.push((current_position, Token::new_mark(Mark::BitOrAssign)));
                     } else {
                         last_char = Some(c);
-                        result.push(Token::new_mark(Mark::BitOr));
+                        result.push((current_position, Token::new_mark(Mark::BitOr)));
                     }
                 } else {
-                    result.push(Token::new_mark(Mark::BitOr));
+                    result.push((current_position, Token::new_mark(Mark::BitOr)));
                 }
             } else if c == '&' {
                 // variants &, &=, &&
@@ -826,15 +781,15 @@ fn lex(text: String) -> Vec<Token> {
                 column_number += 1;
                 if let Some(c) = character {
                     if c == '&' {
-                        result.push(Token::new_mark(Mark::And));
+                        result.push((current_position, Token::new_mark(Mark::And)));
                     } else if c == '=' {
-                        result.push(Token::new_mark(Mark::BitAndAssign));
+                        result.push((current_position, Token::new_mark(Mark::BitAndAssign)));
                     } else {
                         last_char = Some(c);
-                        result.push(Token::new_mark(Mark::BitAnd));
+                        result.push((current_position, Token::new_mark(Mark::BitAnd)));
                     }
                 } else {
-                    result.push(Token::new_mark(Mark::BitAnd));
+                    result.push((current_position, Token::new_mark(Mark::BitAnd)));
                 }
             } else if c == '+' {
                 // variants +, ++, +=
@@ -842,15 +797,15 @@ fn lex(text: String) -> Vec<Token> {
                 column_number += 1;
                 if let Some(c) = character {
                     if c == '+' {
-                        result.push(Token::new_mark(Mark::Increase));
+                        result.push((current_position, Token::new_mark(Mark::Increase)));
                     } else if c == '=' {
-                        result.push(Token::new_mark(Mark::AddAssign));
+                        result.push((current_position, Token::new_mark(Mark::AddAssign)));
                     } else {
                         last_char = Some(c);
-                        result.push(Token::new_mark(Mark::Add));
+                        result.push((current_position, Token::new_mark(Mark::Add)));
                     }
                 } else {
-                    result.push(Token::new_mark(Mark::Add));
+                    result.push((current_position, Token::new_mark(Mark::Add)));
                 }
             } else if c == '-' {
                 // variants -, --, -=
@@ -858,15 +813,15 @@ fn lex(text: String) -> Vec<Token> {
                 column_number += 1;
                 if let Some(c) = character {
                     if c == '-' {
-                        result.push(Token::new_mark(Mark::Decrease));
+                        result.push((current_position, Token::new_mark(Mark::Decrease)));
                     } else if c == '=' {
-                        result.push(Token::new_mark(Mark::SubtractAssign));
+                        result.push((current_position, Token::new_mark(Mark::SubtractAssign)));
                     } else {
                         last_char = Some(c);
-                        result.push(Token::new_mark(Mark::Subtract));
+                        result.push((current_position, Token::new_mark(Mark::Subtract)));
                     }
                 } else {
-                    result.push(Token::new_mark(Mark::Subtract));
+                    result.push((current_position, Token::new_mark(Mark::Subtract)));
                 }
             } else if c == '>' {
                 // variants >, >=, >>, >>=
@@ -874,26 +829,29 @@ fn lex(text: String) -> Vec<Token> {
                 column_number += 1;
                 if let Some(c) = character {
                     if c == '=' {
-                        result.push(Token::new_mark(Mark::GreaterEqual));
+                        result.push((current_position, Token::new_mark(Mark::GreaterEqual)));
                     } else if c == '>' {
                         character = chars.next();
                         column_number += 1;
                         if let Some(c) = character {
                             if c == '=' {
-                                result.push(Token::new_mark(Mark::ShiftRightAssign));
+                                result.push((
+                                    current_position,
+                                    Token::new_mark(Mark::ShiftRightAssign),
+                                ));
                             } else {
                                 last_char = Some(c);
-                                result.push(Token::new_mark(Mark::ShiftRight));
+                                result.push((current_position, Token::new_mark(Mark::ShiftRight)));
                             }
                         } else {
-                            result.push(Token::new_mark(Mark::ShiftRight));
+                            result.push((current_position, Token::new_mark(Mark::ShiftRight)));
                         }
                     } else {
                         last_char = Some(c);
-                        result.push(Token::new_mark(Mark::Greater));
+                        result.push((current_position, Token::new_mark(Mark::Greater)));
                     }
                 } else {
-                    result.push(Token::new_mark(Mark::Greater));
+                    result.push((current_position, Token::new_mark(Mark::Greater)));
                 }
             } else if c == '<' {
                 // variants <, <=, <<, <<=
@@ -901,26 +859,29 @@ fn lex(text: String) -> Vec<Token> {
                 column_number += 1;
                 if let Some(c) = character {
                     if c == '=' {
-                        result.push(Token::new_mark(Mark::LessEqual));
+                        result.push((current_position, Token::new_mark(Mark::LessEqual)));
                     } else if c == '<' {
                         character = chars.next();
                         column_number += 1;
                         if let Some(c) = character {
                             if c == '=' {
-                                result.push(Token::new_mark(Mark::ShiftLeftAssign));
+                                result.push((
+                                    current_position,
+                                    Token::new_mark(Mark::ShiftLeftAssign),
+                                ));
                             } else {
                                 last_char = Some(c);
-                                result.push(Token::new_mark(Mark::ShiftLeft));
+                                result.push((current_position, Token::new_mark(Mark::ShiftLeft)));
                             }
                         } else {
-                            result.push(Token::new_mark(Mark::ShiftLeft));
+                            result.push((current_position, Token::new_mark(Mark::ShiftLeft)));
                         }
                     } else {
                         last_char = Some(c);
-                        result.push(Token::new_mark(Mark::Less));
+                        result.push((current_position, Token::new_mark(Mark::Less)));
                     }
                 } else {
-                    result.push(Token::new_mark(Mark::Less));
+                    result.push((current_position, Token::new_mark(Mark::Less)));
                 }
             } else if c == '!' {
                 // variants !, !=
@@ -928,33 +889,31 @@ fn lex(text: String) -> Vec<Token> {
                 column_number += 1;
                 if let Some(c) = character {
                     if c == '=' {
-                        result.push(Token::new_mark(Mark::NotEqual));
+                        result.push((current_position, Token::new_mark(Mark::NotEqual)));
                     } else {
                         last_char = Some(c);
-                        result.push(Token::new_mark(Mark::Bang));
+                        result.push((current_position, Token::new_mark(Mark::Bang))); // Not, better name
                     }
                 } else {
-                    result.push(Token::new_mark(Mark::Bang));
+                    result.push((current_position, Token::new_mark(Mark::Bang)));
                 }
             } else if c == '^' {
-                // Exponential operator? Or **?
                 // variants ^, ^=
                 character = chars.next();
                 column_number += 1;
                 if let Some(c) = character {
                     if c == '=' {
-                        result.push(Token::new_mark(Mark::BitXorAssign));
+                        result.push((current_position, Token::new_mark(Mark::BitXorAssign)));
                     } else {
                         last_char = Some(c);
-                        result.push(Token::new_mark(Mark::BitXor));
+                        result.push((current_position, Token::new_mark(Mark::BitXor)));
                     }
                 } else {
-                    result.push(Token::new_mark(Mark::BitXor));
+                    result.push((current_position, Token::new_mark(Mark::BitXor)));
                 }
             } else {
                 lexer_errors::unwrap::<()>(Err(lexer_errors::LexerError::unexpected_character(
-                    line_number,
-                    column_number,
+                    current_position,
                     c,
                 )));
             }
@@ -969,16 +928,12 @@ fn main() {
     //let (lex_options, path) = match_cli_argument();
     //let text = open_file(&path);
     //let tokens = lex(text);
-    // let a: Result<(), lexer_errors::LexerError> =
-    //     Err(lexer_errors::LexerError::string_not_closed(1, 1));
-    // lexer_errors::unwrap(a);
-    let string = "Integer test() {
-        //test
-        a = 4.5;
-        a += 2;
-        return a;
-    }"
-    .to_string();
+    let a: Result<(), lexer_errors::LexerError> = Err(lexer_errors::LexerError::string_not_closed(
+        Position::new(2, 1),
+    ));
+    lexer_errors::unwrap(a);
+    let string = "function test(){a= 4.5; a+=2; return a;}".to_string();
+
     let tokens_test = lex(string);
     println!("{:?}", tokens_test);
 }
