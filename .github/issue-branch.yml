@@ -1,7 +1,7 @@
 ---
 autoCloseIssue: true
 branchName: short
-defaultBranch: "v1.0.0-alpha2"  # Needs to be updated with every new update
+defaultBranch: "v1.0.0-alpha3"  # Needs to be updated with every new update
 branches:
   - label: question
     skip: true
