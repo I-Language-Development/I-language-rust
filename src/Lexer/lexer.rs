@@ -45,7 +45,7 @@ const VERSION: &str = "0.1.1";
 
 #[derive(Debug)]
 enum Mark {
-    // Put it all into mark or create a operator enum?
+    // Create a operator enum?
     Equal,   // Equality
     Greater, // GreaterThan
     Less,    // LessThan
@@ -56,7 +56,7 @@ enum Mark {
     Decrease,
     And,
     Or,
-    Bang, // Use case?
+    Not,
     Semicolon,
     Colon,
     Dot,
@@ -68,7 +68,7 @@ enum Mark {
     BracketClose,
     ParenthesisOpen,
     ParenthesisClose,
-    QuestionMark, // Ternary operator?
+    QuestionMark,
     Add,
     AddAssign,
     Subtract,
@@ -892,10 +892,10 @@ fn lex(text: String) -> Vec<(Position, Token)> {
                         result.push((current_position, Token::new_mark(Mark::NotEqual)));
                     } else {
                         last_char = Some(c);
-                        result.push((current_position, Token::new_mark(Mark::Bang))); // Not, better name
+                        result.push((current_position, Token::new_mark(Mark::Not)));
                     }
                 } else {
-                    result.push((current_position, Token::new_mark(Mark::Bang)));
+                    result.push((current_position, Token::new_mark(Mark::Not)));
                 }
             } else if c == '^' {
                 // variants ^, ^=
