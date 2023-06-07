@@ -31,3 +31,11 @@ updates:
       - "ElBe-Plaq"
     labels:
       - "dependencies"
+  - package-ecosystem: "gitsubmodule"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    assignees:
+      - "ElBe-Plaq"
+    labels:
+      - "dependencies"
