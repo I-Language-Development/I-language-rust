@@ -6,7 +6,7 @@
 </h3>
 <p align="center">
     <img src="https://www.codefactor.io/repository/github/i-language-development/i-language-rust/badge">
-    <img src="https://github.com/I-Language-Development/I-language/actions/workflows/megalinter.yml/badge.svg">
+    <img src="https://github.com/I-Language-Development/I-language-rust/actions/workflows/megalinter.yml/badge.svg?branch=main&event=push">
     <img src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit">
 </p>
 
