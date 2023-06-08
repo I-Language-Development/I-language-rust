@@ -639,12 +639,10 @@ fn lex(text: String) -> Vec<(Position, Token)> {
                         current_position,
                         Token::new_base_type(BaseType::Boolean, word),
                     ));
+                } else if let Some(keyword) = Keyword::identify_keyword(&word) {
+                    result.push((current_position, Token::new_keyword(keyword)));
                 } else {
-                    if let Some(keyword) = Keyword::identify_keyword(&word) {
-                        result.push((current_position, Token::new_keyword(keyword)));
-                    } else {
-                        result.push((current_position, Token::new_identifier(word)));
-                    }
+                    result.push((current_position, Token::new_identifier(word)));
                 }
             } else if c == '{' {
                 result.push((current_position, Token::new_mark(Mark::BraceOpen)));
