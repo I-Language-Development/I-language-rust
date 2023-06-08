@@ -522,7 +522,7 @@ struct LexOptions {
 fn print_help_message() {
     println!("\x1b[93mError:\x1b[0m"); // Red
     println!("    Currently the CLI does not work.");
-    println!("");
+    println!();
     println!("Usage: lexer.py [PATH] [-h] [-v] [--types] [--values] [--no-split]");
     println!("Lexer of the I-programming language.");
     println!("Options:");
@@ -570,7 +570,7 @@ fn match_cli_argument() -> (LexOptions, String) {
         } else {
             println!("\x1b[93mError:\x1b[0m");
             println!("    Unknown argument: {}", arg);
-            println!("");
+            println!();
             print_help_message();
             std::process::exit(1); // TODO (ElBe): Find exit codes
         }
