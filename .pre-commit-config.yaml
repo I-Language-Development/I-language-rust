@@ -18,7 +18,7 @@ repos:
       rev: v0.19.1
       hooks:
           - id: gitlint
-            args: [--config]
+            args: [--config=.github\.gitlint, --msg-filename]
     - repo: https://github.com/doublify/pre-commit-rust
       rev: v1.0
       hooks:
