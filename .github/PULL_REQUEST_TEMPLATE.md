@@ -1,9 +1,11 @@
 # Description
+
 Summary of all the changes made.
 
 Closes #(issues that get closed, if this pull request gets closed)
 
 ## Type of change
+
 <!-- Select the relevant option(s) -->
 
 - [ ] Bug fix (non-breaking change which fixes an issue)

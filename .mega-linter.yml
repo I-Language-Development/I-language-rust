@@ -1,7 +1,7 @@
 ---
 DISABLE_ERRORS_LINTERS:
     - SPELL_CSPELL
-    - REPOSITORY_DEVSKIM  # cspell:disable-line
+    - REPOSITORY_DEVSKIM # cspell:disable-line
     - MAKEFILE_CHECKMAKE # cspell:disable-line
     - HTML_HTMLHINT # cspell:disable-line
     - MARKDOWN_MARKDOWN_LINK_CHECK

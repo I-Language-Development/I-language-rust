@@ -7,19 +7,18 @@ version: 2
 
 # Set the version of Python and other tools you might need
 build:
-  os: ubuntu-22.04
-  tools:
-    python: "3.11"
+    os: ubuntu-22.04
+    tools:
+        python: "3.11"
 
 mkdocs:
-  configuration: Docs/mkdocs.yml
+    configuration: Docs/mkdocs.yml
 
 submodules:
-  include: all
-  recursive: true
-
+    include: all
+    recursive: true
 
 # Optionally declare the Python requirements required to build your docs
 python:
-  install:
-    - requirements: Docs/requirements.txt
+    install:
+        - requirements: Docs/requirements.txt

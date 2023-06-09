@@ -1,146 +1,144 @@
 ---
 pull_request_rules:
-  - name: Merge trusted bot updates, no conflicts are present and approved
-    conditions:
-      - or:
-          - "label~=Approved"
-          - "-#approved-reviews-by=0"
-      - "-conflict"
-      - "-draft"
-      - "-locked"
-      - "#check-failure=0"
-      - "author~=.*bot.*"
-    actions:
-      comment:
-        message: |
-          # Merging pull request
+    - name: Merge trusted bot updates, no conflicts are present and approved
+      conditions:
+          - or:
+                - "label~=Approved"
+                - "-#approved-reviews-by=0"
+          - "-conflict"
+          - "-draft"
+          - "-locked"
+          - "#check-failure=0"
+          - "author~=.*bot.*"
+      actions:
+          comment:
+              message: |
+                  # Merging pull request
 
-          Checks:
-          | Name | Status |
-          |------|--------|
-          {% for check in check_success %}| {{check}} | :white_check_mark: |
-          {% endfor %}
-      merge:
-        commit_message_template: |
-          {{title}}
+                  Checks:
+                  | Name | Status |
+                  |------|--------|
+                  {% for check in check_success %}| {{check}} | :white_check_mark: |
+                  {% endfor %}
+          merge:
+              commit_message_template: |
+                  {{title}}
 
-          {{title}} in #{{number}} by @{{author}}, contributing to {{milestone}}
+                  {{title}} in #{{number}} by @{{author}}, contributing to {{milestone}}
 
-          Changed files:
-          {% for file in files %}- '{{file}}'
-          {% endfor %}
+                  Changed files:
+                  {% for file in files %}- '{{file}}'
+                  {% endfor %}
 
-          Approved by: @{{ approved_reviews_by | join(', @') }}
-
-
-          {% for commit in commits %}Co-authored-by: {{commit.author}} <{{commit.email_author}}>
-          {% endfor %}
-        method:
-          merge
-      delete_head_branch:
-  - name: Merge if approved, no conflicts are present and it's not a WIP
-    conditions:
-      - or:
-          - "-#approved-reviews-by=0"
-          - "label~=Approved"
-      - "label~=Able to merge"
-      - "-conflict"
-      - "-draft"
-      - "-locked"
-      - "#check-failure=0"
-    actions:
-      comment:
-        message: |
-          # Merging pull request
-
-          Checks:
-          | Name | Status |
-          |------|--------|
-          {% for check in check_success %}| {{check}} | :white_check_mark: |
-          {% endfor %}
-      merge:
-        commit_message_template: |
-          {{title}}
-
-          {{title}} in #{{number}} by @{{author}}, contributing to {{milestone}}
-
-          Changed files:
-          {% for file in files %}- '{{file}}'
-          {% endfor %}
-
-          Approved by: @{{ approved_reviews_by | join(', @') }}
+                  Approved by: @{{ approved_reviews_by | join(', @') }}
 
 
-          {% for commit in commits %}Co-authored-by: {{commit.author}} <{{commit.email_author}}>
-          {% endfor %}
-        method:
-          merge
-      delete_head_branch:
-  - name: Add review requested label and request review from ElBe
-    conditions:
-      - or:
-          - "#approved-reviews-by=0"
-          - "-label~=Approved"
-      - "-title~=^[WIP].*"
-      - "-label~=Declined"
-      - "-label~=Review requested"
-      - "-draft"
-      - "-locked"
-      - "-conflict"
-    actions:
-      label:
-        add:
-          - Review requested
-      request_reviews:
-        users:
-          - ElBe-Plaq
-  - name: Warn on conflicts and add label
-    conditions:
-      - conflict
-    actions:
-      comment:
-        message: "@{{author}} this pull request has one or more conflicts."
-      label:
-        add:
-          - Invalid
-        remove:
-          - Review requested
-  - name: Remove invalid label if not needed
-    conditions:
-      - -conflict
-    actions:
-      label:
-        add:
-          - Review requested
-        remove:
-          - Invalid
-  - name: Warn on failed checks
-    conditions:
-      - "-#check-failure=0"
-    actions:
-      comment:
-        message: |
-          # Checks failed
+                  {% for commit in commits %}Co-authored-by: {{commit.author}} <{{commit.email_author}}>
+                  {% endfor %}
+              method: merge
+          delete_head_branch:
+    - name: Merge if approved, no conflicts are present and it's not a WIP
+      conditions:
+          - or:
+                - "-#approved-reviews-by=0"
+                - "label~=Approved"
+          - "label~=Able to merge"
+          - "-conflict"
+          - "-draft"
+          - "-locked"
+          - "#check-failure=0"
+      actions:
+          comment:
+              message: |
+                  # Merging pull request
 
-          Checks:
-          | Name | Status |
-          |------|--------|
-          {% for check in check_success %}| {{check}} | :white_check_mark: |
-          {% endfor %}
-          {% for check in check_failure %}| {{check}} | :x: |
-          {% endfor %}
-  - name: Add reviewers and label on update
-    conditions:
-      - head~=^v\d+\.\d+\.\d+(-(alpha|beta|pr|test)\d+)?$
-      - title~=^\[UPDATE\] v\d+\.\d+\.\d+((-| )(alpha|beta|pr|test)\d+)?$
-      - "base=main"
-    actions:
-      request_reviews:
-        users:
-          - "Ranastra"
-          - "MasterOktagon"
-        teams:
-          - "I-Language-Development/i-language-core"
-      label:
-        add:
-          - "Update"
+                  Checks:
+                  | Name | Status |
+                  |------|--------|
+                  {% for check in check_success %}| {{check}} | :white_check_mark: |
+                  {% endfor %}
+          merge:
+              commit_message_template: |
+                  {{title}}
+
+                  {{title}} in #{{number}} by @{{author}}, contributing to {{milestone}}
+
+                  Changed files:
+                  {% for file in files %}- '{{file}}'
+                  {% endfor %}
+
+                  Approved by: @{{ approved_reviews_by | join(', @') }}
+
+
+                  {% for commit in commits %}Co-authored-by: {{commit.author}} <{{commit.email_author}}>
+                  {% endfor %}
+              method: merge
+          delete_head_branch:
+    - name: Add review requested label and request review from ElBe
+      conditions:
+          - or:
+                - "#approved-reviews-by=0"
+                - "-label~=Approved"
+          - "-title~=^[WIP].*"
+          - "-label~=Declined"
+          - "-label~=Review requested"
+          - "-draft"
+          - "-locked"
+          - "-conflict"
+      actions:
+          label:
+              add:
+                  - Review requested
+          request_reviews:
+              users:
+                  - ElBe-Plaq
+    - name: Warn on conflicts and add label
+      conditions:
+          - conflict
+      actions:
+          comment:
+              message: "@{{author}} this pull request has one or more conflicts."
+          label:
+              add:
+                  - Invalid
+              remove:
+                  - Review requested
+    - name: Remove invalid label if not needed
+      conditions:
+          - -conflict
+      actions:
+          label:
+              add:
+                  - Review requested
+              remove:
+                  - Invalid
+    - name: Warn on failed checks
+      conditions:
+          - "-#check-failure=0"
+      actions:
+          comment:
+              message: |
+                  # Checks failed
+
+                  Checks:
+                  | Name | Status |
+                  |------|--------|
+                  {% for check in check_success %}| {{check}} | :white_check_mark: |
+                  {% endfor %}
+                  {% for check in check_failure %}| {{check}} | :x: |
+                  {% endfor %}
+    - name: Add reviewers and label on update
+      conditions:
+          - head~=^v\d+\.\d+\.\d+(-(alpha|beta|pr|test)\d+)?$
+          - title~=^\[UPDATE\] v\d+\.\d+\.\d+((-| )(alpha|beta|pr|test)\d+)?$
+          - "base=main"
+      actions:
+          request_reviews:
+              users:
+                  - "Ranastra"
+                  - "MasterOktagon"
+              teams:
+                  - "I-Language-Development/i-language-core"
+          label:
+              add:
+                  - "Update"

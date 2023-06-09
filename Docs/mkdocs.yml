@@ -81,9 +81,8 @@ extra_css:
     - extra/CSS/round_logo.css
 
 extra_javascript:
-  - https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js
-  - extra/JS/tablesort.js
-
+    - https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js
+    - extra/JS/tablesort.js
 
 extra:
     social:
