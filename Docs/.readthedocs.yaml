@@ -12,7 +12,7 @@ build:
     python: "3.11"
 
 mkdocs:
-  configuration: mkdocs.yml
+  configuration: Docs/mkdocs.yml
 
 submodules:
   include: all
