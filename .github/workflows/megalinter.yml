@@ -20,6 +20,10 @@ jobs:
     build:
         name: MegaLinter
         runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            issues: write
+            pull-requests: write
         steps:
             - name: Checkout Code
               uses: actions/checkout@v3
