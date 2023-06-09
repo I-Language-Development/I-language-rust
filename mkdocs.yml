@@ -77,7 +77,14 @@ plugins:
     - section-index
 
 extra_css:
-    - extra.css
+    - extra/CSS/admonition_license.css
+    - extra/CSS/round_button.css
+    - extra/CSS/round_logo.css
+
+extra_javascript:
+  - https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js
+  - extra/JS/tablesort.js
+
 
 extra:
     social:
