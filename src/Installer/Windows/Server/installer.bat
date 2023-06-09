@@ -107,7 +107,6 @@ exit /b 0
 	pause
 	exit /b %~3
 
-
 :not_installed_error
 	call :error "%~1 seems not to be installed properly.", "Please install %~2 and try again.", 1
 
