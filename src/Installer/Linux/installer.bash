@@ -56,7 +56,7 @@ error () {
     	echo "    $argument"
 	done
 
-	exit ${arguments[-1]}
+	exit "${arguments[-1]}"
 }
 
 # Not installed error
