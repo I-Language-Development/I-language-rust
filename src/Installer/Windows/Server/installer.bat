@@ -24,7 +24,7 @@
 @echo off
 
 : Run as new process with administrator privileges
-net session >nul 2>&1 || (powershell start -verb runas '%~0' %1 & exit /b)
+: net session >nul 2>&1 || (powershell start -verb runas '%~0' %1 & exit /b)
 
 : Show header and ask weather to continue
 echo ###    #
@@ -43,26 +43,14 @@ set /p _="%NUL%    Continue? (Ctrl-C to cancel)"
 
 : Raise error when the OS is not windows
 IF NOT "%OS%"=="Windows_NT" (
-	echo:
-	echo Error:
-	echo     Currently only windows is supported by this installer.
-	echo     Please use the installer for your operating system instead.
-	pause
-
-	exit /b 2
+	call :os_error
 )
 
 : Test for python and get edition
 py --version > NUL 2>&1
 
 IF ERRORLEVEL 1 (
-	echo:
-	echo Error:
-	echo     Python seems not to be installed properly.
-	echo     Please install python and try again.
-	pause
-
-	exit /b 1
+	call :not_installed_error "Python", "python"
 )
 
 : Ask where to install the I programming language
@@ -107,3 +95,21 @@ curl -s %latestReleaseUrl% > ilang.exe
 set PATH=%PATH%;%installLocation%\I Language
 
 pause
+exit /b 0
+
+: Errors
+:error
+	echo:
+	echo Error:
+	echo     %~1
+	echo     %~2
+
+	pause
+	exit /b %~3
+
+
+:not_installed_error
+	call :error "%~1 seems not to be installed properly.", "Please install %~2 and try again.", 1
+
+:os_error
+	call :error "Only windows is supported by this installer.", "Please use the installer for your operating system instead.", 2

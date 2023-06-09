@@ -42,23 +42,46 @@ read -n 1 -r -s
 echo -e -n "\e[2K\r"
 echo -e "    \033[30;107m[x]\033[0m Continue? (Ctrl-C to cancel)"
 
-# Raise error when the OS is not linux
-if [[ ! "$OSTYPE" == "linux-gnu"* ]]; then
+##########
+# ERRORS #
+##########
+
+# Base error
+error () {
 	echo ""
 	echo -e "\033[31;1mError\033[0m"
-	echo "    Currently only linux is supported."
-	echo "    Please use the installer for your operating system instead."
-	exit 2
+
+	arguments=("$@")
+	for argument in "${arguments[@]::${#arguments[@]}-1}"; do
+    	echo "    $argument"
+	done
+
+	exit ${arguments[-1]}
+}
+
+# Not installed error
+not_installed_error () {
+	error "${1^} seems not to be installed properly." "Please install ${1,} and try again." 1
+}
+
+# OS error
+os_error () {
+	error "Currently only linux is supported by this installer." "Please use the installer for your operating system instead." 2
+}
+
+##########
+# Checks #
+##########
+
+# Raise error when the OS is not linux
+if [[ ! "$OSTYPE" == "linux-gnu"* ]]; then
+	os_error
 fi
 
 # Test for python and get edition
 if ! python3 --version &> /dev/null; then
 	if ! python --version &> /dev/null; then
-		echo ""
-		echo -e "\033[31;1mError\033[0m"
-		echo "    Python seems not to be installed properly."
-		echo "    Please install python and try again."
-		exit 1
+		not_installed_error "python"
 	else
 		python=python
 	fi
@@ -97,7 +120,7 @@ latestRelease="https://raw.githubusercontent.com/I-Language-Development/I-langua
 
 echo -e -n "    [\033[34;1m...\033[0m] Installing latest release from $latestRelease (v$($python -c "exec(\"import tomllib\nfrom urllib import request\nwith request.urlopen('$cargoTomlUrl') as file: print(tomllib.loads(file.read().decode())['package']['version'])\")"))"
 
-cd "$installLocation" || exit 3
+cd "$installLocation" || error "Can not navigate to $installLocation." 3
 curl -s "https://raw.githubusercontent.com/I-Language-Development/I-language-rust/releases/$latestRelease" > ilang
 echo -e -n "\e[2K\r"
 echo -e "    [\033[32;1m✓\033[0m] Installing latest release from $latestRelease (v$($python -c "exec(\"import tomllib\nfrom urllib import request\nwith request.urlopen('$cargoTomlUrl') as file: print(tomllib.loads(file.read().decode())['package']['version'])\")"))"
