@@ -4,7 +4,7 @@ repo_url: https://github.com/I-Language-Development/I-Language-Rust
 site_description: The I programming language is a high level programming language written in rust.
 site_author: I-Language-Development
 copyright: >
-    Copyright (c) 2023-present I Language Development.
+    Copyright © 2023-present I Language Development.
     <a href="#__consent">Change cookie settings</a>
 docs_dir: Docs
 site_url: https://i-language-rust.readthedocs.io/en/latest/
