@@ -6,7 +6,8 @@ site_author: I-Language-Development
 copyright: >
     Copyright © 2023-present I Language Development.
     <a href="#__consent">Change cookie settings</a>
-docs_dir: Docs
+docs_dir: .
+site_dir: ../build
 site_url: https://i-language-rust.readthedocs.io/en/latest/
 
 nav:
@@ -52,7 +53,7 @@ theme:
         - toc.integrate
         - navigation.footer
     logo: https://github.com/I-Language-Development/I-language-rust/blob/main/.github/logo.png?raw=true
-    custom_dir: Docs/overrides/
+    custom_dir: overrides/
 
 markdown_extensions:
     - admonition
@@ -66,7 +67,7 @@ markdown_extensions:
     - pymdownx.keys
 
 hooks:
-    - Tools/replace_variables.py
+    - ../Tools/replace_variables.py
 
 plugins:
     - search
