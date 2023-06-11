@@ -4,10 +4,10 @@ permissions: read-all
 
 on:
     push:
-        paths: ["dev-requirements.txt", "Docs/requirements.txt"]
+        paths: ["dev-requirements.txt", "Docs/.requirements.txt"]
 
     pull_request:
-        paths: ["dev-requirements.txt", "Docs/requirements.txt"]
+        paths: ["dev-requirements.txt", "Docs/.requirements.txt"]
 
 jobs:
     install-dependencies:
