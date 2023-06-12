@@ -1,0 +1,3 @@
+[submodule "Docs/Docs/ILEPs"]
+	path = Docs/Docs/ILEPs
+	url = https://github.com/I-Language-Development/I-Language-Enhancement-Proposals.git
