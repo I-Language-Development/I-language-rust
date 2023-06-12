@@ -24,7 +24,7 @@ Added lexer.
 #### Added
 
 - Added parameters to windows installer tools
-- Copied [f79f12b](https://github.com/I-Language-Development/I-language-rust/commit/f79f12bff9c7661d212d5782df8ca7ffe72ba94f) from main
+- Cloned [`f79f12b`](https://github.com/I-Language-Development/I-language-rust/commit/f79f12bff9c7661d212d5782df8ca7ffe72ba94f) from main
 - Added ignore branches
 - Added repository dustilock to megalinter ignore errors
 - Added windows server installer ([gh-27](https://github.com/I-Language-Development/I-language-rust/issues/27))
