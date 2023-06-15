@@ -1,5 +1,5 @@
 ; I Language windows installer.
-; Version: 1.1.0
+; Version: 1.1.1
 
 ; Copyright (c) 2023-present I Language Development.
 
