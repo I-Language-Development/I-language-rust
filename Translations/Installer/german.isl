@@ -27,8 +27,8 @@ LanguageID=$0407
 LanguageCodePage=0
 
 [CustomMessages]
-AddToPath=%1 zum PATH hinzufügen
-AddingToPath=%1 wird zum PATH hinzugefügt
+AddToPath=%1 zum PATH hinzufuegen
+AddingToPath=%1 wird zum PATH hinzugefuegt
 
 AssociateFileExtension=Assoziiere %1 mit %2
 AssociatingFileExtension=%1 wird mit %2 assoziiert
