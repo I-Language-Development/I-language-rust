@@ -124,8 +124,7 @@ pull_request_rules:
                   | Name | Status |
                   |------|--------|
                   {% for check in check_success %}| {{check}} | :white_check_mark: |
-                  {% endfor %}
-                  {% for check in check_failure %}| {{check}} | :x: |
+                  {% endfor %}{% for check in check_failure %}| {{check}} | :x: |
                   {% endfor %}
     - name: Add reviewers and label on update
       conditions:
