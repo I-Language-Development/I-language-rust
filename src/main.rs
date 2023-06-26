@@ -1,3 +1,5 @@
+use I_Language_Rust::Parser;
+
 fn main() {
-    // Do nothing
+    Parser::parser::parse("from x import y as z");
 }

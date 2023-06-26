@@ -1,4 +1,4 @@
-// I Language parser.
+// I Language pest grammar.
 // Version: 0.1.0
 
 // Copyright (c) 2023-present I Language Development.
@@ -21,35 +21,33 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-////////////////////////////////
-// IMPORTS AND USE STATEMENTS //
-////////////////////////////////
+// ASCII_ALPHA All chars, big and small
+// ASCII_DIGIT All digits
+// NEWLINE All newline chars
 
-use pest::Parser;
-use pest_derive::Parser;
+import = { ("from" ~ indentifier)? ~ "import" ~ indentifier ~ ("as" ~ indentifier)? ~ NEWLINE }
+assignment = { indentifier ~ "=" ~ (expression | indentifier) }
 
+keywords = { "as" | "break" | "case" | "catch" | "class" | "const" | "continue" | "default" | "delete" | "else" | "elseif" | "finally" | "for" | "from" | "func" | "function" | "if" | "import" | "match" | "not" | "raise" | "return" | "try" | "use" | "var" | "while" }
+build_in_types = { "array" | "bool" | "char" | "dict" | "dictionary" | "float" | "int" | "integer" | "str" | "string" | "tuple" }
 
-//////////////////
-// GRAMMAR FILE //
-//////////////////
-
-#[cfg(debug_assertions)]
-const _GRAMMAR: &'static str = include_str!("../Grammar/grammar.pest");
-// Make sure grammar.pest is recompiled on every execution
+indentifier = @{ ( ASCII_ALPHA | "_" ) ~ ( ASCII_ALPHA | ASCII_DIGIT)+ }
+expression = { "a" }
 
 
-////////////
-// PARSER //
-////////////
+//////////////
+// COMMENTS //
+//////////////
 
-#[derive(Parser)]
-#[grammar = "Grammar/grammar.pest"]
-pub struct IParser;
+comments = _{ "//" ~ (!NEWLINE ~ ANY)* ~ NEWLINE }
+multiline_comments = _{ "/*" ~ ANY* ~ "*/" }
 
-pub fn parse(input: &str) {
-    let parse_result = IParser::parse(Rule::file, &input).expect("Parsing error");
 
-    println!("{:?}", parse_result);
+////////////////
+// WHITESPACE //
+////////////////
 
-    //parse_result
-}
+WHITESPACE = _{ " " }
+
+
+file = { SOI ~ ( ( import | assignment ) ~ NEWLINE )* ~ EOI }
