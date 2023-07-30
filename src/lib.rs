@@ -25,5 +25,4 @@ DEALINGS IN THE SOFTWARE.
 
 pub mod Compiler;
 pub mod Grammar;
-pub mod Lexer;
 pub mod Parser;
