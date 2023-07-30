@@ -37,7 +37,7 @@ use pest_derive::Parser;
 //////////////////
 
 #[cfg(debug_assertions)]
-const _GRAMMAR: &'static str = include_str!("../Grammar/grammar.pest");
+const _GRAMMAR: &str = include_str!("../Grammar/grammar.pest");
 // Make sure grammar.pest is recompiled on every execution
 
 
