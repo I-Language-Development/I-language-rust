@@ -4,7 +4,7 @@
 [package]
 name = "I-Language-Rust"
 description = "The I programming language is a high level programming language written in rust."
-version = "1.0.0-alpha2"
+version = "1.0.0-alpha3"
 authors = [
 	"ElBe-Plaq <elbe.dev.plaq@gmail.com>",
 	"MasterOktagon",
@@ -24,4 +24,5 @@ categories = [
 ]
 
 [dependencies]
-# None
+pest = "2.7.1"
+pest_derive = "2.7.1"
