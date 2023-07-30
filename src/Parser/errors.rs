@@ -1,5 +1,5 @@
-// I Language parser.
-// Version: 0.1.1
+// I Language parser errors.
+// Version: 0.1.0
 
 // Copyright (c) 2023-present I Language Development.
 
@@ -25,37 +25,18 @@
 // IMPORTS AND USE STATEMENTS //
 ////////////////////////////////
 
-use crate::Parser::errors;
+use std;
 
-use pest::iterators::Pairs;
-use pest::Parser;
-use pest_derive::Parser;
-
+use pest::error::Error;
+use pest::RuleType;
 
 //////////////////
-// GRAMMAR FILE //
+// SYNTAX ERROR //
 //////////////////
 
-#[cfg(debug_assertions)]
-const _GRAMMAR: &'static str = include_str!("../Grammar/grammar.pest");
-// Make sure grammar.pest is recompiled on every execution
+pub fn syntax_error<R: RuleType>(error: &Error<R>) {
+    eprintln!("\x1b[31;1mError:\x1b[0m Invalid syntax");
+    eprintln!("{error}");
 
-
-////////////
-// PARSER //
-////////////
-
-#[derive(Parser)]
-#[grammar = "Grammar/grammar.pest"]
-pub struct IParser;
-
-pub fn parse(input: &str) -> Option<Pairs<'_, Rule>> {
-    let parse_result = IParser::parse(Rule::file, &input);
-
-    match &parse_result {
-        Ok(value) => return Some(value.to_owned()),
-        Err(error) => errors::syntax_error(error),
-    };
-
-    return None;
+    std::process::exit(1);
 }
