@@ -28,7 +28,7 @@ jobs:
                   pip install -r Docs/.requirements.txt
     install-rust-dependencies:
         runs-on: ubuntu-latest
-        setps:
+        steps:
             - uses: actions/checkout@v3
             - name: Install dependencies from Cargo.toml
               uses: mirlahiji/rust-action@v1.71.0
