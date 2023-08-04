@@ -1,4 +1,4 @@
-all: build
+all: compile
 .PHONY: all clean compile test help
 
 clean:
