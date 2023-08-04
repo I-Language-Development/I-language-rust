@@ -5,7 +5,7 @@ clean:
 	python3 Tools/clean.py
 
 compile:
-	cargo build
+	cargo build --release
 
 run:
 	cargo run
