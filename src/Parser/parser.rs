@@ -63,7 +63,7 @@ pub fn parse<'a>(input: &'a str, path: &'a str) -> Option<Pairs<'a, Rule>> {
         Ok(value) => {
             println!("{:#?}", value);
             return Some(value.to_owned());
-        },
+        }
         Err(error) => errors::syntax_error(error.to_owned(), &path),
     };
 
