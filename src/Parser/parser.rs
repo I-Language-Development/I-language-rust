@@ -32,29 +32,39 @@ use pest::Parser;
 use pest_derive::Parser;
 
 
-//////////////////
-// GRAMMAR FILE //
-//////////////////
+///////////////////
+// PARSER STRUCT //
+///////////////////
 
+#[cfg(not(feature = "beta"))]
 #[cfg(debug_assertions)]
 const _GRAMMAR: &str = include_str!("../Grammar/grammar.pest");
 // Make sure grammar.pest is recompiled on every execution
 
-
-////////////
-// PARSER //
-////////////
+#[cfg(feature = "beta")]
+#[cfg(debug_assertions)]
+const _GRAMMAR: &str = include_str!("../Grammar/grammar_beta.pest");
+// Make sure grammar_beta.pest is recompiled on every execution
 
 #[derive(Parser)]
-#[grammar = "Grammar/grammar.pest"]
+#[cfg_attr(not(feature = "beta"), grammar = "Grammar/grammar.pest")]
+#[cfg_attr(feature = "beta", grammar = "Grammar/grammar_beta.pest")]
 pub struct IParser;
 
-pub fn parse(input: &str) -> Option<Pairs<'_, Rule>> {
+
+////////////////////
+// PARSE FUNCTION //
+////////////////////
+
+pub fn parse<'a>(input: &'a str, path: &'a str) -> Option<Pairs<'a, Rule>> {
     let parse_result = IParser::parse(Rule::file, &input);
 
     match &parse_result {
-        Ok(value) => return Some(value.to_owned()),
-        Err(error) => errors::syntax_error(error),
+        Ok(value) => {
+            println!("{:#?}", value);
+            Some(value.to_owned())
+        },
+        Err(error) => errors::syntax_error(error.to_owned(), &path),
     };
 
     return None;

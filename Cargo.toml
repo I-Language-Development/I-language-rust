@@ -26,3 +26,6 @@ categories = [
 [dependencies]
 pest = "2.7.1"
 pest_derive = "2.7.1"
+
+[features]
+beta = []
