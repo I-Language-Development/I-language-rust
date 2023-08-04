@@ -27,5 +27,10 @@ categories = [
 pest = "2.7.1"
 pest_derive = "2.7.1"
 
+[dev-dependencies]
+check = "1.0.0"
+fmt = "0.1.0"
+pest_fmt = "0.2.4"
+
 [features]
 beta = []
