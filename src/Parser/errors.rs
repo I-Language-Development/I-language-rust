@@ -1,5 +1,5 @@
 // I Language parser errors.
-// Version: 0.1.0
+// Version: 0.1.1
 
 // Copyright (c) 2023-present I Language Development.
 
@@ -27,16 +27,29 @@
 
 use std;
 
+use pest::error;
 use pest::error::Error;
 use pest::RuleType;
+
 
 //////////////////
 // SYNTAX ERROR //
 //////////////////
 
-pub fn syntax_error<R: RuleType>(error: &Error<R>) {
+pub fn syntax_error<R: RuleType>(error: Error<R>, path: &str) {
     eprintln!("\x1b[31;1mError:\x1b[0m Invalid syntax");
-    eprintln!("{error}");
+
+    match error.variant {
+        error::ErrorVariant::ParsingError { .. } => {
+            // TODO
+        }
+        error::ErrorVariant::CustomError { .. } => {
+            // TODO
+        }
+    };
+
+    println!("{:?}", error); // For debugging
+    eprintln!("{}", error.with_path(path));
 
     std::process::exit(1);
 }
