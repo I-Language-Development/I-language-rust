@@ -1,10 +1,7 @@
 name: Remove temporary files
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    [push, pull_request]
 
 jobs:
     clean:
@@ -19,6 +16,6 @@ jobs:
               with:
                   python-version: ${{ matrix.python-version }}
             - name: Install dependencies from Cargo.toml
-              uses: mirlahiji/rust-action@v1.71.0
-              with:
-                  args: cargo update && just clean
+              run: cargo update
+            - name: Remove temporary files
+              run: just clean

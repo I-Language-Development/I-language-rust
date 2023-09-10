@@ -31,9 +31,7 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - name: Install dependencies from Cargo.toml
-              uses: mirlahiji/rust-action@v1.71.0
-              with:
-                  args: cargo update
+              run: cargo update
 
     dependency-review:
         runs-on: ubuntu-latest
