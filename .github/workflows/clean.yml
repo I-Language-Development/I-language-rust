@@ -15,7 +15,8 @@ jobs:
               uses: actions/setup-python@v4
               with:
                   python-version: ${{ matrix.python-version }}
-            - name: Install dependencies from Cargo.toml
-              run: cargo update
+            - name: Install dev-dependencies from Cargo.toml
+              run: cargo test --no-run
+              # ^ This is the only way to install dev-dependencies
             - name: Remove temporary files
               run: just clean
