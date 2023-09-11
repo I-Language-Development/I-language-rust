@@ -1,4 +1,5 @@
 name: Rust
+permissions: read-all
 
 on:
     [push, pull_request]
