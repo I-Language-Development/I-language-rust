@@ -33,5 +33,9 @@ use I_Language_Rust::Parser;
 //////////////////
 
 fn main() {
-    Parser::parser::parse("import xy", "src/main.rs");
+    println!(
+        "{:#?}",
+        Parser::parser::parse_and_convert("var x=1\n", "src/main.rs")
+    );
+    //var x=1\n
 }

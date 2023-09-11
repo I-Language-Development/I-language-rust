@@ -25,7 +25,9 @@
 // IMPORTS AND USE STATEMENTS //
 ////////////////////////////////
 
+use crate::Parser::convert;
 use crate::Parser::errors;
+use crate::Parser::token;
 
 use pest::iterators::Pairs;
 use pest::Parser;
@@ -56,15 +58,24 @@ pub struct IParser;
 // PARSE FUNCTION //
 ////////////////////
 
-pub fn parse<'a>(input: &'a str, path: &'a str) -> Option<Pairs<'a, Rule>> {
-    let parse_result = IParser::parse(Rule::file, &input);
+pub fn parse_and_convert(input: &str, path: &str) -> Vec<token::Token> {
+    match convert::convert(parse(input, path).unwrap()) {
+        Some(value) => return value,
+        None => return Vec::new(),
+    }
+}
 
-    match &parse_result {
+pub fn parse<'a>(input: &'a str, path: &'a str) -> Option<Pairs<'a, Rule>> {
+    let parse_result: Result<Pairs<'_, Rule>, pest::error::Error<Rule>> =
+        IParser::parse(Rule::file, &input);
+
+    match parse_result {
         Ok(value) => {
-            println!("{:#?}", value);
-            return Some(value.to_owned());
+            //println!("{:#}", value);
+
+            return Some(value);
         }
-        Err(error) => errors::syntax_error(error.to_owned(), &path),
+        Err(error) => errors::syntax_error(error, &path),
     };
 
     return None;
