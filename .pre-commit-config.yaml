@@ -11,7 +11,7 @@ repos:
           - id: check-toml
           - id: check-yaml
           - id: pretty-format-json
-            args: [--autofix, --indent \t]
+            args: [--autofix, "--indent \t"]
           - id: requirements-txt-fixer
           - id: trailing-whitespace
     - repo: https://github.com/jorisroovers/gitlint
