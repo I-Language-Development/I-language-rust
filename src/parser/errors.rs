@@ -54,7 +54,6 @@ where
         }
     };
 
-    println!("{:?}", error); // For debugging
     eprintln!("{}", error.with_path(path));
 
     std::process::exit(1);
