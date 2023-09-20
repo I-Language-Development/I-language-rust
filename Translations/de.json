@@ -1,0 +1,4 @@
+{
+  "parser.convert.unknown_token": "{{color.yellow}}Warnung:{{end}} Unbekannter Token ({{token}}) gefunden. Token wird \u00fcbersprungen, da kein Syntaxfehler vorliegt...",
+  "parser.errors.syntax": "{{color.red}}Fehler:{{end}} Falsche Syntax"
+}
