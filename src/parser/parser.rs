@@ -33,6 +33,7 @@ use pest::iterators::Pairs;
 use pest::Parser;
 use pest_derive::Parser;
 
+
 ///////////////////
 // PARSER STRUCT //
 ///////////////////
@@ -51,6 +52,7 @@ const _GRAMMAR: &str = include_str!("../grammar/grammar_beta.pest");
 #[cfg_attr(not(feature = "beta"), grammar = "grammar/grammar.pest")]
 #[cfg_attr(feature = "beta", grammar = "grammar/grammar_beta.pest")]
 pub struct IParser;
+
 
 ////////////////////
 // PARSE FUNCTION //

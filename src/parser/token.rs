@@ -116,6 +116,7 @@ pub enum TokenType {
     TypeDefinition(TypeDefinition),
 }
 
+
 //////////////
 // POSITION //
 //////////////
@@ -125,6 +126,7 @@ pub struct Position {
     pub line: usize,
     pub colon: usize,
 }
+
 
 ///////////
 // TOKEN //

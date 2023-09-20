@@ -31,6 +31,7 @@ use crate::parser::token::*;
 
 use pest::iterators::{Pair, Pairs};
 
+
 ////////////////////
 // CONVERT HELPER //
 ////////////////////
@@ -46,6 +47,7 @@ pub fn convert_helper(pair: Pair<'_, Rule>, token_type: TokenType) -> Token {
         },
     }
 }
+
 
 /////////////
 // CONVERT //
