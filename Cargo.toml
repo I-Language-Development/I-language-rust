@@ -16,7 +16,7 @@ documentation = "https://i-language.readthedocs.io/"
 readme = ".github/README.md"
 homepage = "https://i-language-development.github.io/"
 repository = "https://github.com/I-Language-Development/I-language-rust/"
-license-file = "LICENSE"
+license-file = "LICENSE.txt"
 keywords = ["i", "i-language", "programming-language", "language", "compiler"]
 categories = [
 	"compilers",
@@ -26,6 +26,8 @@ categories = [
 [dependencies]
 pest = "2.7.3"
 pest_derive = "2.7.3"
+localizer-rs = "1.1.1"
+current_locale = "0.1.1"
 
 [dev-dependencies]
 check = "1.0.0"
