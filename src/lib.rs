@@ -1,6 +1,6 @@
 /*
 I Language lib.
-Version: 1.0.0
+Version: 0.1.1
 
 Copyright (c) 2023-present I Language Development.
 
@@ -23,7 +23,30 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-pub mod Compiler;
-pub mod Grammar;
-pub mod Lexer;
-pub mod Parser;
+/////////////
+// EXPORTS //
+/////////////
+
+pub mod compiler;
+pub mod grammar;
+pub mod parser;
+
+
+//////////////////
+// TRANSLATIONS //
+//////////////////
+
+pub fn get_config() -> localizer_rs::Config {
+    let locale: String = match current_locale::current_locale() {
+        Ok(value) => {
+            let return_value: String = value;
+            return_value
+        }
+        Err(error) => {
+            eprintln!("{}", error);
+            std::process::exit(1);
+        }
+    };
+    let split_locale: Vec<&str> = locale.split('-').collect();
+    return localizer_rs::Config::new("Translations", split_locale[0]);
+}

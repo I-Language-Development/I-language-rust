@@ -53,7 +53,7 @@ error () {
 
 	arguments=("$@")
 	for argument in "${arguments[@]::${#arguments[@]}-1}"; do
-    	echo "    $argument"
+		echo "    $argument"
 	done
 
 	exit "${arguments[-1]}"

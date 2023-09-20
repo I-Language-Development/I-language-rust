@@ -44,6 +44,10 @@ output("Hello world!");
 
 That's it! It's literally so easy.
 
+## Contact
+
+To contact us, get help or just chat with others, you can visit [our discord server](https://discord.gg/JVyyDukQqV).
+
 ## Contributing
 
 To contribute to this project, read the [contributing guide](CONTRIBUTING.md).

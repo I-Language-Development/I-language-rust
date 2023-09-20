@@ -4,7 +4,7 @@
 [package]
 name = "I-Language-Rust"
 description = "The I programming language is a high level programming language written in rust."
-version = "1.0.0-alpha2"
+version = "1.0.0-alpha3"
 authors = [
 	"ElBe-Plaq <elbe.dev.plaq@gmail.com>",
 	"MasterOktagon",
@@ -16,7 +16,7 @@ documentation = "https://i-language.readthedocs.io/"
 readme = ".github/README.md"
 homepage = "https://i-language-development.github.io/"
 repository = "https://github.com/I-Language-Development/I-language-rust/"
-license-file = "LICENSE"
+license-file = "LICENSE.txt"
 keywords = ["i", "i-language", "programming-language", "language", "compiler"]
 categories = [
 	"compilers",
@@ -24,4 +24,16 @@ categories = [
 ]
 
 [dependencies]
-# None
+pest = "2.7.3"
+pest_derive = "2.7.3"
+localizer-rs = "1.1.1"
+current_locale = "0.1.1"
+
+[dev-dependencies]
+check = "1.0.0"
+fmt = "0.1.0"
+just = "1.14.0"
+pest_fmt = "0.2.4"
+
+[features]
+beta = []

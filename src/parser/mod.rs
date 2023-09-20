@@ -1,6 +1,6 @@
-"""
-I Language clean tool.
-Version: 1.1.0
+/*
+I Language parser mod.
+Version: 1.0.0
 
 Copyright (c) 2023-present I Language Development.
 
@@ -21,17 +21,9 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
-"""
+*/
 
-
-###########
-# IMPORTS #
-###########
-
-import shutil
-
-########
-# MAIN #
-########
-
-shutil.rmtree("target")
+pub mod convert;
+pub mod errors;
+pub mod parser;
+pub mod token;
