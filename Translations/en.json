@@ -1,4 +1,4 @@
 {
-  "parser.convert.unknown_token": "{{color.yellow}}Warning:{{end}} Unknown token ({{token}}) detected. Skipping, due to no syntax error...",
-  "parser.errors.syntax": "{{color.red}}Error:{{end}} Invalid syntax"
+    "parser.convert.unknown_token": "{{color.yellow}}Warning:{{end}} Unknown token ({{token}}) detected. Skipping, due to no syntax error...",
+    "parser.errors.syntax": "{{color.red}}Error:{{end}} Invalid syntax"
 }
