@@ -32,16 +32,6 @@ pub mod grammar;
 pub mod parser;
 
 
-/////////////
-// IMPORTS //
-/////////////
-
-use std;
-
-use current_locale;
-use localizer_rs;
-
-
 //////////////////
 // TRANSLATIONS //
 //////////////////
@@ -49,14 +39,14 @@ use localizer_rs;
 pub fn get_config() -> localizer_rs::Config {
     let locale: String = match current_locale::current_locale() {
         Ok(value) => {
-            let return_value: String = value.to_owned();
+            let return_value: String = value;
             return_value
-        },
+        }
         Err(error) => {
             eprintln!("{}", error);
             std::process::exit(1);
         }
     };
-    let split_locale: Vec<&str> = locale.split("-").collect();
+    let split_locale: Vec<&str> = locale.split('-').collect();
     return localizer_rs::Config::new("Translations", split_locale[0]);
 }
