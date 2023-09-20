@@ -21,11 +21,11 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-////////////////////////////////
-// IMPORTS AND USE STATEMENTS //
-////////////////////////////////
+/////////////
+// IMPORTS //
+/////////////
 
-use I_Language_Rust::Parser;
+use I_Language_Rust::parser;
 
 
 //////////////////
@@ -35,7 +35,7 @@ use I_Language_Rust::Parser;
 fn main() {
     println!(
         "{:#?}",
-        Parser::parser::parse_and_convert("var x=1\n", "src/main.rs")
+        parser::parser::parse_and_convert("var x = 1\n", "src/main.rs")
     );
     //var x=1\n
 }

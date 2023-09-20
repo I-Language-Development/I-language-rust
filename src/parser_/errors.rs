@@ -21,11 +21,13 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-////////////////////////////////
-// IMPORTS AND USE STATEMENTS //
-////////////////////////////////
+/////////////
+// IMPORTS //
+/////////////
 
 use std;
+
+use crate::get_config;
 
 use pest::error;
 use pest::error::Error;
@@ -41,7 +43,7 @@ pub fn syntax_error<R>(error: Error<R>, path: &str)
 where
     R: RuleType,
 {
-    eprintln!("\x1b[31;1mError:\x1b[0m Invalid syntax");
+    eprintln!("{}", get_config().t("parser.errors.syntax", vec![])); //, color = "\x1b[31;1m", end = "\x1b[0m"
 
     match error.variant {
         error::ErrorVariant::ParsingError { .. } => {
@@ -74,14 +76,13 @@ where
 ///
 /// ```should_panic
 /// # use pest;
-/// # use I_Language_Rust::Parser::errors::missing_eoi_error;
+/// # use I_Language_Rust::parser::errors::missing_eoi_error;
 ///
 /// missing_eoi_error(pest::Span::new("//This for some reason does not have a EOI token", 47, 48).unwrap(), "file.il");
 /// ```
 ///
 /// # See also
 ///
-/// - [`filter::filter_eoi`]
 /// - [EOI Token](https://docs.rs/pest/latest/pest/index.html#special-rules)
 pub fn missing_eoi_error(span: Span<'_>, path: &str) {
     let error: Error<()> = Error::new_from_span(

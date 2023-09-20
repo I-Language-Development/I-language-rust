@@ -21,13 +21,13 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-////////////////////////////////
-// IMPORTS AND USE STATEMENTS //
-////////////////////////////////
+/////////////
+// IMPORTS //
+/////////////
 
-use crate::Parser::convert;
-use crate::Parser::errors;
-use crate::Parser::token;
+use crate::parser::convert;
+use crate::parser::errors;
+use crate::parser::token;
 
 use pest::iterators::Pairs;
 use pest::Parser;
@@ -40,17 +40,17 @@ use pest_derive::Parser;
 
 #[cfg(not(feature = "beta"))]
 #[cfg(debug_assertions)]
-const _GRAMMAR: &str = include_str!("../Grammar/grammar.pest");
+const _GRAMMAR: &str = include_str!("../grammar/grammar.pest");
 // Make sure grammar.pest is recompiled on every execution
 
 #[cfg(feature = "beta")]
 #[cfg(debug_assertions)]
-const _GRAMMAR: &str = include_str!("../Grammar/grammar_beta.pest");
+const _GRAMMAR: &str = include_str!("../grammar/grammar_beta.pest");
 // Make sure grammar_beta.pest is recompiled on every execution
 
 #[derive(Parser)]
-#[cfg_attr(not(feature = "beta"), grammar = "Grammar/grammar.pest")]
-#[cfg_attr(feature = "beta", grammar = "Grammar/grammar_beta.pest")]
+#[cfg_attr(not(feature = "beta"), grammar = "grammar/grammar.pest")]
+#[cfg_attr(feature = "beta", grammar = "grammar/grammar_beta.pest")]
 pub struct IParser;
 
 

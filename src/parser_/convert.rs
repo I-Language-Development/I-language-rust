@@ -21,12 +21,13 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-////////////////////////////////
-// IMPORTS AND USE STATEMENTS //
-////////////////////////////////
+/////////////
+// IMPORTS //
+/////////////
 
-use crate::Parser::parser::Rule;
-use crate::Parser::token::*;
+use crate::get_config;
+use crate::parser::parser::Rule;
+use crate::parser::token::*;
 
 use pest::iterators::{Pair, Pairs};
 
@@ -56,8 +57,6 @@ pub fn convert<'a>(input: Pairs<'a, Rule>) -> Option<Vec<Token>> {
     let mut result: Vec<Token> = Vec::new();
 
     for pair in input {
-        println!("{}", pair);
-
         match pair.as_rule() {
             Rule::import => result.push(convert_helper(pair, TokenType::Keyword(Keyword::Import))),
             Rule::import_from => {
@@ -209,8 +208,8 @@ pub fn convert<'a>(input: Pairs<'a, Rule>) -> Option<Vec<Token>> {
                 _ => {}
             },
 
-            Rule::wsc | Rule::EOI => {}
-            _ => println!("Found bad thing"),
+            Rule::wsc | Rule::EOI => {},
+            _ => println!("{}", get_config().t("parser.convert.unknown_token", vec![("token", format!("{:?}", pair.as_rule()).as_str())])),
         }
     }
 
