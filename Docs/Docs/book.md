@@ -1,4 +1,5 @@
 # The I-Language book
+By [@MasterOktagon](https://github.com/MasterOktagon) and [@ElBe-Plaq](https://github.com/ElBe-Plaq).
 
 ## Contents
 
@@ -8,7 +9,7 @@
   - [2. FAQ](#2-faq)
   - [3. Tutorials](#3-tutorials)
     - [3.1 Hello World](#31-hello-world)
-      - [How does it work?](#how-does-it-work)
+      - [3.1.1 How does it work?](#311-how-does-it-work)
     - [3.2 Guess the number](#32-guess-the-number)
 
 ## 1. Why use the I-Programming-Language?
@@ -69,7 +70,7 @@ output("Hello World!");
 
 Thats it! Go ahead and compile it!
 
-#### How does it work?
+#### 3.1.1 How does it work?
 
 `output` will send a print string signal to the standard output (stdout), in this case the command line.
 
