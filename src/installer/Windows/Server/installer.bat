@@ -24,7 +24,7 @@
 @echo off
 
 : Run as new process with administrator privileges
-: net session >nul 2>&1 || (powershell start -verb runas '%~0' %1 & exit /b)
+net session >nul 2>&1 || (powershell start -verb runas '%~0' %1 & exit /b)
 
 : Show header and ask weather to continue
 echo ###    #
