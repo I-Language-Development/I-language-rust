@@ -186,14 +186,28 @@ while(guess != goal){
 ```
 
 This will ensure that your program will keep running until you guessed right.
+Now lets add true random numbers. Because this is a little bit hard for us to program ourself, we will use the built-in random functions.
+Put this at the beginning of the file
+```il
+import random;
+```
+This will ensure the compiler knows that you want to use those random functions that aren't in there as standard
+Now we need to set our goal variable to a random value. We do this by calling `random.randi()` modulo (`%`) the range of numbers you want
+to have as possible goal values. The 'random' indicates that this fuhnction is out of the module `random` which you have imported at the
+beginning. The modulo has something to do with math (modular number rooms). If you are more interested on the maths behind this, you should
+read some articles.
+```il
+int goal = random.randi() % 25;
+```
 
 The final file looks something like this:
 
 ```il
+import random;
 
 output("Welcome to: Guess the number!");
 
-int goal = 3;
+int goal = random.randi() % 25;
 int guess = 0
 
 while(guess != goal){
@@ -221,10 +235,11 @@ while(guess != goal){
 Now you can also move the block that checks if guess equals to goal out of the loop.
 
 ```il
+import random;
 
 output("Welcome to: Guess the number!");
 
-int goal = 3;
+int goal = random.randi() % 25;
 int guess = 0
 
 while(guess != goal){
@@ -246,3 +261,4 @@ while(guess != goal){
 output("Perfect! You guessed the number right!");
 
 ```
+
