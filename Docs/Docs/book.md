@@ -65,7 +65,7 @@ Lets start with the standard Hello world example:
 
 ```il
 
-output("Hello World!");
+print("Hello World!");
 
 ```
 
@@ -73,7 +73,7 @@ Thats it! Go ahead and compile it!
 
 #### 3.1.1 How does it work?
 
-`output` will send a print string signal to the standard output (stdout), in this case the command line.
+`print` will send a print string signal to the standard output (stdout), in this case the command line.
 
 ### 3.2 Guess the number
 
@@ -83,7 +83,7 @@ Lets start with a greeting, using the function we learned in our last tutorial:
 
 ```il
 
-output("Welcome to: Guess the number!");
+print("Welcome to: Guess the number!");
 
 ```
 
@@ -114,7 +114,7 @@ So add this line:
 
 ```il
 
-int guess = int(input("Please input a number to guess: "));
+int guess = int(input("Please input a number to guess (0-25): "));
 
 ```
 
@@ -125,8 +125,8 @@ Now we can store an input value too! However if we type something else than a nu
 Error: Type error
  --> guess_the_number.il:3:17
   |
-3 | int guess = int(input("Please input a number to guess: "));
-  |                 ^---------------------------------------^
+3 | int guess = int(input("Please input a number to guess (0-25): "));
+  |                 ^---------------------------------------------^
   |
   = Cannot convert from string "Test" to integer
 
@@ -137,11 +137,12 @@ To solve this write this instead:
 ```il
 
 int guess = 0;
+
 try {
-    guess = int(input("Please input a number to guess: ));
+    guess = int(input("Please input a number to guess (0-25): "));
 }
 catch TypeError(value) {
-    output("{value} is not a number. Using zero instead.");
+    print("{value} is not a number. Using zero instead.");
 }
 
 ```
@@ -153,8 +154,8 @@ Now we have to compare the input with the goal. To do that, use the `if` stateme
 
 ```il
 
-if (guess == goal){
-    output("Perfect! You guessed the number right!");
+if (guess == goal) {
+    print("Perfect! You guessed the number right!");
     return Exit; // This line ends the program with a exit code of zero.
 }
 
@@ -166,11 +167,12 @@ Now lets print the higher/lower.
 
 ```il
 
-if (guess > goal){
-    output("Lower");
+if (guess > goal) {
+    print("The random number is lower than your guess.");
 }
-if (guess < goal){
-    output("Higher");
+
+if (guess < goal) {
+    print("The random number is higher than your guess.");
 }
 
 ```
@@ -179,86 +181,125 @@ We are again comparing the two values and conditionally outputting lower or high
 
 ```il
 
-while(guess != goal){
+while (guess != goal) {
     ...
 }
 
 ```
 
 This will ensure that your program will keep running until you guessed right.
-Now lets add true random numbers. Because this is a little bit hard for us to program ourself, we will use the built-in random functions.
-Put this at the beginning of the file
+Now lets add true random numbers. Because this is a little bit hard for us to program ourself, we will use the built-in random function.
+Put this at the beginning of the file to import the `random` module.
+
 ```il
+
 import random;
+
 ```
-This will ensure the compiler knows that you want to use those random functions that aren't in there as standard
-Now we need to set our goal variable to a random value. We do this by calling `random.randi()` modulo (`%`) the range of numbers you want
-to have as possible goal values. The 'random' indicates that this fuhnction is out of the module `random` which you have imported at the
-beginning. The modulo has something to do with math (modular number rooms). If you are more interested on the maths behind this, you should
-read some articles.
+
+Now we need to set our goal variable to a random value. We do this by calling `random.randint(0, 25)` where 0 is the lowest possible number (exclusive) and 25 is the highest possible number (inclusive). The `random` indicates that this function is part of the module `random` which you have imported at the beginning.
+
 ```il
-int goal = random.randi() % 25;
+
+int goal = random.randint(0, 25);
+
+```
+
+Now we can add a check if the number inputted is in the range of zero to 25:
+
+```il
+
+while (guess != goal) {
+    try {
+        guess = int(input("Please input a number to guess (0-25): "));
+    }
+    catch TypeError(value) {
+        print("{value} is not a number. Using zero instead.");
+    }
+
+    if (guess <= 0 || guess > 25) {
+        print("{guess} is not in the range of 0 to 25.");
+        continue;
+    }
+
+    ...
+}
+
 ```
 
 The final file looks something like this:
 
 ```il
+
 import random;
 
-output("Welcome to: Guess the number!");
+print("Welcome to: Guess the number!");
 
-int goal = random.randi() % 25;
-int guess = 0
+int goal = random.randint(0, 25);
+int guess = 0;
 
-while(guess != goal){
+while (guess != goal) {
     try {
-        guess = int(input("Please input a number to guess: ));
+        guess = int(input("Please input a number to guess (0-25): "));
     }
     catch TypeError(value) {
-        output("{value} is not a number. Using zero instead.");
+        print("{value} is not a number. Using zero instead.");
     }
 
-    if (guess == goal){
-        output("Perfect! You guessed the number right!");
+    if (guess <= 0 || guess > 25) {
+        print("{guess} is not in the range of 0 to 25.");
+        continue;
+    }
+
+    if (guess == goal) {
+        print("Perfect! You guessed the number right!");
         return Exit;
     }
-    if (guess > goal){
-        output("Lower");
+
+    if (guess > goal) {
+        print("The random number is lower than your guess.");
     }
-    if (guess < goal){
-        output("Higher");
+
+    if (guess < goal) {
+        print("The random number is higher than your guess.");
     }
 }
 
 ```
 
-Now you can also move the block that checks if guess equals to goal out of the loop.
+Now you can then move the block that checks if guess equals to goal out of the loop.
 
 ```il
+
 import random;
 
-output("Welcome to: Guess the number!");
+print("Welcome to: Guess the number!");
 
-int goal = random.randi() % 25;
-int guess = 0
+int goal = random.randint(0, 25);
+int guess = 0;
 
-while(guess != goal){
+while (guess != goal) {
     try {
-        guess = int(input("Please input a number to guess: ));
+        guess = int(input("Please input a number to guess (0-25): "));
     }
     catch TypeError(value) {
-        output("{value} is not a number. Using zero instead.");
+        print("{value} is not a number. Using zero instead.");
     }
 
-    if (guess > goal){
-        output("Lower");
+    if (guess <= 0 || guess > 25) {
+        print("{guess} is not in the range of 0 to 25.");
+        continue;
     }
-    if (guess < goal){
-        output("Higher");
+
+    if (guess > goal) {
+        print("The random number is lower than your guess.");
+    }
+
+    if (guess < goal) {
+        print("The random number is higher than your guess.");
     }
 }
 
-output("Perfect! You guessed the number right!");
+print("Perfect! You guessed the number right!");
 
 ```
-
