@@ -2,18 +2,48 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+
+### [`v1.0.0-alpha4`](https://github.com/I-Language-Development/I-language-rust/releases/tag/v1.0.0-alpha4)
+
+> 10/1/2023 - 11/2/2023
+
+Currently in development.
+
+## Released
 
 ### [`v1.0.0-alpha3`](https://github.com/I-Language-Development/I-language-rust/releases/tag/v1.0.0-alpha3)
 
 > 7/1/2023 - 8/2/2023
 
-Currently in development.
+Added parser.
 
-## Released
+#### Added
+
+- Added book
+- Added pest parser ([gh-43](https://github.com/I-Language-Development/I-language-rust/pull/43))
+- Added translations ([gh-43](https://github.com/I-Language-Development/I-language-rust/pull/43))
+- Added dev docs ([gh-44](https://github.com/I-Language-Development/I-language-rust/pull/44))
+- Added german installer translation ([gh-40](https://github.com/I-Language-Development/I-language-rust/issues/40))
+- Added commit message linter
+
+#### Changed
+
+- Switched from gnu make to just
+- Improved lexer ([gh-36](https://github.com/I-Language-Development/I-language-rust/pull/36))
+
+#### Removed
+
+- Removed lexer and replaced it with parser
+
+#### Fixed
+
+- Fixed issues regarding badges
+- Fixed installer issues
+- Fixed documentation issues
 
 ### [`v1.0.0-alpha2`](https://github.com/I-Language-Development/I-language-rust/releases/tag/v1.0.0-alpha2)
 

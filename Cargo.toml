@@ -24,14 +24,12 @@ categories = [
 ]
 
 [dependencies]
-pest = "2.7.3"
-pest_derive = "2.7.3"
-localizer-rs = "1.1.1"
 current_locale = "0.1.1"
+localizer-rs = "1.1.1"
+pest = "2.7.4"
+pest_derive = "2.7.4"
 
 [dev-dependencies]
-check = "1.0.0"
-fmt = "0.1.0"
 just = "1.14.0"
 pest_fmt = "0.2.4"
 
