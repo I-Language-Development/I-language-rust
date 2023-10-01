@@ -13,6 +13,7 @@
 <p align="center">
     <img src="https://github.com/I-Language-Development/I-language-rust/blob/main/.github/example-syntax.png?raw=true" width="500px"/>
 </p>
+
 ## About this project
 
 Have you been dreaming about coding in your perfect programming language?
