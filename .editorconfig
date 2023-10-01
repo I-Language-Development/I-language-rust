@@ -10,9 +10,13 @@ insert_final_newline = true
 tab_width = 4
 trim_trailing_whitespace = true
 
-[*.{html,md,py,rs}]
+[*.{html,md,py,rs,json}]
 indent_size = 4
 indent_style = space
 
 [*.{yml,yaml}]
+indent_style = space
+
+[*book.md]
+indent_size = 1
 indent_style = space

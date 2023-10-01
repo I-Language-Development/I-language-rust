@@ -7,8 +7,9 @@ Please follow the instructions below on how to contribute to this project.
 
 Please do **not** report an issue of pull request if the issue is a security vulnerability.
 There is a different way to report such issues. Issues or pull requests about a vulnerability will be removed.
+
 <div style="text-align: center">
-<h4>Report vulnerabilities <a href="https://github.com/I-Language-Development/I-language/security/advisories/new">here</a></h4>
+<h4>Report vulnerabilities <a href="https://github.com/I-Language-Development/I-language-rust/security/advisories/new">here</a></h4>
 </div>
 
 ## Contributing

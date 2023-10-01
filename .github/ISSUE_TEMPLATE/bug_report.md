@@ -4,7 +4,6 @@ about: Create a report to help us improve
 title: "[BUG] TITLE"
 labels: Bug
 assignees: ElBe-Plaq
-
 ---
 
 **Describe the bug**

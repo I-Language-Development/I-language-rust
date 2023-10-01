@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 
 {% block announce %}
-    <p>This project is still in early development. Major changes may happen without announcement. Features shown here might not work as expected.</p>
+    <span class="twemoji">
+        {% include ".icons/octicons/alert-fill-24.svg" %}
+    </span>
+    <span>This project is still in early development. Major changes may happen without announcement. Features shown might not work as expected.</span>
 {% endblock %}

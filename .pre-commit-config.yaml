@@ -11,9 +11,14 @@ repos:
           - id: check-toml
           - id: check-yaml
           - id: pretty-format-json
-            args: [--autofix]
+            args: [--autofix, --indent=4]
           - id: requirements-txt-fixer
           - id: trailing-whitespace
+    - repo: https://github.com/jorisroovers/gitlint
+      rev: v0.19.1
+      hooks:
+          - id: gitlint
+            args: [--config=.github\.gitlint, --msg-filename]
     - repo: https://github.com/doublify/pre-commit-rust
       rev: v1.0
       hooks:

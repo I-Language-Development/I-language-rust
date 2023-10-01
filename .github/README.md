@@ -6,12 +6,13 @@
 </h3>
 <p align="center">
     <img src="https://www.codefactor.io/repository/github/i-language-development/i-language-rust/badge">
-    <img src="https://github.com/I-Language-Development/I-language/actions/workflows/megalinter.yml/badge.svg">
+    <img src="https://github.com/I-Language-Development/I-language-rust/actions/workflows/megalinter.yml/badge.svg?branch=main&event=push">
     <img src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit">
 </p>
 
-<img src="https://github.com/I-Language-Development/I-language-rust/blob/main/.github/example-syntax.png?raw=true" width="500px"/>
-
+<p align="center">
+    <img src="https://github.com/I-Language-Development/I-language-rust/blob/main/.github/example-syntax.png?raw=true" width="500px"/>
+</p>
 ## About this project
 
 Have you been dreaming about coding in your perfect programming language?
@@ -43,6 +44,10 @@ output("Hello world!");
 4. You should see "Hello world!" in your terminal.
 
 That's it! It's literally so easy.
+
+## Contact
+
+To contact us, get help or just chat with others, you can visit [our discord server](https://discord.gg/JVyyDukQqV).
 
 ## Contributing
 

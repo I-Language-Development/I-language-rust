@@ -154,3 +154,7 @@ dmypy.json
 
 # Heimer diagrams
 *.alz
+
+# Todo files
+*todo*
+*TODO*

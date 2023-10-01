@@ -1,8 +1,8 @@
 ---
 docs:
-  - "Docs"
+    - "Docs"
 module:
-  - "Modules/*"
+    - "Modules/*"
 dependencies:
-  - "dev-requirements.txt"
-  - "Docs/requirements.txt"
+    - "dev-requirements.txt"
+    - "Docs/requirements.txt"

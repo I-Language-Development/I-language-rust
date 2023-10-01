@@ -19,7 +19,7 @@ jobs:
             - name: Save version
               run: echo "RELEASE_VERSION=$(python Tools/get_release_version.py)" >> "$GITHUB_ENV" # cspell:disable-line
             - name: Create release
-              uses: marvinpinto/action-automatic-releases@latest # cspell:disable-line
+              uses: marvinpinto/action-automatic-releases@v1.2.1 # cspell:disable-line
               if: ${{ startsWith(github.event.pull_request.title, '[UPDATE]') }} # cspell:disable-line
               with:
                   repo_token: ${{ secrets.PAT }} # cspell:disable-line
