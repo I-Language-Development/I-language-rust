@@ -28,7 +28,7 @@
 //////////
 
 /// Entire file matching rule
-file = _{ SOI ~ ((( assignment | import | _use ) ~ ";"? ~ ( NEWLINE+ | comment )) | comment )* ~ EOI }
+file = _{ SOI ~ ((( assignment | import | _use ) ~ ";" ~ ( NEWLINE+ | comment )) | comment )* ~ EOI }
 
 
 ////////////
@@ -153,7 +153,7 @@ wsc = @{ WHITESPACE+ | WHITESPACE+ ~ COMMENT* ~ WHITESPACE+ }
 
 COMMENT = { multiline_comment }
 
-comment = _{ "//" ~ (!NEWLINE ~ ANY)* ~ NEWLINE }
+comment = _{ "//" ~ (!NEWLINE ~ ANY)* ~ NEWLINE+ }
 multiline_comment = _{ "/*" ~ (!"*/" ~ ANY)* ~ "*/" }
 
 
