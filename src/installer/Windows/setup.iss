@@ -46,8 +46,8 @@ LicenseFile="../../../LICENSE.txt"
 ShowLanguageDialog=yes
 
 [Languages]
-Name: "de"; MessagesFile: "../../../Translations/Installer/german.isl"
-Name: "en"; MessagesFile: "../../../Translations/Installer/default.isl"
+Name: "de"; MessagesFile: "../../../Translations/Installer/german.islu"
+Name: "en"; MessagesFile: "../../../Translations/Installer/default.islu"
 
 [Tasks]
 Name: associateFileExtension; Description: "{cm:AssociateFileExtension,.il,I Language}"
