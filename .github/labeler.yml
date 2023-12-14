@@ -1,8 +1,9 @@
 ---
-docs:
-    - "Docs"
+documentation:
+    - "Docs/*"
 module:
     - "Modules/*"
 dependencies:
     - "dev-requirements.txt"
     - "Docs/requirements.txt"
+    - "Cargo.toml"
