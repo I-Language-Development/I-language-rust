@@ -1,6 +1,7 @@
 # Set command aliases
 alias b := build
 alias c := clean
+alias f := format
 alias l := lint
 alias r := run
 alias t := test
@@ -24,6 +25,10 @@ build *ARGUMENTS:
 @clean:
 	cargo clean
 	-{{remove_dir}} {{join("Tools", "__pycache__")}}
+
+# Format all source files
+format *ARGUMENTS:
+	@cargo fmt --all {{ARGUMENTS}}
 
 # Lints the rust source files
 lint *ARGUMENTS:
