@@ -2,7 +2,7 @@
 # All edits to this file, for example rust version updates, should be committed only on a new release.
 
 [package]
-name = "I-Language-Rust"
+name = "I-Language"
 description = "The I programming language is a high level programming language written in rust."
 version = "1.0.0-alpha4"
 authors = [
@@ -24,15 +24,25 @@ categories = [
 ]
 
 [dependencies]
-clap = { version = "4.4.6", features = ["derive"] }
+clap = { version = "4.4.11", features = ["derive"] }
 current_locale = "0.1.1"
 localizer-rs = "1.2.0"
-pest = "2.7.4"
-pest_derive = "2.7.4"
+
+lexer = { package = "I-Language-lexer", version = "1.0.0", path = "src/lexer" }
+#parser = { package = "I-Language-parser", version = "1.0.0", path = "src/parser" }
+tools = { package = "I-Language-tools", version = "1.0.0", path = "src/tools" }
 
 [dev-dependencies]
 just = "1.14.0"
-pest_fmt = "0.2.4"
 
 [features]
 beta = []
+
+[lib]
+name = "I_Language"
+path = "src/lib.rs"
+
+[[bin]]
+name = "I_Language_CLI"
+path = "src/main.rs"
+
