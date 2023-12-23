@@ -140,8 +140,7 @@ int guess = 0;
 
 try {
     guess = int(input("Please input a number to guess (0-25): "));
-}
-catch TypeError(value) {
+} catch TypeError(value) {
     print("{value} is not a number. Using zero instead.");
 }
 
@@ -212,8 +211,7 @@ Now we can add a check if the number inputted is in the range of zero to 25:
 while (guess != goal) {
     try {
         guess = int(input("Please input a number to guess (0-25): "));
-    }
-    catch TypeError(value) {
+    } catch TypeError(value) {
         print("{value} is not a number. Using zero instead.");
     }
 
@@ -241,8 +239,7 @@ int guess = 0;
 while (guess != goal) {
     try {
         guess = int(input("Please input a number to guess (0-25): "));
-    }
-    catch TypeError(value) {
+    } catch TypeError(value) {
         print("{value} is not a number. Using zero instead.");
     }
 
@@ -281,8 +278,7 @@ int guess = 0;
 while (guess != goal) {
     try {
         guess = int(input("Please input a number to guess (0-25): "));
-    }
-    catch TypeError(value) {
+    } catch TypeError(value) {
         print("{value} is not a number. Using zero instead.");
     }
 
