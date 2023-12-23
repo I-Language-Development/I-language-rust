@@ -1,0 +1,30 @@
+[package]
+name = "I-Language-lexer"
+description = "I-Language lexer is the lexer for the I-Programming-Language."
+version = "1.0.0"
+authors = [
+	"ElBe-Plaq <elbe.dev.plaq@gmail.com>",
+]
+edition = "2021"
+rust-version = "1.69"
+documentation = "https://i-language.readthedocs.io/"
+readme = "../../.github/README.md"
+homepage = "https://i-language-development.github.io/"
+repository = "https://github.com/I-Language-Development/I-language-rust/"
+license-file = "../../LICENSE.txt"
+keywords = ["i", "i-language"]
+
+[dependencies]
+clap = { version = "4.4.11", features = ["derive"] }
+current_locale = "0.1.1"
+localizer-rs = "1.2.0"
+
+tools = { package = "I-Language-tools", version = "1.0.0", path = "../../src/tools" }
+
+[lib]
+name = "I_Language_lexer"
+path = "src/lib.rs"
+
+[[bin]]
+name = "I_Language_lexer_CLI"
+path = "src/main.rs"

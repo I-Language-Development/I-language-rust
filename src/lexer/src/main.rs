@@ -1,18 +1,18 @@
-// I Language main program.
-// Version: 1.0.1
-
+// I Language lexer executable.
+// Version: 1.0.0
+//
 // Copyright (c) 2023-present I Language Development.
-
+//
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the 'Software'),
 // to deal in the Software without restriction, including without limitation
 // the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-
+//
 // THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -27,7 +27,8 @@
 
 use std::{self, io::Write};
 
-use lexer::lex;
+use I_Language_lexer::lex;
+
 use tools::beta;
 use tools::panic_handler;
 
@@ -45,17 +46,14 @@ struct Arguments {
     #[arg(short = 'b', long = "beta")]
     beta: bool,
 
-    /// The file to compile
-    file: Option<String>,
-
-    /// The arguments that should be passed to the file (when running)
-    arguments: Option<Vec<String>>
+    /// The file to lex
+    file: Option<String>
 }
 
 
-//////////////////
-// MAIN PROGRAM //
-//////////////////
+///////////////////
+// MAIN FUNCTION //
+///////////////////
 
 fn main() {
     panic_handler::setup_handler();
