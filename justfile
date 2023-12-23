@@ -22,7 +22,7 @@ build *ARGUMENTS:
 
 # Removes temporary files
 @clean:
-	-{{remove_dir}} target
+	cargo clean
 	-{{remove_dir}} {{join("Tools", "__pycache__")}}
 
 # Lints the rust source files
@@ -37,7 +37,11 @@ run *ARGUMENTS:
 test *ARGUMENTS:
 	@cargo test {{ARGUMENTS}}
 
+# Enable nightly version of rust
+enable-nightly:
+	@rustup override set nightly
+
 # Update all submodules
-update_submodules:
+update-submodules:
 	@git submodule update --init --recursive --remote
 	@echo Updated submodules.

@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Currently in development.
 
+#### BREAKING
+
+- Nightly rust is now required. Use `just enable-lightly` to migrate
+
 ## Released
 
 ### [`v1.0.0-alpha3`](https://github.com/I-Language-Development/I-language-rust/releases/tag/v1.0.0-alpha3)

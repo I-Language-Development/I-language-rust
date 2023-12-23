@@ -1,0 +1,4 @@
+# The following requires you to use the nightly version of rust
+# Run `rustup override set nightly` to enable it
+unstable_features = true
+blank_lines_upper_bound = 2
