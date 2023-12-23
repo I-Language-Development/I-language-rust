@@ -49,7 +49,7 @@ struct Arguments {
     file: Option<String>,
 
     /// The arguments that should be passed to the file (when running)
-    arguments: Option<Vec<String>>
+    arguments: Option<Vec<String>>,
 }
 
 

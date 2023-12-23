@@ -25,8 +25,8 @@
 // EXPORTS //
 /////////////
 
-pub mod tokens;
 pub mod lex;
+pub mod tokens;
 
 
 //////////////////
@@ -39,9 +39,7 @@ pub fn get_config() -> localizer_rs::Config {
             let return_value: String = value;
             return_value
         }
-        Err(_) => {
-            "en".to_string()
-        }
+        Err(_) => "en".to_string(),
     };
     let split_locale: Vec<&str> = locale.split('-').collect();
     return localizer_rs::Config::new("Translations", split_locale[0]);

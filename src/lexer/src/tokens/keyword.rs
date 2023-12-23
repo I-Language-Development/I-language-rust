@@ -52,7 +52,7 @@ pub enum Keyword {
     Throw,
     Try,
     Use,
-    While
+    While,
 }
 
 impl GetToken for Keyword {
@@ -66,7 +66,7 @@ impl GetToken for Keyword {
                     content: "break".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Break),
                 },
-                5
+                5,
             )),
             "case" => Some((
                 Token {
@@ -74,7 +74,7 @@ impl GetToken for Keyword {
                     content: "case".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Case),
                 },
-                4
+                4,
             )),
             "catch" => Some((
                 Token {
@@ -82,7 +82,7 @@ impl GetToken for Keyword {
                     content: "catch".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Catch),
                 },
-                5
+                5,
             )),
             "class" => Some((
                 Token {
@@ -90,7 +90,7 @@ impl GetToken for Keyword {
                     content: "class".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Class),
                 },
-                5
+                5,
             )),
             "continue" => Some((
                 Token {
@@ -98,7 +98,7 @@ impl GetToken for Keyword {
                     content: "continue".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Continue),
                 },
-                8
+                8,
             )),
             "default" => Some((
                 Token {
@@ -106,7 +106,7 @@ impl GetToken for Keyword {
                     content: "default".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Default),
                 },
-                7
+                7,
             )),
             "delete" => Some((
                 Token {
@@ -114,7 +114,7 @@ impl GetToken for Keyword {
                     content: "delete".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Delete),
                 },
-                6
+                6,
             )),
             "else" => Some((
                 Token {
@@ -122,7 +122,7 @@ impl GetToken for Keyword {
                     content: "else".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Else),
                 },
-                4
+                4,
             )),
             "finally" => Some((
                 Token {
@@ -130,7 +130,7 @@ impl GetToken for Keyword {
                     content: "finally".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Finally),
                 },
-                6
+                6,
             )),
             "for" => Some((
                 Token {
@@ -138,7 +138,7 @@ impl GetToken for Keyword {
                     content: "for".to_owned(),
                     token_type: TokenType::Keyword(Keyword::For),
                 },
-                3
+                3,
             )),
             "function" => Some((
                 Token {
@@ -146,7 +146,7 @@ impl GetToken for Keyword {
                     content: "function".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Function),
                 },
-                8
+                8,
             )),
             "if" => Some((
                 Token {
@@ -154,7 +154,7 @@ impl GetToken for Keyword {
                     content: "if".to_owned(),
                     token_type: TokenType::Keyword(Keyword::If),
                 },
-                2
+                2,
             )),
             "import" => Some((
                 Token {
@@ -162,7 +162,7 @@ impl GetToken for Keyword {
                     content: "import".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Import),
                 },
-                6
+                6,
             )),
             "match" => Some((
                 Token {
@@ -170,7 +170,7 @@ impl GetToken for Keyword {
                     content: "match".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Match),
                 },
-                5
+                5,
             )),
             "return" => Some((
                 Token {
@@ -178,7 +178,7 @@ impl GetToken for Keyword {
                     content: "return".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Return),
                 },
-                6
+                6,
             )),
             "throw" => Some((
                 Token {
@@ -186,7 +186,7 @@ impl GetToken for Keyword {
                     content: "throw".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Throw),
                 },
-                5
+                5,
             )),
             "try" => Some((
                 Token {
@@ -194,7 +194,7 @@ impl GetToken for Keyword {
                     content: "try".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Try),
                 },
-                3
+                3,
             )),
             "use" => Some((
                 Token {
@@ -202,7 +202,7 @@ impl GetToken for Keyword {
                     content: "use".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Use),
                 },
-                3
+                3,
             )),
             "while" => Some((
                 Token {
@@ -210,7 +210,7 @@ impl GetToken for Keyword {
                     content: "while".to_owned(),
                     token_type: TokenType::Keyword(Keyword::While),
                 },
-                5
+                5,
             )),
             _ => None,
         }

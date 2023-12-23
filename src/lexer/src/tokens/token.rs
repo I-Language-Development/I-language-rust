@@ -51,7 +51,7 @@ pub enum TypeDefinition {
     Integer,
     Float,
     Boolean(Constant),
-    None
+    None,
 }
 
 
@@ -65,14 +65,14 @@ pub enum TokenType {
     TypeDefinition(TypeDefinition),
     Keyword(Keyword),
     Mark(Mark),
-    Identifier
+    Identifier,
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Location {
     pub file: String,
     pub line: usize,
-    pub column: usize
+    pub column: usize,
 }
 
 impl std::fmt::Display for Location {
@@ -85,5 +85,5 @@ impl std::fmt::Display for Location {
 pub struct Token {
     pub location: Location,
     pub content: String,
-    pub token_type: TokenType
+    pub token_type: TokenType,
 }

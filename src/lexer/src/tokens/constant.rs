@@ -35,7 +35,7 @@ use crate::tokens::token::*;
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum Constant {
     True,
-    False
+    False,
 }
 
 impl GetToken for Constant {
@@ -43,37 +43,31 @@ impl GetToken for Constant {
         let content: &str = &buffer.into_iter().collect::<String>();
 
         match content {
-            "true" => Some(
-                (
-                    Token {
-                        location: location,
-                        content: "true".to_owned(),
-                        token_type: TokenType::TypeDefinition(TypeDefinition::Boolean(Constant::True))
-                    },
-                    4
-                )
-            ),
-            "false" => Some(
-                (
-                    Token {
-                        location: location,
-                        content: "false".to_owned(),
-                        token_type: TokenType::TypeDefinition(TypeDefinition::Boolean(Constant::False))
-                    },
-                    5
-                )
-            ),
-            "None" => Some(
-                (
-                    Token {
-                        location: location,
-                        content: "None".to_owned(),
-                        token_type: TokenType::TypeDefinition(TypeDefinition::None)
-                    },
-                    4
-                )
-            ),
-            _ => None
+            "true" => Some((
+                Token {
+                    location: location,
+                    content: "true".to_owned(),
+                    token_type: TokenType::TypeDefinition(TypeDefinition::Boolean(Constant::True)),
+                },
+                4,
+            )),
+            "false" => Some((
+                Token {
+                    location: location,
+                    content: "false".to_owned(),
+                    token_type: TokenType::TypeDefinition(TypeDefinition::Boolean(Constant::False)),
+                },
+                5,
+            )),
+            "None" => Some((
+                Token {
+                    location: location,
+                    content: "None".to_owned(),
+                    token_type: TokenType::TypeDefinition(TypeDefinition::None),
+                },
+                4,
+            )),
+            _ => None,
         }
     }
 }
@@ -87,7 +81,7 @@ impl GetToken for Constant {
 pub enum Type {
     Str,
     Int,
-    Boolean
+    Boolean,
 }
 
 impl GetToken for Type {
@@ -95,37 +89,31 @@ impl GetToken for Type {
         let content: &str = &buffer.into_iter().collect::<String>();
 
         match content {
-            "str" | "string" => Some(
-                (
-                    Token {
-                        location: location,
-                        content: "string".to_string(),
-                        token_type: TokenType::Type(Type::Str),
-                    },
-                    content.len()
-                )
-            ),
-            "int" | "integer" => Some(
-                (
-                    Token {
-                        location: location,
-                        content: "integer".to_string(),
-                        token_type: TokenType::Type(Type::Int)
-                    },
-                    content.len()
-                )
-            ),
-            "bool" | "boolean" => Some(
-                (
-                    Token {
-                        location: location,
-                        content: "boolean".to_string(),
-                        token_type: TokenType::Type(Type::Boolean)
-                    },
-                    content.len()
-                )
-            ),
-            _ => None
+            "str" | "string" => Some((
+                Token {
+                    location: location,
+                    content: "string".to_string(),
+                    token_type: TokenType::Type(Type::Str),
+                },
+                content.len(),
+            )),
+            "int" | "integer" => Some((
+                Token {
+                    location: location,
+                    content: "integer".to_string(),
+                    token_type: TokenType::Type(Type::Int),
+                },
+                content.len(),
+            )),
+            "bool" | "boolean" => Some((
+                Token {
+                    location: location,
+                    content: "boolean".to_string(),
+                    token_type: TokenType::Type(Type::Boolean),
+                },
+                content.len(),
+            )),
+            _ => None,
         }
     }
 }

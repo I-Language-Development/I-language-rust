@@ -47,7 +47,7 @@ struct Arguments {
     beta: bool,
 
     /// The file to lex
-    file: Option<String>
+    file: Option<String>,
 }
 
 

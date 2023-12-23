@@ -124,16 +124,28 @@ use std;
 /// # See also
 ///
 /// - [`setup_handler`]
-pub fn generate_report<'a>(_location: Option<&std::panic::Location<'_>>, payload: Option<String>, backtrace: std::backtrace::Backtrace) -> Option<std::path::PathBuf> {
+pub fn generate_report<'a>(
+    _location: Option<&std::panic::Location<'_>>,
+    payload: Option<String>,
+    backtrace: std::backtrace::Backtrace,
+) -> Option<std::path::PathBuf> {
     let path: std::path::PathBuf = std::env::temp_dir().join("I_Language_Crash_Report.txt");
 
     let header: String = "Crash report\n============\n".to_owned();
-    let reason: String = if let Some(value) = payload { format!("Reason: {value}\n") } else { String::new() };
-    let location: String = if let Some(value) = _location { format!("Location: {}:{}\n", value.file(), value.line()) } else { String::new() };
+    let reason: String = if let Some(value) = payload {
+        format!("Reason: {value}\n")
+    } else {
+        String::new()
+    };
+    let location: String = if let Some(value) = _location {
+        format!("Location: {}:{}\n", value.file(), value.line())
+    } else {
+        String::new()
+    };
     let content: &str = &format!("Backtrace:\n{backtrace}");
 
     match std::fs::write(path.clone(), header + &reason + &location + content) {
-        Ok(_) => {},
+        Ok(_) => {}
         Err(error) => {
             eprintln!("Crash report generation failed.");
             eprintln!("File could not be created: {error}");
@@ -165,8 +177,15 @@ pub fn setup_handler() {
         eprintln!("Well, this is embarrassing...");
         eprintln!("The compiler had a problem and crashed. You can help us fix the error by voluntarily reporting the problem to us.");
 
-        if let Some(path) = generate_report(panic_info.location(), panic_info.payload().downcast_ref::<String>().cloned(), std::backtrace::Backtrace::force_capture()) {
-            eprintln!("We have generated a crash report at \"{}\".", path.display());
+        if let Some(path) = generate_report(
+            panic_info.location(),
+            panic_info.payload().downcast_ref::<String>().cloned(),
+            std::backtrace::Backtrace::force_capture(),
+        ) {
+            eprintln!(
+                "We have generated a crash report at \"{}\".",
+                path.display()
+            );
         }
 
         println!();

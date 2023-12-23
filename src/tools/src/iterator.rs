@@ -33,11 +33,16 @@ use std;
 //////////////////////////
 
 pub trait ConditionalPeeking<I: std::iter::Iterator> {
-    fn peek_while(&mut self, closure: impl Fn(&I::Item) -> bool) -> Vec<I::Item> where <I as Iterator>::Item: Clone;
+    fn peek_while(&mut self, closure: impl Fn(&I::Item) -> bool) -> Vec<I::Item>
+    where
+        <I as Iterator>::Item: Clone;
 }
 
 impl<I: std::iter::Iterator + Clone> ConditionalPeeking<I> for std::iter::Peekable<I> {
-    fn peek_while(&mut self, closure: impl Fn(&I::Item) -> bool) -> Vec<I::Item> where <I as Iterator>::Item: Clone {
+    fn peek_while(&mut self, closure: impl Fn(&I::Item) -> bool) -> Vec<I::Item>
+    where
+        <I as Iterator>::Item: Clone,
+    {
         let mut result: Vec<I::Item> = vec![];
         while let Some(value) = self.peek().cloned() {
             if closure(&value) {
