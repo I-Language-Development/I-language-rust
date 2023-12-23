@@ -1,0 +1,18 @@
+[package]
+name = "I-Language-tools"
+description = "I-Language tools is a collection of tools used with the I-Programming-Language."
+version = "1.0.0"
+authors = [
+	"ElBe-Plaq <elbe.dev.plaq@gmail.com>",
+]
+edition = "2021"
+rust-version = "1.69"
+documentation = "https://i-language.readthedocs.io/"
+readme = "../../.github/README.md"
+homepage = "https://i-language-development.github.io/"
+repository = "https://github.com/I-Language-Development/I-language-rust/"
+license-file = "../../LICENSE.txt"
+keywords = ["i", "i-language"]
+
+[dependencies]
+# None
