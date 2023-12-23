@@ -46,3 +46,5 @@ path = "src/lib.rs"
 name = "I_Language_CLI"
 path = "src/main.rs"
 
+[lints.rust]
+non_snake_case = "allow"

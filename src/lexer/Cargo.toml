@@ -28,3 +28,6 @@ path = "src/lib.rs"
 [[bin]]
 name = "I_Language_lexer_CLI"
 path = "src/main.rs"
+
+[lints.rust]
+non_snake_case = "allow"

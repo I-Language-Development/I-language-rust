@@ -16,3 +16,6 @@ keywords = ["i", "i-language"]
 
 [dependencies]
 # None
+
+[lints.rust]
+non_snake_case = "allow"
