@@ -21,14 +21,6 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-/////////////
-// EXPORTS //
-/////////////
-
-//pub mod compiler;
-//pub mod grammar;
-
-
 //////////////////
 // TRANSLATIONS //
 //////////////////
@@ -39,10 +31,8 @@ pub fn get_config() -> localizer_rs::Config {
             let return_value: String = value;
             return_value
         }
-        Err(_) => {
-            "en".to_string()
-        }
+        Err(_) => "en".to_string(),
     };
     let split_locale: Vec<&str> = locale.split('-').collect();
-    return localizer_rs::Config::new("Translations", split_locale[0]);
+    localizer_rs::Config::new("Translations", split_locale[0])
 }
