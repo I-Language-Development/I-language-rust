@@ -65,7 +65,11 @@ def generate_paths(
 
     result = []
     for path in base_path.iterdir():
-        if "__" not in str(path) and "Cargo" not in str(path) and "target" not in str(path.parent):
+        if (
+            "__" not in str(path)
+            and "Cargo" not in str(path)
+            and "target" not in str(path.parent)
+        ):
             if path.is_dir():
                 result.extend(generate_paths(path))
             else:
@@ -87,7 +91,7 @@ def sort_paths(
             First value: Whether the path is in the current directory of not.
             Second value: List of parent paths.
             Third value: Flag to indicate whether the path is called "main", "lib", "mod"
-                         ("main" being the most important one) or something else.
+                        ("main" being the most important one) or something else.
             Fourth value: Whether the path has a file extension or not.
             Fifth value: Lowercase name of the path including the parent paths.
     """
@@ -99,6 +103,7 @@ def sort_paths(
         path.suffix == "",
         str(path).lower().replace("src\\", ""),
     )
+
 
 def parse_files(text: str) -> typing.List[str]:
     """Parses a markdown table and returns the list of filenames in that table.
@@ -132,9 +137,11 @@ if __name__ == "__main__":
         "",
         "!!! note",
         "",
-        "    The source can be found [here](https://github.com/I-Language-Development/I-language-rust).",
+        "    The source can be found [here]\
+            (https://github.com/I-Language-Development/I-language-rust).",
         "",
-        "The files contain the source code documentation, meaning documentation about public and private functions or classes, variables and more.",
+        "The files contain the source code documentation, meaning documentation about \
+            public and private functions or classes, variables and more.",
         "",
         "## List",
         "",
@@ -161,7 +168,9 @@ if __name__ == "__main__":
             FILE_TYPES.get(path.suffix) if path.suffix else FILE_TYPES.get(path.stem)
         )
         index_table.append(
-            f"| [`{path.relative_to('Docs', 'Docs', 'Dev').as_posix()}`](./{path.relative_to('Docs', 'Docs', 'Dev').as_posix()}.md) | {file_type if file_type else 'unknown'} | DESCRIPTION |"
+            f"| [`{path.relative_to('Docs', 'Docs', 'Dev').as_posix()}`]\
+                (./{path.relative_to('Docs', 'Docs', 'Dev').as_posix()}.md) | \
+                    {file_type if file_type else 'unknown'} | DESCRIPTION |"
         )
 
     # index.md file with a table of all source code files and a description for each
