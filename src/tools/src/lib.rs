@@ -29,3 +29,4 @@ pub mod beta;
 pub mod error;
 pub mod iterator;
 pub mod panic_handler;
+pub mod translation;
