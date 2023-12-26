@@ -1,3 +1,4 @@
+//! The CLI of the lexer.
 // I Language lexer executable.
 // Version: 1.0.0
 //
@@ -46,7 +47,7 @@ struct Arguments {
     #[arg(short = 'b', long = "beta")]
     beta: bool,
 
-    /// The file to lex
+    /// The file to lex. If not provided, a REPL like input will be used
     file: Option<String>,
 }
 

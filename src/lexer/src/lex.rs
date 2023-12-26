@@ -1,3 +1,4 @@
+//! Lexes (tokenizes) a input string into tokens.
 // I Language lexer.
 // Version: 1.0.0
 //
@@ -38,6 +39,66 @@ use tools::iterator::ConditionalPeeking;
 // LEX FUNCTION //
 //////////////////
 
+// TODO (ElBe): Examples and tests
+/// Lexes (tokenizes) a input string into a vector of [`Token`]s.
+///
+/// # Parameters
+///
+/// - `input`: The input string to lex.
+/// - `file`: The file name to show in errors and include in locations of tokens. Can be `<stdin>`.
+///
+/// # Returns
+///
+/// A vector of lexed [`Token`]s.
+///
+/// # Examples
+///
+/// ```rust
+/// # use I_Language_lexer::lex;
+/// # use I_Language_lexer::tokens::mark;
+/// # use I_Language_lexer::tokens::token;
+/// assert_eq!(lex::lex("1 + 1", "<stdin>"),
+/// [
+///     token::Token {
+///         location: token::Location {
+///             file: "<stdin>".to_owned(),
+///             line: 1,
+///             column: 1,
+///         },
+///         content: "1".to_owned(),
+///         token_type: token::TokenType::TypeDefinition(
+///             token::TypeDefinition::Integer,
+///         ),
+///     },
+///     token::Token {
+///         location: token::Location {
+///             file: "<stdin>".to_owned(),
+///             line: 1,
+///             column: 3,
+///         },
+///         content: "+".to_owned(),
+///         token_type: token::TokenType::Mark(
+///             mark::Mark::Add,
+///         ),
+///     },
+///     token::Token {
+///         location: token::Location {
+///             file: "<stdin>".to_owned(),
+///             line: 1,
+///             column: 5,
+///         },
+///         content: "1".to_owned(),
+///         token_type: token::TokenType::TypeDefinition(
+///             token::TypeDefinition::Integer,
+///         ),
+///     },
+/// ]);
+/// ```
+///
+/// # See also
+///
+/// - [`Token`]
+/// - [`Location`]
 pub fn lex(input: &str, file: &str) -> Vec<Token> {
     let mut result: Vec<Token> = vec![];
 
@@ -55,13 +116,13 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
 
     let mut skips: usize = 0;
 
-    for (mut line_number, line) in input.split("\n").enumerate() {
+    for (mut line_number, line) in input.split('\n').enumerate() {
         line_number += 1;
 
         chars = line.chars();
         buffer = vec![];
 
-        iterator = chars.into_iter().enumerate().peekable();
+        iterator = chars.enumerate().peekable();
 
         while let Some((_index, character)) = iterator.next() {
             if skips > 0 {
@@ -114,7 +175,7 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                         if double_quote.is_some() && last_character != '\\' {
                             location.column = double_quote.unwrap();
                             result.push(Token {
-                                location: location,
+                                location,
                                 content: line[double_quote.unwrap()..index - 1].to_owned(),
                                 token_type: TokenType::TypeDefinition(TypeDefinition::Str),
                             });
@@ -125,7 +186,7 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                         if single_quote.is_some() && last_character != '\\' {
                             location.column = single_quote.unwrap();
                             result.push(Token {
-                                location: location,
+                                location,
                                 content: line[single_quote.unwrap()..index - 1].to_owned(),
                                 token_type: TokenType::TypeDefinition(TypeDefinition::Str),
                             });
@@ -186,12 +247,12 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                     result.push(value);
                     buffer.clear();
                 }
-            } else if character.is_digit(10) {
+            } else if character.is_ascii_digit() {
                 buffer.push(character);
                 buffer.append(
                     &mut iterator
                         .peek_while(|&(_, next_character)| {
-                            next_character.is_digit(10) || next_character == '.'
+                            next_character.is_ascii_digit() || next_character == '.'
                         })
                         .iter()
                         .map(|(_, found)| *found)
@@ -279,5 +340,5 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
         }
     }
 
-    return result;
+    result
 }
