@@ -40,12 +40,12 @@ pub enum Constant {
 
 impl GetToken for Constant {
     fn get_token(location: Location, buffer: &Vec<char>) -> Option<(Token, usize)> {
-        let content: &str = &buffer.into_iter().collect::<String>();
+        let content: &str = &buffer.iter().collect::<String>();
 
         match content {
             "true" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "true".to_owned(),
                     token_type: TokenType::TypeDefinition(TypeDefinition::Boolean(Constant::True)),
                 },
@@ -53,7 +53,7 @@ impl GetToken for Constant {
             )),
             "false" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "false".to_owned(),
                     token_type: TokenType::TypeDefinition(TypeDefinition::Boolean(Constant::False)),
                 },
@@ -61,7 +61,7 @@ impl GetToken for Constant {
             )),
             "None" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "None".to_owned(),
                     token_type: TokenType::TypeDefinition(TypeDefinition::None),
                 },
@@ -86,12 +86,12 @@ pub enum Type {
 
 impl GetToken for Type {
     fn get_token(location: Location, buffer: &Vec<char>) -> Option<(Token, usize)> {
-        let content: &str = &buffer.into_iter().collect::<String>();
+        let content: &str = &buffer.iter().collect::<String>();
 
         match content {
             "str" | "string" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "string".to_string(),
                     token_type: TokenType::Type(Type::Str),
                 },
@@ -99,7 +99,7 @@ impl GetToken for Type {
             )),
             "int" | "integer" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "integer".to_string(),
                     token_type: TokenType::Type(Type::Int),
                 },
@@ -107,7 +107,7 @@ impl GetToken for Type {
             )),
             "bool" | "boolean" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "boolean".to_string(),
                     token_type: TokenType::Type(Type::Boolean),
                 },

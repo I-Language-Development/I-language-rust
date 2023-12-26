@@ -57,12 +57,12 @@ pub enum Keyword {
 
 impl GetToken for Keyword {
     fn get_token(location: Location, buffer: &Vec<char>) -> Option<(Token, usize)> {
-        let content: &str = &buffer.into_iter().collect::<String>();
+        let content: &str = &buffer.iter().collect::<String>();
 
         match content {
             "break" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "break".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Break),
                 },
@@ -70,7 +70,7 @@ impl GetToken for Keyword {
             )),
             "case" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "case".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Case),
                 },
@@ -78,7 +78,7 @@ impl GetToken for Keyword {
             )),
             "catch" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "catch".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Catch),
                 },
@@ -86,7 +86,7 @@ impl GetToken for Keyword {
             )),
             "class" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "class".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Class),
                 },
@@ -94,7 +94,7 @@ impl GetToken for Keyword {
             )),
             "continue" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "continue".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Continue),
                 },
@@ -102,7 +102,7 @@ impl GetToken for Keyword {
             )),
             "default" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "default".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Default),
                 },
@@ -110,7 +110,7 @@ impl GetToken for Keyword {
             )),
             "delete" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "delete".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Delete),
                 },
@@ -118,7 +118,7 @@ impl GetToken for Keyword {
             )),
             "else" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "else".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Else),
                 },
@@ -126,7 +126,7 @@ impl GetToken for Keyword {
             )),
             "finally" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "finally".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Finally),
                 },
@@ -134,7 +134,7 @@ impl GetToken for Keyword {
             )),
             "for" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "for".to_owned(),
                     token_type: TokenType::Keyword(Keyword::For),
                 },
@@ -142,7 +142,7 @@ impl GetToken for Keyword {
             )),
             "function" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "function".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Function),
                 },
@@ -150,7 +150,7 @@ impl GetToken for Keyword {
             )),
             "if" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "if".to_owned(),
                     token_type: TokenType::Keyword(Keyword::If),
                 },
@@ -158,7 +158,7 @@ impl GetToken for Keyword {
             )),
             "import" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "import".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Import),
                 },
@@ -166,7 +166,7 @@ impl GetToken for Keyword {
             )),
             "match" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "match".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Match),
                 },
@@ -174,7 +174,7 @@ impl GetToken for Keyword {
             )),
             "return" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "return".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Return),
                 },
@@ -182,7 +182,7 @@ impl GetToken for Keyword {
             )),
             "throw" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "throw".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Throw),
                 },
@@ -190,7 +190,7 @@ impl GetToken for Keyword {
             )),
             "try" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "try".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Try),
                 },
@@ -198,7 +198,7 @@ impl GetToken for Keyword {
             )),
             "use" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "use".to_owned(),
                     token_type: TokenType::Keyword(Keyword::Use),
                 },
@@ -206,7 +206,7 @@ impl GetToken for Keyword {
             )),
             "while" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "while".to_owned(),
                     token_type: TokenType::Keyword(Keyword::While),
                 },

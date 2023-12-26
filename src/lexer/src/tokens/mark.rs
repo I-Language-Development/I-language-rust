@@ -83,12 +83,12 @@ pub enum Mark {
 
 impl GetToken for Mark {
     fn get_token(location: Location, buffer: &Vec<char>) -> Option<(Token, usize)> {
-        let content: &str = &buffer.into_iter().collect::<String>();
+        let content: &str = &buffer.iter().collect::<String>();
 
         match content {
             "+" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "+".to_owned(),
                     token_type: TokenType::Mark(Mark::Add),
                 },
@@ -96,7 +96,7 @@ impl GetToken for Mark {
             )),
             "+=" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "+=".to_owned(),
                     token_type: TokenType::Mark(Mark::AddAssign),
                 },
@@ -104,7 +104,7 @@ impl GetToken for Mark {
             )),
             "&&" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "&&".to_owned(),
                     token_type: TokenType::Mark(Mark::And),
                 },
@@ -112,7 +112,7 @@ impl GetToken for Mark {
             )),
             "=" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "=".to_owned(),
                     token_type: TokenType::Mark(Mark::Assign),
                 },
@@ -120,7 +120,7 @@ impl GetToken for Mark {
             )),
             "!" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "!".to_owned(),
                     token_type: TokenType::Mark(Mark::Bang),
                 },
@@ -128,7 +128,7 @@ impl GetToken for Mark {
             )),
             "&" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "&".to_owned(),
                     token_type: TokenType::Mark(Mark::BitAnd),
                 },
@@ -136,7 +136,7 @@ impl GetToken for Mark {
             )),
             "&=" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "&=".to_owned(),
                     token_type: TokenType::Mark(Mark::BitAndAssign),
                 },
@@ -144,7 +144,7 @@ impl GetToken for Mark {
             )),
             "|" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "|".to_owned(),
                     token_type: TokenType::Mark(Mark::BitOr),
                 },
@@ -152,7 +152,7 @@ impl GetToken for Mark {
             )),
             "|=" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "|=".to_owned(),
                     token_type: TokenType::Mark(Mark::BitOrAssign),
                 },
@@ -160,7 +160,7 @@ impl GetToken for Mark {
             )),
             "^" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "^".to_owned(),
                     token_type: TokenType::Mark(Mark::BitXor),
                 },
@@ -168,7 +168,7 @@ impl GetToken for Mark {
             )),
             "^=" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "^=".to_owned(),
                     token_type: TokenType::Mark(Mark::BitXorAssign),
                 },
@@ -176,7 +176,7 @@ impl GetToken for Mark {
             )),
             "{" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "{".to_owned(),
                     token_type: TokenType::Mark(Mark::BraceOpen),
                 },
@@ -184,7 +184,7 @@ impl GetToken for Mark {
             )),
             "}" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "}".to_owned(),
                     token_type: TokenType::Mark(Mark::BraceClose),
                 },
@@ -192,7 +192,7 @@ impl GetToken for Mark {
             )),
             "[" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "[".to_owned(),
                     token_type: TokenType::Mark(Mark::BracketOpen),
                 },
@@ -200,7 +200,7 @@ impl GetToken for Mark {
             )),
             "]" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "]".to_owned(),
                     token_type: TokenType::Mark(Mark::BracketClose),
                 },
@@ -208,7 +208,7 @@ impl GetToken for Mark {
             )),
             ":" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: ":".to_owned(),
                     token_type: TokenType::Mark(Mark::Colon),
                 },
@@ -216,7 +216,7 @@ impl GetToken for Mark {
             )),
             "," => Some((
                 Token {
-                    location: location,
+                    location,
                     content: ",".to_owned(),
                     token_type: TokenType::Mark(Mark::Comma),
                 },
@@ -224,7 +224,7 @@ impl GetToken for Mark {
             )),
             "--" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "--".to_owned(),
                     token_type: TokenType::Mark(Mark::Decrease),
                 },
@@ -232,7 +232,7 @@ impl GetToken for Mark {
             )),
             "/" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "/".to_owned(),
                     token_type: TokenType::Mark(Mark::Divide),
                 },
@@ -240,7 +240,7 @@ impl GetToken for Mark {
             )),
             "/=" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "/=".to_owned(),
                     token_type: TokenType::Mark(Mark::DivideAssign),
                 },
@@ -248,7 +248,7 @@ impl GetToken for Mark {
             )),
             "." => Some((
                 Token {
-                    location: location,
+                    location,
                     content: ".".to_owned(),
                     token_type: TokenType::Mark(Mark::Dot),
                 },
@@ -256,7 +256,7 @@ impl GetToken for Mark {
             )),
             "==" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "==".to_owned(),
                     token_type: TokenType::Mark(Mark::Equal),
                 },
@@ -264,7 +264,7 @@ impl GetToken for Mark {
             )),
             "**" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "**".to_owned(),
                     token_type: TokenType::Mark(Mark::Exponentiation),
                 },
@@ -272,7 +272,7 @@ impl GetToken for Mark {
             )),
             ">" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: ">".to_owned(),
                     token_type: TokenType::Mark(Mark::Greater),
                 },
@@ -280,7 +280,7 @@ impl GetToken for Mark {
             )),
             ">=" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: ">=".to_owned(),
                     token_type: TokenType::Mark(Mark::GreaterEqual),
                 },
@@ -288,7 +288,7 @@ impl GetToken for Mark {
             )),
             "++" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "++".to_owned(),
                     token_type: TokenType::Mark(Mark::Increase),
                 },
@@ -296,7 +296,7 @@ impl GetToken for Mark {
             )),
             "<" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "<".to_owned(),
                     token_type: TokenType::Mark(Mark::Less),
                 },
@@ -304,7 +304,7 @@ impl GetToken for Mark {
             )),
             "<=" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "<=".to_owned(),
                     token_type: TokenType::Mark(Mark::LessEqual),
                 },
@@ -312,7 +312,7 @@ impl GetToken for Mark {
             )),
             "%" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "%".to_owned(),
                     token_type: TokenType::Mark(Mark::Modulo),
                 },
@@ -320,7 +320,7 @@ impl GetToken for Mark {
             )),
             "%=" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "%=".to_owned(),
                     token_type: TokenType::Mark(Mark::ModuloAssign),
                 },
@@ -328,7 +328,7 @@ impl GetToken for Mark {
             )),
             "*" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "*".to_owned(),
                     token_type: TokenType::Mark(Mark::Multiply),
                 },
@@ -336,7 +336,7 @@ impl GetToken for Mark {
             )),
             "*=" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "*=".to_owned(),
                     token_type: TokenType::Mark(Mark::MultiplyAssign),
                 },
@@ -344,7 +344,7 @@ impl GetToken for Mark {
             )),
             "!=" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "!=".to_owned(),
                     token_type: TokenType::Mark(Mark::NotEqual),
                 },
@@ -352,7 +352,7 @@ impl GetToken for Mark {
             )),
             "||" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "||".to_owned(),
                     token_type: TokenType::Mark(Mark::Or),
                 },
@@ -360,7 +360,7 @@ impl GetToken for Mark {
             )),
             "(" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "(".to_owned(),
                     token_type: TokenType::Mark(Mark::ParenthesisOpen),
                 },
@@ -368,7 +368,7 @@ impl GetToken for Mark {
             )),
             ")" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: ")".to_owned(),
                     token_type: TokenType::Mark(Mark::ParenthesisClose),
                 },
@@ -376,7 +376,7 @@ impl GetToken for Mark {
             )),
             "?" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "?".to_owned(),
                     token_type: TokenType::Mark(Mark::QuestionMark),
                 },
@@ -384,7 +384,7 @@ impl GetToken for Mark {
             )),
             ".." => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "..".to_owned(),
                     token_type: TokenType::Mark(Mark::Range),
                 },
@@ -392,7 +392,7 @@ impl GetToken for Mark {
             )),
             ";" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: ";".to_owned(),
                     token_type: TokenType::Mark(Mark::Semicolon),
                 },
@@ -400,7 +400,7 @@ impl GetToken for Mark {
             )),
             "<<" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "<<".to_owned(),
                     token_type: TokenType::Mark(Mark::ShiftLeft),
                 },
@@ -408,7 +408,7 @@ impl GetToken for Mark {
             )),
             "<<=" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "<<=".to_owned(),
                     token_type: TokenType::Mark(Mark::ShiftLeftAssign),
                 },
@@ -416,7 +416,7 @@ impl GetToken for Mark {
             )),
             ">>" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: ">>".to_owned(),
                     token_type: TokenType::Mark(Mark::ShiftRight),
                 },
@@ -424,7 +424,7 @@ impl GetToken for Mark {
             )),
             ">>=" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: ">>=".to_owned(),
                     token_type: TokenType::Mark(Mark::ShiftRightAssign),
                 },
@@ -432,7 +432,7 @@ impl GetToken for Mark {
             )),
             "-" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "-".to_owned(),
                     token_type: TokenType::Mark(Mark::Subtract),
                 },
@@ -440,7 +440,7 @@ impl GetToken for Mark {
             )),
             "-=" => Some((
                 Token {
-                    location: location,
+                    location,
                     content: "-=".to_owned(),
                     token_type: TokenType::Mark(Mark::SubtractAssign),
                 },
