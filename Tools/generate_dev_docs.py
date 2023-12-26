@@ -69,6 +69,8 @@ def generate_paths(
             "__" not in str(path)
             and "Cargo" not in str(path)
             and "target" not in str(path.parent)
+            and "tests" not in str(path.parent)
+            and "examples" not in str(path.parent)
         ):
             if path.is_dir():
                 result.extend(generate_paths(path))
