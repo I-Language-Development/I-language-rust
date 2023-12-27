@@ -2,6 +2,7 @@
 alias b := build
 alias c := clean
 alias f := format
+alias i := install-binary
 alias l := lint
 alias r := run
 alias t := test
@@ -25,10 +26,19 @@ build *ARGUMENTS:
 @clean:
 	cargo clean
 	-{{remove_dir}} {{join("Tools", "__pycache__")}}
+	git gc
+
+# Enable nightly version of rust
+enable-nightly:
+	@rustup override set nightly
 
 # Format all source files
 format *ARGUMENTS:
 	@cargo fmt --all {{ARGUMENTS}}
+
+# Install the `ilang` binary
+install-binary:
+	@cargo install --path .
 
 # Lints the rust source files
 lint *ARGUMENTS:
@@ -38,13 +48,9 @@ lint *ARGUMENTS:
 run *ARGUMENTS:
 	@cargo run {{ARGUMENTS}}
 
-# Runs the unittests
+# Runs the tests
 test *ARGUMENTS:
-	@cargo test {{ARGUMENTS}}
-
-# Enable nightly version of rust
-enable-nightly:
-	@rustup override set nightly
+	@cargo test -p I-Language -p I-Language-lexer -p I-Language-tools {{ARGUMENTS}}
 
 # Update all submodules
 update-submodules:
