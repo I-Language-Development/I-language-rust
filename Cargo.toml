@@ -23,6 +23,10 @@ categories = [
 	"development-tools",
 ]
 
+[[bin]]
+name = "ilang"
+path = "src/main.rs"
+
 [dependencies]
 clap = { version = "4.4.11", features = ["derive"] }
 
