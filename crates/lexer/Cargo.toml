@@ -1,0 +1,23 @@
+[package]
+name = "lexer"
+description = "I-Language lexer is the lexer for the I-Programming-Language."
+version = "1.0.0"
+authors = [
+	"ElBe-Plaq <elbe.dev.plaq@gmail.com>",
+]
+
+edition.workspace = true
+rust-version.workspace = true
+homepage.workspace = true
+repository.workspace = true
+license-file.workspace = true
+keywords.workspace = true
+publish.workspace = true
+
+[dependencies]
+log.workspace = true
+
+tools = { path = "../tools" }
+
+[lints]
+workspace = true

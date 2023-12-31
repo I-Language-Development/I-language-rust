@@ -1,0 +1,25 @@
+[package]
+name = "tools"
+description = "I-Language tools is a collection of tools used with the I-Programming-Language."
+version = "1.0.0"
+authors = [
+	"ElBe-Plaq <elbe.dev.plaq@gmail.com>",
+]
+
+edition.workspace = true
+rust-version.workspace = true
+homepage.workspace = true
+repository.workspace = true
+license-file.workspace = true
+keywords.workspace = true
+publish.workspace = true
+
+[dependencies]
+current_locale = "0.1.1"
+env_logger = "0.10.1"
+localizer-rs = "1.2.0"
+
+log.workspace = true
+
+[lints]
+workspace = true

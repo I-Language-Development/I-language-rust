@@ -27,11 +27,12 @@
 
 use std::{self, io::Write};
 
-use lexer::lex;
-use tools::beta;
-use tools::panic_handler;
+use lexer;
+use tools;
 
 use clap::Parser;
+use clap_verbosity_flag::{Verbosity, WarnLevel};
+use log::{debug, error, trace};
 
 
 ///////////////////
@@ -40,16 +41,21 @@ use clap::Parser;
 
 #[derive(Parser)]
 #[command(author, version, about)]
-struct Arguments {
-    /// Weather to use experimental beta features or not
-    #[arg(short = 'b', long = "beta")]
-    beta: bool,
-
-    /// The file to compile
+struct CLI {
+    /// The path of the program to run
     file: Option<String>,
 
-    /// The arguments that should be passed to the file (when running)
-    arguments: Option<Vec<String>>,
+    /// Changes the verbosity of the logger
+    #[command(flatten)]
+    verbosity: Verbosity<WarnLevel>,
+
+    /// Weather to use experimental beta features or not
+    #[arg(short, long)]
+    beta: bool,
+
+    /// The directory where the output should be written to
+    #[arg(short = 'o', long = "output", default_value = "out/run")]
+    output: String,
 }
 
 
@@ -58,31 +64,51 @@ struct Arguments {
 //////////////////
 
 fn main() {
-    panic_handler::setup_handler();
+    tools::panic_handler::setup_handler();
 
-    let arguments: Arguments = Arguments::parse();
+    let arguments: CLI = CLI::parse();
     unsafe {
-        beta::BETA_FLAG = arguments.beta;
+        tools::beta::BETA_FLAG = arguments.beta;
     }
 
-    let mut input: String = String::new();
-    let source: &str;
+    tools::logging::setup_logging(arguments.verbosity.log_level_filter());
 
-    if let Some(file_name) = arguments.file.as_deref() {
-        let file = std::fs::File::open(file_name).unwrap();
-        let reader = std::io::BufReader::new(file);
-
-        input = std::io::read_to_string(reader).unwrap();
-        source = file_name;
+    let file_name: String;
+    if let Some(custom_file_name) = arguments.file {
+        file_name = custom_file_name;
     } else {
-        print!(">>> ");
-        std::io::stdout().flush().unwrap();
-        std::io::stdin().read_line(&mut input).unwrap();
-
-        source = "<stdin>";
+        if std::path::Path::new("src/main.il")
+            .try_exists()
+            .expect("Could not check whether `src/main.il` exists")
+        {
+            file_name = "src/main.il".to_owned();
+        } else if std::path::Path::new("main.il")
+            .try_exists()
+            .expect("Could not check whether `main.il` exists")
+        {
+            file_name = "main.il".to_owned();
+        } else {
+            error!("Neither `src/main.il` nor `main.il` exist.");
+            std::process::exit(1); // TODO (ElBe): Proper errors
+        }
     }
+
+    trace!("Attempting to open file `{file_name}`.");
+    let _file: std::fs::File =
+        std::fs::File::open(file_name.clone()).expect("File `{file_name}` could not be opened.");
+    let reader: std::io::BufReader<std::fs::File> = std::io::BufReader::new(_file);
+
+    trace!("Successfully opened file `{file_name}`.");
+    let input: String = std::io::read_to_string(reader).unwrap();
 
     let start = std::time::Instant::now();
-    println!("{:#?}", lex::lex(input.trim(), source));
-    println!("Took {}ms", start.elapsed().as_millis());
+    let output = lexer::lex::lex(input.trim(), &file_name);
+    debug!(
+        "Lexing `{file_name}` took {}ms.",
+        start.elapsed().as_millis()
+    );
+
+    let mut file = std::fs::File::create(arguments.output + "/tokens")
+        .expect("Could not open file `{value}` for writing.");
+    file.write_all(format!("{:#?}", output).as_bytes());
 }
