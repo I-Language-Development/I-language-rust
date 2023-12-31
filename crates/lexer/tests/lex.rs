@@ -30,39 +30,39 @@ mod tests {
     #[test]
     fn test_lex() {
         assert_eq!(
-            I_Language_lexer::lex::lex("1 + 1", "<stdin>"),
+            lexer::lex::lex("1 + 1", "<stdin>"),
             [
-                I_Language_lexer::tokens::token::Token {
-                    location: I_Language_lexer::tokens::token::Location {
+                lexer::tokens::token::Token {
+                    location: lexer::tokens::token::Location {
                         file: "<stdin>".to_owned(),
                         line: 1,
                         column: 1,
                     },
                     content: "1".to_owned(),
-                    token_type: I_Language_lexer::tokens::token::TokenType::TypeDefinition(
-                        I_Language_lexer::tokens::token::TypeDefinition::Integer,
+                    token_type: lexer::tokens::token::TokenType::TypeDefinition(
+                        lexer::tokens::token::TypeDefinition::Integer,
                     ),
                 },
-                I_Language_lexer::tokens::token::Token {
-                    location: I_Language_lexer::tokens::token::Location {
+                lexer::tokens::token::Token {
+                    location: lexer::tokens::token::Location {
                         file: "<stdin>".to_owned(),
                         line: 1,
                         column: 3,
                     },
                     content: "+".to_owned(),
-                    token_type: I_Language_lexer::tokens::token::TokenType::Mark(
-                        I_Language_lexer::tokens::mark::Mark::Add,
+                    token_type: lexer::tokens::token::TokenType::Mark(
+                        lexer::tokens::mark::Mark::Add,
                     ),
                 },
-                I_Language_lexer::tokens::token::Token {
-                    location: I_Language_lexer::tokens::token::Location {
+                lexer::tokens::token::Token {
+                    location: lexer::tokens::token::Location {
                         file: "<stdin>".to_owned(),
                         line: 1,
                         column: 5,
                     },
                     content: "1".to_owned(),
-                    token_type: I_Language_lexer::tokens::token::TokenType::TypeDefinition(
-                        I_Language_lexer::tokens::token::TypeDefinition::Integer,
+                    token_type: lexer::tokens::token::TokenType::TypeDefinition(
+                        lexer::tokens::token::TypeDefinition::Integer,
                     ),
                 },
             ]

@@ -53,9 +53,9 @@ use tools::iterator::ConditionalPeeking;
 /// # Examples
 ///
 /// ```rust
-/// # use I_Language_lexer::lex;
-/// # use I_Language_lexer::tokens::mark;
-/// # use I_Language_lexer::tokens::token;
+/// # use lexer::lex;
+/// # use lexer::tokens::mark;
+/// # use lexer::tokens::token;
 /// assert_eq!(lex::lex("1 + 1", "<stdin>"),
 /// [
 ///     token::Token {

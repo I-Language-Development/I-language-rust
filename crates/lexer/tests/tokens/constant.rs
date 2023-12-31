@@ -27,29 +27,28 @@
 
 #[cfg(test)]
 mod tests {
-    use I_Language_lexer::tokens::token::GetToken;
+    use lexer::tokens::token::GetToken;
 
     #[test]
     fn test_constant() {
-        let location: I_Language_lexer::tokens::token::Location =
-            I_Language_lexer::tokens::token::Location {
-                file: "tests".to_owned(),
-                line: 1,
-                column: 1,
-            };
+        let location: lexer::tokens::token::Location = lexer::tokens::token::Location {
+            file: "tests".to_owned(),
+            line: 1,
+            column: 1,
+        };
 
         assert_eq!(
-            I_Language_lexer::tokens::constant::Constant::get_token(
+            lexer::tokens::constant::Constant::get_token(
                 location.clone(),
                 &"true".chars().collect::<Vec<char>>()
             ),
             Some((
-                I_Language_lexer::tokens::token::Token {
+                lexer::tokens::token::Token {
                     location: location.clone(),
                     content: "true".to_owned(),
-                    token_type: I_Language_lexer::tokens::token::TokenType::TypeDefinition(
-                        I_Language_lexer::tokens::token::TypeDefinition::Boolean(
-                            I_Language_lexer::tokens::constant::Constant::True
+                    token_type: lexer::tokens::token::TokenType::TypeDefinition(
+                        lexer::tokens::token::TypeDefinition::Boolean(
+                            lexer::tokens::constant::Constant::True
                         )
                     ),
                 },
@@ -57,17 +56,17 @@ mod tests {
             ))
         );
         assert_eq!(
-            I_Language_lexer::tokens::constant::Constant::get_token(
+            lexer::tokens::constant::Constant::get_token(
                 location.clone(),
                 &"false".chars().collect::<Vec<char>>()
             ),
             Some((
-                I_Language_lexer::tokens::token::Token {
+                lexer::tokens::token::Token {
                     location: location.clone(),
                     content: "false".to_owned(),
-                    token_type: I_Language_lexer::tokens::token::TokenType::TypeDefinition(
-                        I_Language_lexer::tokens::token::TypeDefinition::Boolean(
-                            I_Language_lexer::tokens::constant::Constant::False
+                    token_type: lexer::tokens::token::TokenType::TypeDefinition(
+                        lexer::tokens::token::TypeDefinition::Boolean(
+                            lexer::tokens::constant::Constant::False
                         )
                     ),
                 },
@@ -75,23 +74,23 @@ mod tests {
             ))
         );
         assert_eq!(
-            I_Language_lexer::tokens::constant::Constant::get_token(
+            lexer::tokens::constant::Constant::get_token(
                 location.clone(),
                 &"None".chars().collect::<Vec<char>>()
             ),
             Some((
-                I_Language_lexer::tokens::token::Token {
+                lexer::tokens::token::Token {
                     location: location.clone(),
                     content: "None".to_owned(),
-                    token_type: I_Language_lexer::tokens::token::TokenType::TypeDefinition(
-                        I_Language_lexer::tokens::token::TypeDefinition::None
+                    token_type: lexer::tokens::token::TokenType::TypeDefinition(
+                        lexer::tokens::token::TypeDefinition::None
                     ),
                 },
                 4,
             ))
         );
         assert_eq!(
-            I_Language_lexer::tokens::constant::Constant::get_token(
+            lexer::tokens::constant::Constant::get_token(
                 location.clone(),
                 &"/".chars().collect::<Vec<char>>()
             ),
@@ -101,111 +100,110 @@ mod tests {
 
     #[test]
     fn test_type() {
-        let location: I_Language_lexer::tokens::token::Location =
-            I_Language_lexer::tokens::token::Location {
-                file: "tests".to_owned(),
-                line: 1,
-                column: 1,
-            };
+        let location: lexer::tokens::token::Location = lexer::tokens::token::Location {
+            file: "tests".to_owned(),
+            line: 1,
+            column: 1,
+        };
 
         assert_eq!(
-            I_Language_lexer::tokens::constant::Type::get_token(
+            lexer::tokens::constant::Type::get_token(
                 location.clone(),
                 &"str".chars().collect::<Vec<char>>()
             ),
             Some((
-                I_Language_lexer::tokens::token::Token {
+                lexer::tokens::token::Token {
                     location: location.clone(),
                     content: "string".to_owned(),
-                    token_type: I_Language_lexer::tokens::token::TokenType::Type(
-                        I_Language_lexer::tokens::constant::Type::Str
+                    token_type: lexer::tokens::token::TokenType::Type(
+                        lexer::tokens::constant::Type::Str
                     ),
                 },
                 3,
             ))
         );
         assert_eq!(
-            I_Language_lexer::tokens::constant::Type::get_token(
+            lexer::tokens::constant::Type::get_token(
                 location.clone(),
                 &"string".chars().collect::<Vec<char>>()
             ),
             Some((
-                I_Language_lexer::tokens::token::Token {
+                lexer::tokens::token::Token {
                     location: location.clone(),
                     content: "string".to_owned(),
-                    token_type: I_Language_lexer::tokens::token::TokenType::Type(
-                        I_Language_lexer::tokens::constant::Type::Str
+                    token_type: lexer::tokens::token::TokenType::Type(
+                        lexer::tokens::constant::Type::Str
                     ),
                 },
                 6,
             ))
         );
         assert_eq!(
-            I_Language_lexer::tokens::constant::Type::get_token(
+            lexer::tokens::constant::Type::get_token(
                 location.clone(),
                 &"int".chars().collect::<Vec<char>>()
             ),
             Some((
-                I_Language_lexer::tokens::token::Token {
+                lexer::tokens::token::Token {
                     location: location.clone(),
                     content: "integer".to_owned(),
-                    token_type: I_Language_lexer::tokens::token::TokenType::Type(
-                        I_Language_lexer::tokens::constant::Type::Int
+                    token_type: lexer::tokens::token::TokenType::Type(
+                        lexer::tokens::constant::Type::Int
                     ),
                 },
                 3,
             ))
         );
         assert_eq!(
-            I_Language_lexer::tokens::constant::Type::get_token(
+            lexer::tokens::constant::Type::get_token(
                 location.clone(),
                 &"integer".chars().collect::<Vec<char>>()
             ),
             Some((
-                I_Language_lexer::tokens::token::Token {
+                lexer::tokens::token::Token {
                     location: location.clone(),
                     content: "integer".to_owned(),
-                    token_type: I_Language_lexer::tokens::token::TokenType::Type(
-                        I_Language_lexer::tokens::constant::Type::Int
+                    token_type: lexer::tokens::token::TokenType::Type(
+                        lexer::tokens::constant::Type::Int
                     ),
                 },
                 7,
             ))
         );
         assert_eq!(
-            I_Language_lexer::tokens::constant::Type::get_token(
+            lexer::tokens::constant::Type::get_token(
                 location.clone(),
                 &"bool".chars().collect::<Vec<char>>()
             ),
             Some((
-                I_Language_lexer::tokens::token::Token {
+                lexer::tokens::token::Token {
                     location: location.clone(),
                     content: "boolean".to_owned(),
-                    token_type: I_Language_lexer::tokens::token::TokenType::Type(
-                        I_Language_lexer::tokens::constant::Type::Boolean
+                    token_type: lexer::tokens::token::TokenType::Type(
+                        lexer::tokens::constant::Type::Boolean
                     ),
                 },
                 4,
             ))
         );
         assert_eq!(
-            I_Language_lexer::tokens::constant::Type::get_token(
+            lexer::tokens::constant::Type::get_token(
                 location.clone(),
                 &"boolean".chars().collect::<Vec<char>>()
             ),
             Some((
-                I_Language_lexer::tokens::token::Token {
+                lexer::tokens::token::Token {
                     location: location.clone(),
                     content: "boolean".to_owned(),
-                    token_type: I_Language_lexer::tokens::token::TokenType::Type(
-                        I_Language_lexer::tokens::constant::Type::Boolean
+                    token_type: lexer::tokens::token::TokenType::Type(
+                        lexer::tokens::constant::Type::Boolean
                     ),
                 },
                 7,
             ))
         );
         assert_eq!(
-            I_Language_lexer::tokens::constant::Type::get_token(
+            lexer::tokens::constant::Type::get_token(
                 location.clone(),
                 &"/".chars().collect::<Vec<char>>()
             ),
