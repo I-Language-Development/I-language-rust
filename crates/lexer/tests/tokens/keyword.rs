@@ -157,7 +157,7 @@ mod tests {
             Some((
                 lexer::tokens::token::Token {
                     location: location.clone(),
-                    content: "else"to_owned(),
+                    content: "else".to_owned(),
                     token_type: lexer::tokens::token::TokenType::Keyword(
                         lexer::tokens::keyword::Keyword::Else
                     ),
