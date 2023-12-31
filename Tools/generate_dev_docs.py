@@ -92,8 +92,9 @@ def sort_paths(
         typing.Tuple[bool, typing.List[str], int, bool, str]: Tuple to sort with.
             First value: Whether the path is in the current directory of not.
             Second value: List of parent paths.
-            Third value: Flag to indicate whether the path is called "main", "lib", "mod"
-                        ("main" being the most important one) or something else.
+            Third value: Flag to indicate whether the path is called "main", "lib",
+                        "mod" ("main" being the most important one) or something
+                        else.
             Fourth value: Whether the path has a file extension or not.
             Fifth value: Lowercase name of the path including the parent paths.
     """
