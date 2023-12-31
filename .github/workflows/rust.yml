@@ -7,11 +7,21 @@ env:
     CARGO_TERM_COLOR: always
 
 jobs:
-    build:
+    test:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
-            - name: Build
-              run: cargo build --verbose
+            - name: Install Rust
+              uses: actions-rs/toolchain@v1
             - name: Run tests
-              run: cargo test --verbose
+              run: cargo test --workspace
+    cargo_bloat:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Install Rust
+              uses: actions-rs/toolchain@v1
+            - name: Run cargo bloat
+              uses: orf/cargo-bloat-action@v1
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}

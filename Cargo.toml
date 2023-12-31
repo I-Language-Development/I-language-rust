@@ -23,22 +23,49 @@ categories = [
 	"development-tools",
 ]
 
-[[bin]]
-name = "ilang"
-path = "src/main.rs"
+[workspace]
+members = ["crates/*"]
+
+[workspace.package]
+edition = "2021"
+rust-version = "1.69"
+homepage = "https://i-language-development.github.io/"
+repository = "https://github.com/I-Language-Development/I-language-rust/"
+license-file = "LICENSE.txt"
+keywords = ["i", "i-language", "programming-language", "language"]
+publish = false
+
+[workspace.dependencies]
+localizer-rs = "1.2.0"
+log = "0.4.20"
+
+[workspace.lints.rust]
+non_snake_case = "allow"
 
 [dependencies]
-clap = { version = "4.4.11", features = ["derive"] }
+clap = { version = "4.4.11", features = ["derive", "wrap_help"], optional = true }
+clap-verbosity-flag = { version = "2.1.1", optional = true }
+log = { version = "0.4.20", optional = true }
 
-lexer = { package = "I-Language-lexer", version = "1.0.0", path = "src/lexer" }
-#parser = { package = "I-Language-parser", version = "1.0.0", path = "src/parser" }
-tools = { package = "I-Language-tools", version = "1.0.0", path = "src/tools" }
+compiler = { path = "crates/compiler" }
+grammar = { path = "crates/grammar" }
+lexer = { path = "crates/lexer" }
+parser = { path = "crates/parser" }
+tools = { path = "crates/tools" }
 
 [dev-dependencies]
+cargo-audit = "0.18.3"
 just = "1.14.0"
+
+[build-dependencies]
+version_check = "0.9.4"
 
 [features]
 beta = []
+cli = ["dep:clap", "dep:clap-verbosity-flag", "dep:log"]
+localization = []
 
-[lints.rust]
-non_snake_case = "allow"
+[[bin]]
+name = "icomp"  # icomp = I Compiler
+path = "src/main.rs"
+required-features = ["cli"]
