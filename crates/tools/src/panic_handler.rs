@@ -48,10 +48,10 @@ use std;
 /// It is recommended to use [`setup_handler`] instead of the code from the example below.
 ///
 /// ```rust
-/// # use I_Language_tools;
+/// # use tools;
 /// # use std;
 /// std::panic::set_hook(Box::new(|panic_info: &std::panic::PanicInfo| {
-///     I_Language_tools::panic_handler::generate_report(
+///     tools::panic_handler::generate_report(
 ///         panic_info.location(),
 ///         panic_info.payload().downcast_ref::<String>().cloned(),
 ///         std::backtrace::Backtrace::force_capture()
@@ -160,8 +160,8 @@ pub fn generate_report<'a>(
 /// # Examples
 ///
 /// ```rust
-/// # use I_Language_tools;
-/// I_Language_tools::panic_handler::setup_handler();
+/// # use tools;
+/// tools::panic_handler::setup_handler();
 /// ```
 ///
 /// # See also

@@ -48,8 +48,8 @@ use std::fmt;
 /// # Examples
 ///
 /// ```rust
-/// # use I_Language_tools;
-/// I_Language_tools::error::Error {
+/// # use tools;
+/// tools::error::Error {
 ///     name: "name".to_owned(),
 ///     description: "description".to_owned(),
 ///     exit_code: 1
@@ -81,8 +81,8 @@ impl fmt::Display for Error {
     /// # Examples
     ///
     /// ```rust
-    /// # use I_Language_tools;
-    /// # let error = I_Language_tools::error::Error::new("name", "description", 1);
+    /// # use tools;
+    /// # let error = tools::error::Error::new("name", "description", 1);
     /// println!("{}", error);
     /// ```
     ///
@@ -111,8 +111,8 @@ impl Error {
     /// # Examples
     ///
     /// ```rust
-    /// # use I_Language_tools;
-    /// I_Language_tools::error::Error::new("name", "description", 1);
+    /// # use tools;
+    /// tools::error::Error::new("name", "description", 1);
     /// ```
     ///
     /// # See also
@@ -140,8 +140,8 @@ impl Error {
     /// # Examples
     ///
     /// ```should_panic
-    /// # use I_Language_tools;
-    /// # let error: I_Language_tools::error::Error = I_Language_tools::error::Error::new("name", "description", 1);
+    /// # use tools;
+    /// # let error: tools::error::Error = tools::error::Error::new("name", "description", 1);
     /// error.raise("Something went very wrong");
     /// ```
     ///
@@ -165,8 +165,8 @@ impl Error {
     /// # Examples
     ///
     /// ```
-    /// # use I_Language_tools;
-    /// # let error: I_Language_tools::error::Error = I_Language_tools::error::Error::new("name", "description", 1);
+    /// # use tools;
+    /// # let error: tools::error::Error = tools::error::Error::new("name", "description", 1);
     /// error.raise_without_exit("Something went very wrong");
     /// ```
     ///
