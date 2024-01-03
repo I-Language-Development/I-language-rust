@@ -36,15 +36,20 @@ keywords = ["i", "i-language", "programming-language", "language"]
 publish = false
 
 [workspace.dependencies]
+annotate-snippets = "0.10.0"
 localizer-rs = "1.2.0"
 log = "0.4.20"
+
+tools = { path = "crates/tools" }
 
 [workspace.lints.rust]
 non_snake_case = "allow"
 
 [dependencies]
+# annotate-snippets = { version = "0.10.0", optional = true }
 clap = { version = "4.4.11", features = ["derive", "wrap_help"], optional = true }
 clap-verbosity-flag = { version = "2.1.1", optional = true }
+localizer-rs = { version = "1.2.0", optional = true }
 log = { version = "0.4.20", optional = true }
 
 compiler = { path = "crates/compiler" }
@@ -57,13 +62,10 @@ tools = { path = "crates/tools" }
 cargo-audit = "0.18.3"
 just = "1.14.0"
 
-[build-dependencies]
-version_check = "0.9.4"
-
 [features]
 beta = []
 cli = ["dep:clap", "dep:clap-verbosity-flag", "dep:log"]
-localization = []
+localization = ["dep:localizer-rs"]
 
 [[bin]]
 name = "icomp"  # icomp = I Compiler
