@@ -31,6 +31,7 @@ use crate::tokens::constant::{Constant, Type};
 use crate::tokens::keyword::Keyword;
 use crate::tokens::mark::Mark;
 
+
 ////////////
 // TRAITS //
 ////////////
@@ -38,6 +39,7 @@ use crate::tokens::mark::Mark;
 pub trait GetToken {
     fn get_token(location: Location, buffer: &Vec<char>) -> Option<(Token, usize)>;
 }
+
 
 ////////////////////////////////
 // TYPE DEFINITION TOKEN TYPE //
@@ -51,6 +53,7 @@ pub enum TypeDefinition {
     Boolean(Constant),
     None,
 }
+
 
 //////////////////
 // TOKEN STRUCT //
