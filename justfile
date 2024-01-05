@@ -49,7 +49,7 @@ install-dev-dependencies:
 
 # Lints the rust source files
 lint *ARGUMENTS:
-	@cargo check {{ARGUMENTS}}
+	@cargo clippy --workspace {{ARGUMENTS}}
 
 # Compiles and executes the main.rs file
 run *ARGUMENTS:
