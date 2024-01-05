@@ -15,10 +15,11 @@ keywords.workspace = true
 publish.workspace = true
 
 [dependencies]
+chrono = "0.4.31"
 current_locale = "0.1.1"
 env_logger = "0.10.1"
-localizer-rs = "1.2.0"
 
+localizer-rs.workspace = true
 log.workspace = true
 
 [lints]

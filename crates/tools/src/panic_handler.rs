@@ -27,6 +27,9 @@
 
 use std;
 
+use crate::logging;
+
+
 ///////////////////
 // PANIC HANDLER //
 ///////////////////
@@ -66,6 +69,9 @@ use std;
 /// ============
 /// Reason: Problem with the code!
 /// Location: src\main.rs:13
+/// Log:
+/// [2024-01-05T19:26:33Z TRACE icomp] Trace message
+/// [2024-01-05T19:26:33Z ERROR icomp] Oh no, a bad thing happened!
 /// Backtrace:
 ///    0: std::backtrace_rs::backtrace::dbghelp::trace
 ///              at /rustc/79e9716c980570bfd1f666e3b16ac583f0168962/library\std\src\..\..\backtrace\src\backtrace\dbghelp.rs:98
@@ -123,12 +129,12 @@ use std;
 /// # See also
 ///
 /// - [`setup_handler`]
-pub fn generate_report<'a>(
+pub fn generate_report(
     _location: Option<&std::panic::Location<'_>>,
     payload: Option<String>,
     backtrace: std::backtrace::Backtrace,
 ) -> Option<std::path::PathBuf> {
-    let path: std::path::PathBuf = std::env::temp_dir().join("I_Language_Crash_Report.txt");
+    let path: std::path::PathBuf = std::env::temp_dir().join("icomp_crash.txt");
 
     let header: String = "Crash report\n============\n".to_owned();
     let reason: String = if let Some(value) = payload {
@@ -141,9 +147,20 @@ pub fn generate_report<'a>(
     } else {
         String::new()
     };
-    let content: &str = &format!("Backtrace:\n{backtrace}");
 
-    match std::fs::write(path.clone(), header + &reason + &location + content) {
+    #[allow(unused_assignments)]
+    let mut log_buffer: String = String::new();
+
+    unsafe {
+        log_buffer = format!("Log:\n{}\n", logging::BUFFER.join("\n"));
+    }
+
+    let content: String = format!("Backtrace:\n{backtrace}");
+
+    match std::fs::write(
+        path.clone(),
+        header + &reason + &location + &log_buffer + &content,
+    ) {
         Ok(_) => {}
         Err(error) => {
             eprintln!("Crash report generation failed.");

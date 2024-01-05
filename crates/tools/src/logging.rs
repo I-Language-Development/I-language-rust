@@ -28,16 +28,49 @@
 use env_logger;
 use log;
 
+
 ///////////////////
 // SETUP LOGGING //
 ///////////////////
 
+pub struct Logger(env_logger::Logger);
+
+impl log::Log for Logger {
+    fn enabled(&self, metadata: &log::Metadata) -> bool {
+        self.0.enabled(metadata)
+    }
+
+    fn log(&self, record: &log::Record) {
+        self.0.log(&record.clone());
+
+        unsafe {
+            BUFFER.push(format!(
+                "[{} {} {}] {}",
+                chrono::offset::Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Secs, true),
+                record.level(),
+                record.target(),
+                record.args()
+            ));
+        }
+    }
+
+    fn flush(&self) {
+        self.0.flush();
+    }
+}
+
+pub static mut BUFFER: Vec<String> = Vec::new();
 static mut INITIALIZED: bool = false;
 
 pub fn setup_logging(level: log::LevelFilter) {
     unsafe {
         if !INITIALIZED {
-            env_logger::Builder::new().filter_level(level).init();
+            log::set_boxed_logger(Box::new(Logger(
+                env_logger::Builder::new().filter_level(level).build(),
+            )))
+            .unwrap();
+            log::set_max_level(level);
+
             INITIALIZED = true;
         }
     }
