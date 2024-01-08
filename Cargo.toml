@@ -44,6 +44,7 @@ tools = { path = "crates/tools" }
 
 [workspace.lints.rust]
 non_snake_case = "allow"
+unsafe_code = "deny"
 
 [dependencies]
 # annotate-snippets = { version = "0.10.0", optional = true }
