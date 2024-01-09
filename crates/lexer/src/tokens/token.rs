@@ -37,6 +37,7 @@ use crate::tokens::mark::Mark;
 ////////////
 
 pub trait GetToken {
+    #[allow(clippy::ptr_arg)]
     fn get_token(location: Location, buffer: &Vec<char>) -> Option<(Token, usize)>;
 }
 
