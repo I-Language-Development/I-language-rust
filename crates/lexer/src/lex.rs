@@ -102,7 +102,6 @@ use tools::iterator::ConditionalPeeking;
 pub fn lex(input: &str, file: &str) -> Vec<Token> {
     let mut result: Vec<Token> = vec![];
 
-    let mut chars: std::str::Chars;
     let mut iterator: std::iter::Peekable<std::iter::Enumerate<std::str::Chars>>;
     let mut index: usize;
 
@@ -114,14 +113,16 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
     for (mut line_number, line) in input.split('\n').enumerate() {
         line_number += 1;
 
-        chars = line.chars();
         buffer = vec![];
-
-        iterator = chars.enumerate().peekable();
+        iterator = line.chars().enumerate().peekable();
 
         while let Some((_index, character)) = iterator.next() {
             if skips > 0 {
                 skips -= 1;
+                continue;
+            }
+
+            if character.is_whitespace() {
                 continue;
             }
 
