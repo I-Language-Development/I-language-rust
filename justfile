@@ -7,6 +7,7 @@ alias l := lint
 alias r := run
 alias t := test
 
+alias fmt := format
 alias install-dev-deps := install-dev-dependencies
 
 # Remove directory command
@@ -49,7 +50,7 @@ install-dev-dependencies:
 
 # Lints the rust source files
 lint *ARGUMENTS:
-	@cargo clippy --workspace {{ARGUMENTS}}
+	@cargo clippy --all-targets --features cli --workspace {{ARGUMENTS}}
 
 # Compiles and executes the main.rs file
 run *ARGUMENTS:
