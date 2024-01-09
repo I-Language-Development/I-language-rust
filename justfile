@@ -1,4 +1,5 @@
 # Set command aliases
+alias a := audit
 alias b := build
 alias c := clean
 alias f := format
@@ -21,8 +22,8 @@ set windows-shell := ["cmd.exe", "/D", "/C"]
 # Rust backtrace
 export RUST_BACKTRACE := "1"
 
+# for line 27: See rustsec/rustsec#696
 # Audit the whole project (check for vulnerable dependencies)
-# You may have to run `just install-dev-deps` before
 audit *ARGUMENTS:
 	@cargo audit --ignore RUSTSEC-2020-0138 {{ARGUMENTS}}
 
