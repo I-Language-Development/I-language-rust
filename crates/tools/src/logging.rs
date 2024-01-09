@@ -33,16 +33,20 @@ use log;
 // SETUP LOGGING //
 ///////////////////
 
+/// Custom logger with a buffer.
 pub struct Logger(env_logger::Logger);
 
 impl log::Log for Logger {
     fn enabled(&self, metadata: &log::Metadata) -> bool {
-        self.0.enabled(metadata)
+        metadata.level() >= log::Level::Trace
     }
 
     fn log(&self, record: &log::Record) {
-        self.0.log(&record.clone());
+        if self.0.enabled(record.metadata()) {
+            self.0.log(&record.clone());
+        }
 
+        #[allow(unsafe_code)]
         unsafe {
             BUFFER.push(format!(
                 "[{} {} {}] {}",
@@ -59,19 +63,27 @@ impl log::Log for Logger {
     }
 }
 
-pub static mut BUFFER: Vec<String> = Vec::new();
+static mut BUFFER: Vec<String> = Vec::new();
 static mut INITIALIZED: bool = false;
 
 pub fn setup_logging(level: log::LevelFilter) {
+    #[allow(unsafe_code)]
     unsafe {
         if !INITIALIZED {
             log::set_boxed_logger(Box::new(Logger(
                 env_logger::Builder::new().filter_level(level).build(),
             )))
             .unwrap();
-            log::set_max_level(level);
+            log::set_max_level(log::LevelFilter::Trace);
 
             INITIALIZED = true;
         }
+    }
+}
+
+pub fn buffer() -> &'static Vec<String> {
+    #[allow(unsafe_code)]
+    unsafe {
+        &BUFFER
     }
 }

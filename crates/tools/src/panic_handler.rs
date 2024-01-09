@@ -148,18 +148,20 @@ pub fn generate_report(
         String::new()
     };
 
-    #[allow(unused_assignments)]
-    let mut log_buffer: String = String::new();
-
-    unsafe {
-        log_buffer = format!("Log:\n{}\n", logging::BUFFER.join("\n"));
-    }
-
+    let log_buffer: String = format!("Log:\n{}\n", logging::buffer().join("\n"));
     let content: String = format!("Backtrace:\n{backtrace}");
 
     match std::fs::write(
         path.clone(),
-        header + &reason + &location + &log_buffer + &content,
+        header
+            + &reason
+            + &location
+            + if &log_buffer != "Log:\n\n" {
+                &log_buffer
+            } else {
+                ""
+            }
+            + &content,
     ) {
         Ok(_) => {}
         Err(error) => {
