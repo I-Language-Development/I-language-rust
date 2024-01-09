@@ -35,6 +35,10 @@ pub trait ConditionalPeeking<I: std::iter::Iterator> {
     fn peek_while(&mut self, closure: impl Fn(&I::Item) -> bool) -> Vec<I::Item>
     where
         <I as Iterator>::Item: Clone;
+
+    fn peek_until(&mut self, closure: impl Fn(&I::Item) -> bool) -> Vec<I::Item>
+    where
+        <I as Iterator>::Item: Clone;
 }
 
 impl<I: std::iter::Iterator + Clone> ConditionalPeeking<I> for std::iter::Peekable<I> {
@@ -53,5 +57,12 @@ impl<I: std::iter::Iterator + Clone> ConditionalPeeking<I> for std::iter::Peekab
         }
 
         result
+    }
+
+    fn peek_until(&mut self, closure: impl Fn(&<I as Iterator>::Item) -> bool) -> Vec<I::Item>
+    where
+        <I as Iterator>::Item: Clone,
+    {
+        self.peek_while(|item| !closure(item))
     }
 }
