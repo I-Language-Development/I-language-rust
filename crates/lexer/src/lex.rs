@@ -34,6 +34,7 @@ use crate::tokens::token::*;
 use tools::error;
 use tools::iterator::ConditionalPeeking;
 
+
 //////////////////
 // LEX FUNCTION //
 //////////////////
@@ -101,12 +102,7 @@ use tools::iterator::ConditionalPeeking;
 pub fn lex(input: &str, file: &str) -> Vec<Token> {
     let mut result: Vec<Token> = vec![];
 
-    let mut single_quote: Option<usize> = None;
-    let mut double_quote: Option<usize> = None;
-
     let mut chars: std::str::Chars;
-    let mut last_character: char = '\0';
-
     let mut iterator: std::iter::Peekable<std::iter::Enumerate<std::str::Chars>>;
     let mut index: usize;
 
@@ -126,78 +122,101 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
         while let Some((_index, character)) = iterator.next() {
             if skips > 0 {
                 skips -= 1;
-                last_character = character;
-                continue;
-            }
-
-            if character.is_whitespace() && !(single_quote.is_some() || double_quote.is_some()) {
-                last_character = character;
                 continue;
             }
 
             index = _index + 1;
-            let mut location: Location = Location {
+            let location: Location = Location {
                 file: file.to_string(),
                 line: line_number,
                 column: index,
             };
 
             // TODO (ElBe): Add comments (/* */, //)
-            if single_quote.is_some() || double_quote.is_some() {
-                if index == line.len() {
-                    let quote_index: usize = single_quote.or(double_quote).unwrap();
-                    let quote_type: char = if single_quote.is_some() { '\'' } else { '"' };
+            if character == '"' {
+                let last_character: std::cell::Cell<char> = std::cell::Cell::new('\0');
+                buffer = iterator
+                    .peek_while(|&(_, next_character)| {
+                        let value: bool = last_character.get() != '\\' && next_character == '"';
+                        last_character.set(next_character);
+                        !value
+                    })
+                    .iter()
+                    .map(|(_, found)| *found)
+                    .collect::<Vec<char>>();
 
+                let unterminated_string_error = || {
                     let source: &str = &format!("   {line_number} | {line}");
 
-                    if character == ';' {
-                        let underline: &str = &format!(
-                            "{0:>1$}{2}",
-                            '^',
-                            line_number.to_string().len() + quote_index + 6, /* < Amount of extra characters, in this case the pipe symbol and the five spaces*/
-                            "^".repeat(index - quote_index)
-                        );
+                    let underline: &str = &format!(
+                        "{0}^",
+                        " ".repeat(line_number.to_string().len() + index + buffer.len() +  6 /* < Amount of extra characters, in this case the pipe symbol and the five spaces*/)
+                    );
 
-                        error::Error::new(
-                            "Error",
-                            &format!("Unterminated string\n --> {location}"),
-                            1,
-                        )
-                        .raise_without_exit(&format!(
-                            "{source}\n{underline} = help: Add a `{quote_type}` here"
-                        ));
+                    error::Error::new(
+                        "Error",
+                        &format!("Unterminated string literal\n --> {location}"),
+                        1,
+                    )
+                    .raise(&format!("{source}\n{underline} = help: Add a `\"` here"));
+                };
+
+                if let Some((_, next_character)) = iterator.next() {
+                    if next_character != '"' {
+                        unterminated_string_error()
                     }
+                } else {
+                    unterminated_string_error()
                 }
 
-                match character {
-                    '"' => {
-                        if double_quote.is_some() && last_character != '\\' {
-                            location.column = double_quote.unwrap();
-                            result.push(Token {
-                                location,
-                                content: line[double_quote.unwrap()..index - 1].to_owned(),
-                                token_type: TokenType::TypeDefinition(TypeDefinition::Str),
-                            });
-                            double_quote = None;
-                        }
-                    }
-                    '\'' => {
-                        if single_quote.is_some() && last_character != '\\' {
-                            location.column = single_quote.unwrap();
-                            result.push(Token {
-                                location,
-                                content: line[single_quote.unwrap()..index - 1].to_owned(),
-                                token_type: TokenType::TypeDefinition(TypeDefinition::Str),
-                            });
-                            single_quote = None;
-                        }
-                    }
-                    _ => {}
-                }
-            } else if character == '"' {
-                double_quote = Some(index);
+                result.push(Token {
+                    location,
+                    content: buffer.iter().collect::<String>(),
+                    token_type: TokenType::TypeDefinition(TypeDefinition::Str),
+                });
+                buffer.clear()
             } else if character == '\'' {
-                single_quote = Some(index);
+                let last_character: std::cell::Cell<char> = std::cell::Cell::new('\0');
+                buffer = iterator
+                    .peek_while(|&(_, next_character)| {
+                        let value: bool = last_character.get() != '\\' && next_character == '\'';
+                        last_character.set(next_character);
+                        !value
+                    })
+                    .iter()
+                    .map(|(_, found)| *found)
+                    .collect::<Vec<char>>();
+
+                let unterminated_string_error = || {
+                    let source: &str = &format!("   {line_number} | {line}");
+
+                    let underline: &str = &format!(
+                        "{0}^",
+                        " ".repeat(line_number.to_string().len() + index + buffer.len() +  6 /* < Amount of extra characters, in this case the pipe symbol and the five spaces*/)
+                    );
+
+                    error::Error::new(
+                        "Error",
+                        &format!("Unterminated string literal\n --> {location}"),
+                        1,
+                    )
+                    .raise(&format!("{source}\n{underline} = help: Add a `'` here"));
+                };
+
+                if let Some((_, next_character)) = iterator.next() {
+                    if next_character != '\'' {
+                        unterminated_string_error()
+                    }
+                } else {
+                    unterminated_string_error()
+                }
+
+                result.push(Token {
+                    location,
+                    content: buffer.iter().collect::<String>(),
+                    token_type: TokenType::TypeDefinition(TypeDefinition::Str),
+                });
+                buffer.clear()
             } else if matches!(
                 character,
                 '+' | '-'
@@ -338,8 +357,6 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                     "{source}\n{underline} = help: Unexpected character `{character}`"
                 ));
             }
-
-            last_character = character;
         }
     }
 
