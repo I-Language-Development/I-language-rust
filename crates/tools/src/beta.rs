@@ -31,6 +31,7 @@ pub const BETA_BUILD: bool = true;
 #[cfg(not(feature = "beta"))]
 pub const BETA_BUILD: bool = false;
 
+
 ///////////////
 // BETA FLAG //
 ///////////////
