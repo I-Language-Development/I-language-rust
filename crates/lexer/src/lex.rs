@@ -34,6 +34,8 @@ use crate::tokens::token::*;
 use tools::error;
 use tools::iterator::ConditionalPeeking;
 
+use log::{debug, trace};
+
 
 //////////////////
 // LEX FUNCTION //
@@ -110,7 +112,7 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
 
     let mut skips: usize = 0;
 
-    for (mut line_number, line) in input.split('\n').enumerate() {
+    'outer: for (mut line_number, line) in input.split('\n').enumerate() {
         line_number += 1;
 
         buffer = vec![];
@@ -133,7 +135,8 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                 column: index,
             };
 
-            // TODO (ElBe): Add comments (/* */, //)
+            trace!("Lexing character {character} in line {line_number}, column {index}.");
+
             if character == '"' {
                 let last_character: std::cell::Cell<char> = std::cell::Cell::new('\0');
                 buffer = iterator
@@ -248,7 +251,7 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                 if let Some((_, next_character)) = iterator.clone().peek() {
                     if matches!(
                         *next_character,
-                        '+' | '-' | '>' | '*' | '=' | '&' | '|' | '.'
+                        '+' | '-' | '/' | '>' | '*' | '=' | '&' | '|' | '.'
                     ) {
                         iterator.next();
                         buffer.push(*next_character);
@@ -266,7 +269,48 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                     }
                 }
 
-                if let Some((value, _skips)) = Mark::get_token(location.clone(), &buffer) {
+                // TODO (ElBe): Make code better lol
+                if &buffer.iter().collect::<String>() == "/*" {
+                    let last_character: std::cell::Cell<char> = std::cell::Cell::new('\0');
+                    buffer = iterator
+                        .peek_until(|&(_, next_character)| {
+                            let value: bool = last_character.get() == '*' && next_character == '/';
+                            last_character.set(next_character);
+                            value
+                        })
+                        .iter()
+                        .map(|(_, found)| *found)
+                        .collect::<Vec<char>>();
+
+                    if buffer.last() != Some(&'*') {
+                        eprintln!("Unclosed comment...");
+                        eprintln!("Proper errors soon...");
+                        std::process::exit(1);
+                    }
+
+                    iterator.next();
+
+                    result.push(Token {
+                        location,
+                        content: buffer[..(buffer.len() - 1)]
+                            .iter()
+                            .collect::<String>()
+                            .trim()
+                            .to_owned(),
+                        token_type: TokenType::Comment,
+                    });
+                    buffer.clear();
+                } else if &buffer.iter().collect::<String>() == "//" {
+                    buffer = line[(index + 1)..].chars().collect::<Vec<char>>();
+
+                    result.push(Token {
+                        location,
+                        content: buffer.iter().collect::<String>().trim().to_owned(),
+                        token_type: TokenType::Comment,
+                    });
+
+                    continue 'outer;
+                } else if let Some(value) = Mark::get_token(location.clone(), &buffer) {
                     result.push(value);
                     buffer.clear();
                 }
@@ -323,14 +367,13 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                     buffer_location = Some(location.clone());
                 }
 
-                if let Some((value, _skips)) = Keyword::get_token(location.clone(), &buffer) {
+                if let Some(value) = Keyword::get_token(location.clone(), &buffer) {
                     result.push(value);
                     buffer.clear();
-                } else if let Some((value, _skips)) = Type::get_token(location.clone(), &buffer) {
+                } else if let Some(value) = Type::get_token(location.clone(), &buffer) {
                     result.push(value);
                     buffer.clear();
-                } else if let Some((value, _skips)) = Constant::get_token(location.clone(), &buffer)
-                {
+                } else if let Some(value) = Constant::get_token(location.clone(), &buffer) {
                     result.push(value);
                     buffer.clear();
                 } else {

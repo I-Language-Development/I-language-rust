@@ -67,5 +67,47 @@ mod tests {
                 },
             ]
         );
+
+        assert_eq!(
+            lexer::lex::lex("my/* cool */code // works", "<stdin>"),
+            [
+                lexer::tokens::token::Token {
+                    location: lexer::tokens::token::Location {
+                        file: "<stdin>".to_owned(),
+                        line: 1,
+                        column: 1,
+                    },
+                    content: "my".to_owned(),
+                    token_type: lexer::tokens::token::TokenType::Identifier,
+                },
+                lexer::tokens::token::Token {
+                    location: lexer::tokens::token::Location {
+                        file: "<stdin>".to_owned(),
+                        line: 1,
+                        column: 3,
+                    },
+                    content: "cool".to_owned(),
+                    token_type: lexer::tokens::token::TokenType::Comment,
+                },
+                lexer::tokens::token::Token {
+                    location: lexer::tokens::token::Location {
+                        file: "<stdin>".to_owned(),
+                        line: 1,
+                        column: 13,
+                    },
+                    content: "code".to_owned(),
+                    token_type: lexer::tokens::token::TokenType::Identifier,
+                },
+                lexer::tokens::token::Token {
+                    location: lexer::tokens::token::Location {
+                        file: "<stdin>".to_owned(),
+                        line: 1,
+                        column: 18,
+                    },
+                    content: "works".to_owned(),
+                    token_type: lexer::tokens::token::TokenType::Comment,
+                },
+            ]
+        );
     }
 }
