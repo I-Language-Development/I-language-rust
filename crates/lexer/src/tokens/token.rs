@@ -38,7 +38,7 @@ use crate::tokens::mark::Mark;
 
 pub trait GetToken {
     #[allow(clippy::ptr_arg)]
-    fn get_token(location: Location, buffer: &Vec<char>) -> Option<(Token, usize)>;
+    fn get_token(location: Location, buffer: &Vec<char>) -> Option<Token>;
 }
 
 
@@ -67,6 +67,7 @@ pub enum TokenType {
     Keyword(Keyword),
     Mark(Mark),
     Identifier,
+    Comment,
 }
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]

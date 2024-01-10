@@ -84,386 +84,245 @@ pub enum Mark {
 }
 
 impl GetToken for Mark {
-    fn get_token(location: Location, buffer: &Vec<char>) -> Option<(Token, usize)> {
+    fn get_token(location: Location, buffer: &Vec<char>) -> Option<Token> {
         let content: &str = &buffer.iter().collect::<String>();
 
         match content {
-            "+" => Some((
-                Token {
-                    location,
-                    content: "+".to_owned(),
-                    token_type: TokenType::Mark(Mark::Add),
-                },
-                1,
-            )),
-            "+=" => Some((
-                Token {
-                    location,
-                    content: "+=".to_owned(),
-                    token_type: TokenType::Mark(Mark::AddAssign),
-                },
-                2,
-            )),
-            "&&" => Some((
-                Token {
-                    location,
-                    content: "&&".to_owned(),
-                    token_type: TokenType::Mark(Mark::And),
-                },
-                2,
-            )),
-            "->" => Some((
-                Token {
-                    location,
-                    content: "->".to_owned(),
-                    token_type: TokenType::Mark(Mark::Arrow),
-                },
-                2,
-            )),
-            "=" => Some((
-                Token {
-                    location,
-                    content: "=".to_owned(),
-                    token_type: TokenType::Mark(Mark::Assign),
-                },
-                1,
-            )),
-            "@" => Some((
-                Token {
-                    location,
-                    content: "@".to_owned(),
-                    token_type: TokenType::Mark(Mark::At),
-                },
-                1,
-            )),
-            "!" => Some((
-                Token {
-                    location,
-                    content: "!".to_owned(),
-                    token_type: TokenType::Mark(Mark::Bang),
-                },
-                1,
-            )),
-            "&" => Some((
-                Token {
-                    location,
-                    content: "&".to_owned(),
-                    token_type: TokenType::Mark(Mark::BitAnd),
-                },
-                1,
-            )),
-            "&=" => Some((
-                Token {
-                    location,
-                    content: "&=".to_owned(),
-                    token_type: TokenType::Mark(Mark::BitAndAssign),
-                },
-                2,
-            )),
-            "|" => Some((
-                Token {
-                    location,
-                    content: "|".to_owned(),
-                    token_type: TokenType::Mark(Mark::BitOr),
-                },
-                1,
-            )),
-            "|=" => Some((
-                Token {
-                    location,
-                    content: "|=".to_owned(),
-                    token_type: TokenType::Mark(Mark::BitOrAssign),
-                },
-                2,
-            )),
-            "^" => Some((
-                Token {
-                    location,
-                    content: "^".to_owned(),
-                    token_type: TokenType::Mark(Mark::BitXor),
-                },
-                1,
-            )),
-            "^=" => Some((
-                Token {
-                    location,
-                    content: "^=".to_owned(),
-                    token_type: TokenType::Mark(Mark::BitXorAssign),
-                },
-                2,
-            )),
-            "{" => Some((
-                Token {
-                    location,
-                    content: "{".to_owned(),
-                    token_type: TokenType::Mark(Mark::BraceOpen),
-                },
-                1,
-            )),
-            "}" => Some((
-                Token {
-                    location,
-                    content: "}".to_owned(),
-                    token_type: TokenType::Mark(Mark::BraceClose),
-                },
-                1,
-            )),
-            "[" => Some((
-                Token {
-                    location,
-                    content: "[".to_owned(),
-                    token_type: TokenType::Mark(Mark::BracketOpen),
-                },
-                1,
-            )),
-            "]" => Some((
-                Token {
-                    location,
-                    content: "]".to_owned(),
-                    token_type: TokenType::Mark(Mark::BracketClose),
-                },
-                1,
-            )),
-            ":" => Some((
-                Token {
-                    location,
-                    content: ":".to_owned(),
-                    token_type: TokenType::Mark(Mark::Colon),
-                },
-                1,
-            )),
-            "," => Some((
-                Token {
-                    location,
-                    content: ",".to_owned(),
-                    token_type: TokenType::Mark(Mark::Comma),
-                },
-                1,
-            )),
-            "--" => Some((
-                Token {
-                    location,
-                    content: "--".to_owned(),
-                    token_type: TokenType::Mark(Mark::Decrease),
-                },
-                2,
-            )),
-            "/" => Some((
-                Token {
-                    location,
-                    content: "/".to_owned(),
-                    token_type: TokenType::Mark(Mark::Divide),
-                },
-                1,
-            )),
-            "/=" => Some((
-                Token {
-                    location,
-                    content: "/=".to_owned(),
-                    token_type: TokenType::Mark(Mark::DivideAssign),
-                },
-                2,
-            )),
-            "." => Some((
-                Token {
-                    location,
-                    content: ".".to_owned(),
-                    token_type: TokenType::Mark(Mark::Dot),
-                },
-                1,
-            )),
-            "==" => Some((
-                Token {
-                    location,
-                    content: "==".to_owned(),
-                    token_type: TokenType::Mark(Mark::Equal),
-                },
-                2,
-            )),
-            "**" => Some((
-                Token {
-                    location,
-                    content: "**".to_owned(),
-                    token_type: TokenType::Mark(Mark::Exponentiation),
-                },
-                2,
-            )),
-            ">" => Some((
-                Token {
-                    location,
-                    content: ">".to_owned(),
-                    token_type: TokenType::Mark(Mark::Greater),
-                },
-                1,
-            )),
-            ">=" => Some((
-                Token {
-                    location,
-                    content: ">=".to_owned(),
-                    token_type: TokenType::Mark(Mark::GreaterEqual),
-                },
-                2,
-            )),
-            "++" => Some((
-                Token {
-                    location,
-                    content: "++".to_owned(),
-                    token_type: TokenType::Mark(Mark::Increase),
-                },
-                2,
-            )),
-            "<" => Some((
-                Token {
-                    location,
-                    content: "<".to_owned(),
-                    token_type: TokenType::Mark(Mark::Less),
-                },
-                1,
-            )),
-            "<=" => Some((
-                Token {
-                    location,
-                    content: "<=".to_owned(),
-                    token_type: TokenType::Mark(Mark::LessEqual),
-                },
-                2,
-            )),
-            "%" => Some((
-                Token {
-                    location,
-                    content: "%".to_owned(),
-                    token_type: TokenType::Mark(Mark::Modulo),
-                },
-                1,
-            )),
-            "%=" => Some((
-                Token {
-                    location,
-                    content: "%=".to_owned(),
-                    token_type: TokenType::Mark(Mark::ModuloAssign),
-                },
-                2,
-            )),
-            "*" => Some((
-                Token {
-                    location,
-                    content: "*".to_owned(),
-                    token_type: TokenType::Mark(Mark::Multiply),
-                },
-                1,
-            )),
-            "*=" => Some((
-                Token {
-                    location,
-                    content: "*=".to_owned(),
-                    token_type: TokenType::Mark(Mark::MultiplyAssign),
-                },
-                2,
-            )),
-            "!=" => Some((
-                Token {
-                    location,
-                    content: "!=".to_owned(),
-                    token_type: TokenType::Mark(Mark::NotEqual),
-                },
-                2,
-            )),
-            "||" => Some((
-                Token {
-                    location,
-                    content: "||".to_owned(),
-                    token_type: TokenType::Mark(Mark::Or),
-                },
-                2,
-            )),
-            "(" => Some((
-                Token {
-                    location,
-                    content: "(".to_owned(),
-                    token_type: TokenType::Mark(Mark::ParenthesisOpen),
-                },
-                1,
-            )),
-            ")" => Some((
-                Token {
-                    location,
-                    content: ")".to_owned(),
-                    token_type: TokenType::Mark(Mark::ParenthesisClose),
-                },
-                1,
-            )),
-            "?" => Some((
-                Token {
-                    location,
-                    content: "?".to_owned(),
-                    token_type: TokenType::Mark(Mark::QuestionMark),
-                },
-                1,
-            )),
-            ".." => Some((
-                Token {
-                    location,
-                    content: "..".to_owned(),
-                    token_type: TokenType::Mark(Mark::Range),
-                },
-                2,
-            )),
-            ";" => Some((
-                Token {
-                    location,
-                    content: ";".to_owned(),
-                    token_type: TokenType::Mark(Mark::Semicolon),
-                },
-                1,
-            )),
-            "<<" => Some((
-                Token {
-                    location,
-                    content: "<<".to_owned(),
-                    token_type: TokenType::Mark(Mark::ShiftLeft),
-                },
-                2,
-            )),
-            "<<=" => Some((
-                Token {
-                    location,
-                    content: "<<=".to_owned(),
-                    token_type: TokenType::Mark(Mark::ShiftLeftAssign),
-                },
-                3,
-            )),
-            ">>" => Some((
-                Token {
-                    location,
-                    content: ">>".to_owned(),
-                    token_type: TokenType::Mark(Mark::ShiftRight),
-                },
-                2,
-            )),
-            ">>=" => Some((
-                Token {
-                    location,
-                    content: ">>=".to_owned(),
-                    token_type: TokenType::Mark(Mark::ShiftRightAssign),
-                },
-                3,
-            )),
-            "-" => Some((
-                Token {
-                    location,
-                    content: "-".to_owned(),
-                    token_type: TokenType::Mark(Mark::Subtract),
-                },
-                1,
-            )),
-            "-=" => Some((
-                Token {
-                    location,
-                    content: "-=".to_owned(),
-                    token_type: TokenType::Mark(Mark::SubtractAssign),
-                },
-                2,
-            )),
+            "+" => Some(Token {
+                location,
+                content: "+".to_owned(),
+                token_type: TokenType::Mark(Mark::Add),
+            }),
+            "+=" => Some(Token {
+                location,
+                content: "+=".to_owned(),
+                token_type: TokenType::Mark(Mark::AddAssign),
+            }),
+            "&&" => Some(Token {
+                location,
+                content: "&&".to_owned(),
+                token_type: TokenType::Mark(Mark::And),
+            }),
+            "->" => Some(Token {
+                location,
+                content: "->".to_owned(),
+                token_type: TokenType::Mark(Mark::Arrow),
+            }),
+            "=" => Some(Token {
+                location,
+                content: "=".to_owned(),
+                token_type: TokenType::Mark(Mark::Assign),
+            }),
+            "@" => Some(Token {
+                location,
+                content: "@".to_owned(),
+                token_type: TokenType::Mark(Mark::At),
+            }),
+            "!" => Some(Token {
+                location,
+                content: "!".to_owned(),
+                token_type: TokenType::Mark(Mark::Bang),
+            }),
+            "&" => Some(Token {
+                location,
+                content: "&".to_owned(),
+                token_type: TokenType::Mark(Mark::BitAnd),
+            }),
+            "&=" => Some(Token {
+                location,
+                content: "&=".to_owned(),
+                token_type: TokenType::Mark(Mark::BitAndAssign),
+            }),
+            "|" => Some(Token {
+                location,
+                content: "|".to_owned(),
+                token_type: TokenType::Mark(Mark::BitOr),
+            }),
+            "|=" => Some(Token {
+                location,
+                content: "|=".to_owned(),
+                token_type: TokenType::Mark(Mark::BitOrAssign),
+            }),
+            "^" => Some(Token {
+                location,
+                content: "^".to_owned(),
+                token_type: TokenType::Mark(Mark::BitXor),
+            }),
+            "^=" => Some(Token {
+                location,
+                content: "^=".to_owned(),
+                token_type: TokenType::Mark(Mark::BitXorAssign),
+            }),
+            "{" => Some(Token {
+                location,
+                content: "{".to_owned(),
+                token_type: TokenType::Mark(Mark::BraceOpen),
+            }),
+            "}" => Some(Token {
+                location,
+                content: "}".to_owned(),
+                token_type: TokenType::Mark(Mark::BraceClose),
+            }),
+            "[" => Some(Token {
+                location,
+                content: "[".to_owned(),
+                token_type: TokenType::Mark(Mark::BracketOpen),
+            }),
+            "]" => Some(Token {
+                location,
+                content: "]".to_owned(),
+                token_type: TokenType::Mark(Mark::BracketClose),
+            }),
+            ":" => Some(Token {
+                location,
+                content: ":".to_owned(),
+                token_type: TokenType::Mark(Mark::Colon),
+            }),
+            "," => Some(Token {
+                location,
+                content: ",".to_owned(),
+                token_type: TokenType::Mark(Mark::Comma),
+            }),
+            "--" => Some(Token {
+                location,
+                content: "--".to_owned(),
+                token_type: TokenType::Mark(Mark::Decrease),
+            }),
+            "/" => Some(Token {
+                location,
+                content: "/".to_owned(),
+                token_type: TokenType::Mark(Mark::Divide),
+            }),
+            "/=" => Some(Token {
+                location,
+                content: "/=".to_owned(),
+                token_type: TokenType::Mark(Mark::DivideAssign),
+            }),
+            "." => Some(Token {
+                location,
+                content: ".".to_owned(),
+                token_type: TokenType::Mark(Mark::Dot),
+            }),
+            "==" => Some(Token {
+                location,
+                content: "==".to_owned(),
+                token_type: TokenType::Mark(Mark::Equal),
+            }),
+            "**" => Some(Token {
+                location,
+                content: "**".to_owned(),
+                token_type: TokenType::Mark(Mark::Exponentiation),
+            }),
+            ">" => Some(Token {
+                location,
+                content: ">".to_owned(),
+                token_type: TokenType::Mark(Mark::Greater),
+            }),
+            ">=" => Some(Token {
+                location,
+                content: ">=".to_owned(),
+                token_type: TokenType::Mark(Mark::GreaterEqual),
+            }),
+            "++" => Some(Token {
+                location,
+                content: "++".to_owned(),
+                token_type: TokenType::Mark(Mark::Increase),
+            }),
+            "<" => Some(Token {
+                location,
+                content: "<".to_owned(),
+                token_type: TokenType::Mark(Mark::Less),
+            }),
+            "<=" => Some(Token {
+                location,
+                content: "<=".to_owned(),
+                token_type: TokenType::Mark(Mark::LessEqual),
+            }),
+            "%" => Some(Token {
+                location,
+                content: "%".to_owned(),
+                token_type: TokenType::Mark(Mark::Modulo),
+            }),
+            "%=" => Some(Token {
+                location,
+                content: "%=".to_owned(),
+                token_type: TokenType::Mark(Mark::ModuloAssign),
+            }),
+            "*" => Some(Token {
+                location,
+                content: "*".to_owned(),
+                token_type: TokenType::Mark(Mark::Multiply),
+            }),
+            "*=" => Some(Token {
+                location,
+                content: "*=".to_owned(),
+                token_type: TokenType::Mark(Mark::MultiplyAssign),
+            }),
+            "!=" => Some(Token {
+                location,
+                content: "!=".to_owned(),
+                token_type: TokenType::Mark(Mark::NotEqual),
+            }),
+            "||" => Some(Token {
+                location,
+                content: "||".to_owned(),
+                token_type: TokenType::Mark(Mark::Or),
+            }),
+            "(" => Some(Token {
+                location,
+                content: "(".to_owned(),
+                token_type: TokenType::Mark(Mark::ParenthesisOpen),
+            }),
+            ")" => Some(Token {
+                location,
+                content: ")".to_owned(),
+                token_type: TokenType::Mark(Mark::ParenthesisClose),
+            }),
+            "?" => Some(Token {
+                location,
+                content: "?".to_owned(),
+                token_type: TokenType::Mark(Mark::QuestionMark),
+            }),
+            ".." => Some(Token {
+                location,
+                content: "..".to_owned(),
+                token_type: TokenType::Mark(Mark::Range),
+            }),
+            ";" => Some(Token {
+                location,
+                content: ";".to_owned(),
+                token_type: TokenType::Mark(Mark::Semicolon),
+            }),
+            "<<" => Some(Token {
+                location,
+                content: "<<".to_owned(),
+                token_type: TokenType::Mark(Mark::ShiftLeft),
+            }),
+            "<<=" => Some(Token {
+                location,
+                content: "<<=".to_owned(),
+                token_type: TokenType::Mark(Mark::ShiftLeftAssign),
+            }),
+            ">>" => Some(Token {
+                location,
+                content: ">>".to_owned(),
+                token_type: TokenType::Mark(Mark::ShiftRight),
+            }),
+            ">>=" => Some(Token {
+                location,
+                content: ">>=".to_owned(),
+                token_type: TokenType::Mark(Mark::ShiftRightAssign),
+            }),
+            "-" => Some(Token {
+                location,
+                content: "-".to_owned(),
+                token_type: TokenType::Mark(Mark::Subtract),
+            }),
+            "-=" => Some(Token {
+                location,
+                content: "-=".to_owned(),
+                token_type: TokenType::Mark(Mark::SubtractAssign),
+            }),
             _ => None,
         }
     }

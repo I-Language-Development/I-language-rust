@@ -38,34 +38,25 @@ pub enum Constant {
 }
 
 impl GetToken for Constant {
-    fn get_token(location: Location, buffer: &Vec<char>) -> Option<(Token, usize)> {
+    fn get_token(location: Location, buffer: &Vec<char>) -> Option<Token> {
         let content: &str = &buffer.iter().collect::<String>();
 
         match content {
-            "true" => Some((
-                Token {
-                    location,
-                    content: "true".to_owned(),
-                    token_type: TokenType::TypeDefinition(TypeDefinition::Boolean(Constant::True)),
-                },
-                4,
-            )),
-            "false" => Some((
-                Token {
-                    location,
-                    content: "false".to_owned(),
-                    token_type: TokenType::TypeDefinition(TypeDefinition::Boolean(Constant::False)),
-                },
-                5,
-            )),
-            "None" => Some((
-                Token {
-                    location,
-                    content: "None".to_owned(),
-                    token_type: TokenType::TypeDefinition(TypeDefinition::None),
-                },
-                4,
-            )),
+            "true" => Some(Token {
+                location,
+                content: "true".to_owned(),
+                token_type: TokenType::TypeDefinition(TypeDefinition::Boolean(Constant::True)),
+            }),
+            "false" => Some(Token {
+                location,
+                content: "false".to_owned(),
+                token_type: TokenType::TypeDefinition(TypeDefinition::Boolean(Constant::False)),
+            }),
+            "None" => Some(Token {
+                location,
+                content: "None".to_owned(),
+                token_type: TokenType::TypeDefinition(TypeDefinition::None),
+            }),
             _ => None,
         }
     }
@@ -83,34 +74,25 @@ pub enum Type {
 }
 
 impl GetToken for Type {
-    fn get_token(location: Location, buffer: &Vec<char>) -> Option<(Token, usize)> {
+    fn get_token(location: Location, buffer: &Vec<char>) -> Option<Token> {
         let content: &str = &buffer.iter().collect::<String>();
 
         match content {
-            "str" | "string" => Some((
-                Token {
-                    location,
-                    content: "string".to_string(),
-                    token_type: TokenType::Type(Type::Str),
-                },
-                content.len(),
-            )),
-            "int" | "integer" => Some((
-                Token {
-                    location,
-                    content: "integer".to_string(),
-                    token_type: TokenType::Type(Type::Int),
-                },
-                content.len(),
-            )),
-            "bool" | "boolean" => Some((
-                Token {
-                    location,
-                    content: "boolean".to_string(),
-                    token_type: TokenType::Type(Type::Boolean),
-                },
-                content.len(),
-            )),
+            "str" | "string" => Some(Token {
+                location,
+                content: "string".to_string(),
+                token_type: TokenType::Type(Type::Str),
+            }),
+            "int" | "integer" => Some(Token {
+                location,
+                content: "integer".to_string(),
+                token_type: TokenType::Type(Type::Int),
+            }),
+            "bool" | "boolean" => Some(Token {
+                location,
+                content: "boolean".to_string(),
+                token_type: TokenType::Type(Type::Boolean),
+            }),
             _ => None,
         }
     }
