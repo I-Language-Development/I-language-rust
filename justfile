@@ -8,6 +8,8 @@ alias l := lint
 alias r := run
 alias t := test
 
+alias id := install-doc-requirements
+alias sd := serve-docs
 alias fmt := format
 alias install-dev-deps := install-dev-dependencies
 
@@ -49,6 +51,10 @@ install-binary:
 install-dev-dependencies:
 	@cargo install cargo-audit
 
+# Install documentation dependencies
+install-doc-requirements:
+	@pip install -r Docs/.requirements.txt
+
 # Lints the rust source files
 lint *ARGUMENTS:
 	@cargo clippy --all-targets --features cli --workspace {{ARGUMENTS}}
@@ -56,6 +62,10 @@ lint *ARGUMENTS:
 # Compiles and executes the main.rs file
 run *ARGUMENTS:
 	@cargo run --features cli {{ARGUMENTS}}
+
+# Serve documentation locally
+serve-docs *ARGUMENTS:
+	@mkdocs serve -f Docs\.mkdocs.yml {{ARGUMENTS}}
 
 # Runs the tests
 test *ARGUMENTS:
