@@ -1,19 +1,19 @@
 //! Lexes (tokenizes) a input string into tokens.
 // I Language lexer.
 // Version: 1.0.0
-//
+
 // Copyright (c) 2023-present I Language Development.
-//
+
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the 'Software'),
 // to deal in the Software without restriction, including without limitation
 // the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-//
+
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-//
+
 // THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,19 +22,22 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+// Many false positives
+#![allow(clippy::pattern_type_mismatch)]
+
 /////////////
 // IMPORTS //
 /////////////
 
-use crate::tokens::constant::*;
-use crate::tokens::keyword::*;
-use crate::tokens::mark::*;
-use crate::tokens::token::*;
+use crate::tokens::constant::{Constant, Type};
+use crate::tokens::keyword::Keyword;
+use crate::tokens::mark::Mark;
+use crate::tokens::token::{GetToken, Location, Token, TokenType, TypeDefinition};
 
 use tools::error;
 use tools::iterator::ConditionalPeeking;
 
-use log::{debug, trace};
+use log::{error, trace};
 
 
 //////////////////
@@ -101,6 +104,8 @@ use log::{debug, trace};
 ///
 /// - [`Token`]
 /// - [`Location`]
+#[inline] // Suggesting inlining due to rare calls to the function
+#[allow(clippy::too_many_lines)]
 pub fn lex(input: &str, file: &str) -> Vec<Token> {
     let mut result: Vec<Token> = vec![];
 
@@ -118,7 +123,7 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
         buffer = vec![];
         iterator = line.chars().enumerate().peekable();
 
-        while let Some((_index, character)) = iterator.next() {
+        while let Some((zero_based_index, character)) = iterator.next() {
             if skips > 0 {
                 skips -= 1;
                 continue;
@@ -128,9 +133,9 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                 continue;
             }
 
-            index = _index + 1;
+            index = zero_based_index + 1;
             let location: Location = Location {
-                file: file.to_string(),
+                file: file.to_owned(),
                 line: line_number,
                 column: index,
             };
@@ -167,10 +172,10 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
 
                 if let Some((_, next_character)) = iterator.next() {
                     if next_character != '"' {
-                        unterminated_string_error()
+                        unterminated_string_error();
                     }
                 } else {
-                    unterminated_string_error()
+                    unterminated_string_error();
                 }
 
                 result.push(Token {
@@ -178,7 +183,7 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                     content: buffer.iter().collect::<String>(),
                     token_type: TokenType::TypeDefinition(TypeDefinition::Str),
                 });
-                buffer.clear()
+                buffer.clear();
             } else if character == '\'' {
                 let last_character: std::cell::Cell<char> = std::cell::Cell::new('\0');
                 buffer = iterator
@@ -209,10 +214,10 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
 
                 if let Some((_, next_character)) = iterator.next() {
                     if next_character != '\'' {
-                        unterminated_string_error()
+                        unterminated_string_error();
                     }
                 } else {
-                    unterminated_string_error()
+                    unterminated_string_error();
                 }
 
                 result.push(Token {
@@ -220,7 +225,7 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                     content: buffer.iter().collect::<String>(),
                     token_type: TokenType::TypeDefinition(TypeDefinition::Str),
                 });
-                buffer.clear()
+                buffer.clear();
             } else if matches!(
                 character,
                 '+' | '-'
@@ -248,28 +253,27 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
             ) {
                 buffer.push(character);
 
-                if let Some((_, next_character)) = iterator.clone().peek() {
+                if let Some(&(_, next_character)) = iterator.clone().peek() {
+                    #[allow(clippy::else_if_without_else)]
                     if matches!(
-                        *next_character,
-                        '+' | '-' | '/' | '>' | '*' | '=' | '&' | '|' | '.'
+                        next_character,
+                        '+' | '-' | '/' | '*' | '=' | '&' | '|' | '.'
                     ) {
                         iterator.next();
-                        buffer.push(*next_character);
+                        buffer.push(next_character);
                     /* Three character exceptions ("<<=", ">>=") */
-                    } else if matches!(*next_character, '<' | '>') {
+                    } else if matches!(next_character, '<' | '>') {
                         iterator.next();
-                        buffer.push(*next_character);
+                        buffer.push(next_character);
 
-                        if let Some((_, next_character)) = iterator.clone().peek() {
-                            if next_character == &'=' {
-                                iterator.next();
-                                buffer.push('=');
-                            }
+                        if let Some(&(_, '=')) = iterator.clone().peek() {
+                            iterator.next();
+                            buffer.push('=');
                         }
                     }
                 }
 
-                // TODO (ElBe): Make code better lol
+                #[allow(clippy::else_if_without_else)]
                 if &buffer.iter().collect::<String>() == "/*" {
                     let last_character: std::cell::Cell<char> = std::cell::Cell::new('\0');
                     buffer = iterator
@@ -290,6 +294,8 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
 
                     iterator.next();
 
+                    // We can be assured the slicing won't panic unless the comment immediately
+                    #[allow(clippy::indexing_slicing)]
                     result.push(Token {
                         location,
                         content: buffer[..(buffer.len() - 1)]
@@ -301,6 +307,7 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                     });
                     buffer.clear();
                 } else if &buffer.iter().collect::<String>() == "//" {
+                    #[allow(clippy::indexing_slicing, clippy::string_slice)]
                     buffer = line[(index + 1)..].chars().collect::<Vec<char>>();
 
                     result.push(Token {
@@ -319,7 +326,9 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                 buffer.append(
                     &mut iterator
                         .peek_while(|&(_, next_character)| {
-                            next_character.is_ascii_digit() || next_character == '.'
+                            next_character.is_ascii_digit()
+                                || next_character == '_'
+                                || next_character == '.'
                         })
                         .iter()
                         .map(|(_, found)| *found)
@@ -333,8 +342,24 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                         .count()
                         > 1
                     {
-                        // TODO (ElBe): Proper errors, filter ranges
-                        eprintln!("Float with more than one dot");
+                        let dots: std::cell::Cell<u8> = std::cell::Cell::new(0);
+                        let found_dots: Vec<&char> =
+                            buffer.iter().peekable().peek_until(|&&next_character| {
+                                if next_character == '.' {
+                                    dots.set(dots.get() + 1);
+                                } else {
+                                    dots.set(0);
+                                }
+
+                                dots.get() > 2
+                            });
+                        if found_dots.len() != buffer.len() {
+                            error!(
+                                "Invalid float literal at {index}:\n{}\n{}^ = help: to many dots",
+                                buffer.iter().collect::<String>(),
+                                " ".repeat(found_dots.len())
+                            );
+                        }
                     }
 
                     result.push(Token {
@@ -383,7 +408,7 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                         token_type: TokenType::Identifier,
                     });
 
-                    buffer.clear()
+                    buffer.clear();
                 }
             } else {
                 let source: &str = &format!("   {line_number} | {line}");
