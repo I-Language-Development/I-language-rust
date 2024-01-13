@@ -1,4 +1,4 @@
-// I Language lexer tests.
+// I Language lexer token tests.
 // Version: 1.0.0
 
 // Copyright (c) 2023-present I Language Development.
@@ -25,5 +25,16 @@
 // TESTS //
 ///////////
 
-mod lex;
-mod tokens;
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn test_location_debug() {
+        let location: lexer::tokens::token::Location = lexer::tokens::token::Location {
+            file: "tests".to_owned(),
+            line: 1,
+            column: 1,
+        };
+
+        assert_eq!(&format!("{location}"), "tests:1:1");
+    }
+}
