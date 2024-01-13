@@ -55,9 +55,10 @@ install-dev-dependencies:
 install-doc-requirements:
 	@pip install -r Docs/.requirements.txt
 
+# See rust-lang/cargo/12918 for why `-A clippy::std-instead-of-core` is needed
 # Lints the rust source files
 lint *ARGUMENTS:
-	@cargo clippy --all-targets --features cli --workspace {{ARGUMENTS}}
+	@cargo clippy --all-targets --all-features --workspace -- -A clippy::std-instead-of-core {{ARGUMENTS}}
 
 # Compiles and executes the main.rs file
 run *ARGUMENTS:

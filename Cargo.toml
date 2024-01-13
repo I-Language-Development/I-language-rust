@@ -37,7 +37,6 @@ publish = false
 
 [workspace.dependencies]
 annotate-snippets = "0.10.0"
-localizer-rs = "1.2.0"
 log = "0.4.20"
 
 tools = { path = "crates/tools" }
@@ -45,6 +44,26 @@ tools = { path = "crates/tools" }
 [workspace.lints.rust]
 non_snake_case = "allow"
 unsafe_code = "deny"
+
+[workspace.lints.clippy]
+pedantic = "warn"
+restriction = "warn"
+
+# Explicit allows
+absolute_paths = "allow"
+arithmetic_side_effects = "allow"
+blanket_clippy_restriction_lints = "allow"
+exhaustive_enums = "allow"
+exhaustive_structs = "allow"
+expect_used = "allow"
+implicit_return = "allow"
+inline_always = "allow"
+missing_trait_methods = "allow"
+must_use_candidate = "allow"
+print_stderr = "allow"
+print_stdout = "allow"
+redundant_type_annotations = "allow"
+std_instead_of_core = "allow" # Doesn't work until rust-lang/cargo/12918 is fixed
 
 [dependencies]
 # annotate-snippets = { version = "0.10.0", optional = true }
@@ -65,8 +84,18 @@ just = "1.14.0"
 
 [features]
 beta = []
-cli = ["dep:clap", "dep:clap-verbosity-flag", "dep:log"]
-localization = ["dep:localizer-rs"]
+cli = ["dep:clap", "dep:clap-verbosity-flag", "dep:log", "tools/cli"]
+localization = [
+	"dep:localizer-rs",
+	# "compiler/localization",
+	# "grammar/localization",
+	# "lexer/localization",
+	# "parser/localization",
+	"tools/localization"
+]
+
+# Default features
+default = ["localization"]
 
 [[bin]]
 name = "icomp"  # icomp = I Compiler
