@@ -307,7 +307,6 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                     });
                     buffer.clear();
                 } else if &buffer.iter().collect::<String>() == "//" {
-                    #[allow(clippy::indexing_slicing, clippy::string_slice)]
                     buffer = line[(index + 1)..].chars().collect::<Vec<char>>();
 
                     result.push(Token {
