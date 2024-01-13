@@ -9,11 +9,11 @@ while (guess != goal) {
     try {
         guess = int(input("Please input a number to guess (0-25): "));
     } catch TypeError(value) {
-        print("{value} is not a number. Using zero instead.");
+        print(f"{value} is not a number. Using zero instead.");
     }
 
     if (guess <= 0 || guess > 25) {
-        print("{guess} is not in the range of 0 to 25.");
+        print(f"{guess} is not in the range of 0 to 25.");
         continue;
     }
 
