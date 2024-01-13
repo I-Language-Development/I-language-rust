@@ -1,18 +1,18 @@
 // I Language lexer tokens.
 // Version: 1.0.0
-//
+
 // Copyright (c) 2023-present I Language Development.
-//
+
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the 'Software'),
 // to deal in the Software without restriction, including without limitation
 // the rights to use, copy, modify, merge, publish, distribute, sublicense,
 // and/or sell copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following conditions:
-//
+
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-//
+
 // THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS
 // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -36,6 +36,7 @@ use crate::tokens::mark::Mark;
 // TRAITS //
 ////////////
 
+#[allow(clippy::module_name_repetitions)]
 pub trait GetToken {
     #[allow(clippy::ptr_arg)]
     fn get_token(location: Location, buffer: &Vec<char>) -> Option<Token>;
@@ -60,6 +61,7 @@ pub enum TypeDefinition {
 // TOKEN STRUCT //
 //////////////////
 
+#[allow(clippy::module_name_repetitions)]
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum TokenType {
     Type(Type),
@@ -78,6 +80,7 @@ pub struct Location {
 }
 
 impl std::fmt::Display for Location {
+    #[inline]
     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(formatter, "{}:{}:{}", self.file, self.line, self.column)
     }

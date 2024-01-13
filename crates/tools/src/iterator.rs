@@ -25,13 +25,14 @@
 // IMPORTS //
 /////////////
 
-use std;
+use std::iter::{Iterator, Peekable};
+
 
 //////////////////////////
 // CONDITIONAL PEEKING //
 //////////////////////////
 
-pub trait ConditionalPeeking<I: std::iter::Iterator> {
+pub trait ConditionalPeeking<I: Iterator> {
     fn peek_while(&mut self, closure: impl Fn(&I::Item) -> bool) -> Vec<I::Item>
     where
         <I as Iterator>::Item: Clone;
@@ -41,7 +42,8 @@ pub trait ConditionalPeeking<I: std::iter::Iterator> {
         <I as Iterator>::Item: Clone;
 }
 
-impl<I: std::iter::Iterator + Clone> ConditionalPeeking<I> for std::iter::Peekable<I> {
+impl<I: Iterator + Clone> ConditionalPeeking<I> for Peekable<I> {
+    #[inline]
     fn peek_while(&mut self, closure: impl Fn(&I::Item) -> bool) -> Vec<I::Item>
     where
         <I as Iterator>::Item: Clone,
@@ -59,6 +61,7 @@ impl<I: std::iter::Iterator + Clone> ConditionalPeeking<I> for std::iter::Peekab
         result
     }
 
+    #[inline(always)]
     fn peek_until(&mut self, closure: impl Fn(&<I as Iterator>::Item) -> bool) -> Vec<I::Item>
     where
         <I as Iterator>::Item: Clone,

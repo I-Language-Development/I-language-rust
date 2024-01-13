@@ -28,18 +28,21 @@
 use current_locale;
 use localizer_rs;
 
+
 ////////////////
 // GET CONFIG //
 ////////////////
 
+#[inline(always)]
 pub fn get_config() -> localizer_rs::Config {
     let locale: String = match current_locale::current_locale() {
         Ok(value) => {
             let return_value: String = value;
             return_value
         }
-        Err(_) => "en".to_string(),
+        Err(_) => "en".to_owned(),
     };
     let split_locale: Vec<&str> = locale.split('-').collect();
+    #[allow(clippy::indexing_slicing)]
     localizer_rs::Config::new("Translations", split_locale[0])
 }

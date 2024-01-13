@@ -38,9 +38,8 @@ use crate::logging;
 ///
 /// # Parameters
 ///
-/// - `_location`: The panics location.
+/// - `location`: The panics location.
 /// - `payload`: The downcasted panic payload.
-/// - `backtrace`: The backtrace of the panic.
 ///
 /// # Returns
 ///
@@ -57,7 +56,6 @@ use crate::logging;
 ///     tools::panic_handler::generate_report(
 ///         panic_info.location(),
 ///         panic_info.payload().downcast_ref::<String>().cloned(),
-///         std::backtrace::Backtrace::force_capture()
 ///     );
 /// }));
 /// ```
@@ -129,10 +127,10 @@ use crate::logging;
 /// # See also
 ///
 /// - [`setup_handler`]
+#[inline(always)]
 pub fn generate_report(
-    _location: Option<&std::panic::Location<'_>>,
+    location: Option<&std::panic::Location<'_>>,
     payload: Option<String>,
-    backtrace: std::backtrace::Backtrace,
 ) -> Option<std::path::PathBuf> {
     let path: std::path::PathBuf = std::env::temp_dir().join("icomp_crash.txt");
 
@@ -142,36 +140,34 @@ pub fn generate_report(
     } else {
         String::new()
     };
-    let location: String = if let Some(value) = _location {
+    let location_string: String = if let Some(value) = location {
         format!("Location: {}:{}\n", value.file(), value.line())
     } else {
         String::new()
     };
 
     let log_buffer: String = format!("Log:\n{}\n", logging::buffer().join("\n"));
-    let content: String = format!("Backtrace:\n{backtrace}");
+    let content: String = format!("Backtrace:\n{}", std::backtrace::Backtrace::force_capture());
 
-    match std::fs::write(
-        path.clone(),
-        header
-            + &reason
-            + &location
-            + if &log_buffer != "Log:\n\n" {
-                &log_buffer
-            } else {
-                ""
-            }
-            + &content,
-    ) {
-        Ok(_) => {}
+    let mut file_content: String = String::new();
+    file_content.push_str(&header);
+    file_content.push_str(&reason);
+    file_content.push_str(&location_string);
+    file_content.push_str(if &log_buffer == "Log:\n\n" {
+        ""
+    } else {
+        &log_buffer
+    });
+    file_content.push_str(&content);
+
+    match std::fs::write(path.clone(), file_content) {
+        Ok(()) => Some(path),
         Err(error) => {
             eprintln!("Crash report generation failed.");
             eprintln!("File could not be created: {error}");
-            return None;
+            None
         }
-    };
-
-    Some(path)
+    }
 }
 
 /// Sets the panic handler (hook) up.
@@ -190,6 +186,7 @@ pub fn generate_report(
 /// # Admonition
 ///
 /// Inspired by [human-panic](https://crates.io/crates/human-panic).
+#[inline(always)]
 pub fn setup_handler() {
     let panic_handler = |panic_info: &std::panic::PanicInfo| {
         eprintln!("Well, this is embarrassing...");
@@ -198,7 +195,6 @@ pub fn setup_handler() {
         if let Some(path) = generate_report(
             panic_info.location(),
             panic_info.payload().downcast_ref::<String>().cloned(),
-            std::backtrace::Backtrace::force_capture(),
         ) {
             eprintln!(
                 "We have generated a crash report at \"{}\".",

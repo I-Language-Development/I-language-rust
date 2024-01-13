@@ -25,15 +25,13 @@
 // BETA BUILD //
 ////////////////
 
-#[cfg(feature = "beta")]
-pub const BETA_BUILD: bool = true;
-
-#[cfg(not(feature = "beta"))]
-pub const BETA_BUILD: bool = false;
+/// Whether or not the current version is a beta build
+pub const BETA_BUILD: bool = cfg!(feature = "beta");
 
 
 ///////////////
 // BETA FLAG //
 ///////////////
 
+/// Whether or not the `--beta` flag was used
 pub static mut BETA_FLAG: bool = false;
