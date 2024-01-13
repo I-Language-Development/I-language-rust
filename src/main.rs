@@ -27,11 +27,8 @@
 
 use std::{self, io::Write};
 
-use lexer;
-use tools;
-
 use clap::Parser;
-use clap_verbosity_flag::{Verbosity, WarnLevel};
+use clap_verbosity_flag::Verbosity;
 use log::{debug, error, trace};
 
 
@@ -41,20 +38,20 @@ use log::{debug, error, trace};
 
 #[derive(Parser)]
 #[command(author, version, about)]
-struct CLI {
+struct Cli {
     /// The path of the program to run
     file: Option<String>,
 
     /// Changes the verbosity of the logger
     #[command(flatten)]
-    verbosity: Verbosity<WarnLevel>,
+    verbosity: Verbosity<tools::logging::OffLevel>,
 
     /// Weather to use experimental beta features or not
     #[arg(short, long)]
     beta: bool,
 
     /// The directory where the output should be written to
-    #[arg(short = 'o', long = "output", default_value = "out/run")]
+    #[arg(short = 'o', long = "output", default_value = "out")]
     output: String,
 }
 
@@ -66,49 +63,60 @@ struct CLI {
 fn main() {
     tools::panic_handler::setup_handler();
 
-    let arguments: CLI = CLI::parse();
+    let arguments: Cli = Cli::parse();
+
+    #[allow(unsafe_code)]
     unsafe {
         tools::beta::BETA_FLAG = arguments.beta;
     }
 
-    tools::logging::setup_logging(arguments.verbosity.log_level_filter());
+    tools::logging::setup(arguments.verbosity.log_level_filter());
 
     let file_name: String;
     if let Some(custom_file_name) = arguments.file {
         file_name = custom_file_name;
+    } else if std::path::Path::new("src/main.il")
+        .try_exists()
+        .expect("Could not check whether `src/main.il` exists")
+    {
+        file_name = "src/main.il".to_owned();
+    } else if std::path::Path::new("main.il")
+        .try_exists()
+        .expect("Could not check whether `main.il` exists")
+    {
+        file_name = "main.il".to_owned();
     } else {
-        if std::path::Path::new("src/main.il")
-            .try_exists()
-            .expect("Could not check whether `src/main.il` exists")
-        {
-            file_name = "src/main.il".to_owned();
-        } else if std::path::Path::new("main.il")
-            .try_exists()
-            .expect("Could not check whether `main.il` exists")
-        {
-            file_name = "main.il".to_owned();
-        } else {
-            error!("Neither `src/main.il` nor `main.il` exist.");
-            std::process::exit(1); // TODO (ElBe): Proper errors
-        }
+        error!("Neither `src/main.il` nor `main.il` exist.");
+        std::process::exit(1); // TODO (ElBe): Proper errors
     }
 
     trace!("Attempting to open file `{file_name}`.");
-    let _file: std::fs::File =
-        std::fs::File::open(file_name.clone()).expect("File `{file_name}` could not be opened.");
+    let _file: std::fs::File = std::fs::File::open(file_name.clone())
+        .unwrap_or_else(|_| panic!("File `{file_name}` could not be opened."));
     let reader: std::io::BufReader<std::fs::File> = std::io::BufReader::new(_file);
 
     trace!("Successfully opened file `{file_name}`.");
     let input: String = std::io::read_to_string(reader).unwrap();
 
-    let start = std::time::Instant::now();
-    let output = lexer::lex::lex(input.trim(), &file_name);
+    let start: std::time::Instant = std::time::Instant::now();
+    let output: Vec<lexer::tokens::token::Token> = lexer::lex::lex(input.trim(), &file_name);
     debug!(
         "Lexing `{file_name}` took {}ms.",
         start.elapsed().as_millis()
     );
 
-    let mut file = std::fs::File::create(arguments.output + "/tokens")
-        .expect("Could not open file `{value}` for writing.");
-    file.write_all(format!("{:#?}", output).as_bytes());
+    let mut file: std::fs::File =
+        std::fs::File::create(String::new() + &arguments.output + "/tokens").unwrap_or_else(|_| {
+            panic!(
+                "Could not open file \"{}{}\" for writing.",
+                &arguments.output, "/tokens"
+            )
+        });
+    file.write_all(format!("{:#?}", output).as_bytes())
+        .unwrap_or_else(|_| {
+            panic!(
+                "Could not write to file \"{}{}\"",
+                &arguments.output, "/tokens"
+            )
+        });
 }
