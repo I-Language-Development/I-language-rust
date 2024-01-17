@@ -32,9 +32,12 @@ use crate::tokens::token::{GetToken, Location, Token, TokenType, TypeDefinition}
 // TRUE CONSTANTS //
 ////////////////////
 
+/// Constant tokens representing constants (`true`, `false`) in the lexer.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum Constant {
+    /// The `true` constant. Indicates a truthful expression.
     True,
+    /// The `false` constant. Indicates a falsy expression.
     False,
 }
 
@@ -69,10 +72,14 @@ impl GetToken for Constant {
 // TYPE NAMES //
 ////////////////
 
+/// Type **name** tokens representing type names (`str`, `int`, etc., **NOT** `"my string"` or `1234`) in the lexer.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum Type {
+    /// The `str` type. Alias: `string`. The type of string literals (e.g. `"my string"`).
     Str,
+    /// The `int` type. Alias: `integer`. The type of integer literals (e.g. `12`).
     Int,
+    /// The `bool` type. Alias: `boolean`. The type of boolean literals (`true`, `false`).
     Boolean,
 }
 

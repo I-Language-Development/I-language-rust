@@ -32,33 +32,51 @@ use crate::tokens::token::{GetToken, Location, Token, TokenType};
 // KEYWORDS //
 //////////////
 
+/// Keyword tokens representing a keyword (`if`, `class`, etc.) in the lexer.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum Keyword {
+    /// The `break` keyword. Used for exiting out of a loop.
     Break,
+    /// The `case` keyword. Used in combination with the [`match`](`Keyword::Match`) keyword to match a specific case.
     Case,
+    /// The `catch` keyword. Used in combination with the [`try`](`Keyword::Try`) keyword to catch exceptions and implement error handling.
     Catch,
+    /// The `class` keyword. Used to define classes.
     Class,
+    /// The `continue` keyword. Used to continue a loop before all of it's code is executed.
     Continue,
+    /// The `default` keyword. Used in combination with the [`match`](`Keyword::Match`) and [`case`](`Keyword::Case`) keywords to match the default case.
     Default,
-    Delete, // Replace with "gc.delete"?
+    /// The `delete` keyword. May be replaced by the `gc.delete()` function. Used to remove a variable from the current scope.
+    Delete, // TODO (ElBe): Replace with "gc.delete"?
+    /// The `else` keyword. Used to define the "otherwise" block of an [`if`](`Keyword::If`) statement.
     Else,
+    /// The `finally` keyword. Used in combination with the [`try`](`Keyword::Try`) keyword to execute code even after an exception has been raised.
     Finally,
+    /// The `for` keyword. Used to create a loop over an iterator.
     For,
-    Function, // Replace with "fn" or "func"?
+    /// The `function` keyword. Will probably be replaced by either `fn` or `func` soon. Used to define a function.
+    Function, // TODO (ElBe): Replace with "fn" or "func"?
+    /// The `if` keyword. Used to check whether a condition is true or false and execute code based on that condition.
     If,
+    /// The `import` keyword. Used to import code from other modules.
     Import,
+    /// The `match` keyword. Used in combination with the [`case`](`Keyword::Case`) and [`default`](`Keyword::Default`) keywords.
     Match,
+    /// The `pub` keyword. Used to export an item out of the current scope.
     Pub,
+    /// The `return` keyword. Used to return something from a function.
     Return,
+    /// The `throw` keyword. Used to throw (raise) an exception.
     Throw,
+    /// The `try` keyword. Used in combination with the [`catch`](`Keyword::Catch`) keyword to catch exceptions.
     Try,
+    /// The `use` keyword. Used to enable language features.
     Use,
+    /// The `while` keyword. Used to crate a loop which will iterates as long as a condition is true.
     While,
 }
 
-// TODO (ElBe): Possible way of doing it: one keyword enum var, like Identifier, determine keyword using content
-// TODO (ElBe): Possible way of doing it: file for each token type containing what to match and the token type (grammar file)
-//              "break"     KEYWORD(break)
 impl GetToken for Keyword {
     #[inline]
     #[allow(clippy::too_many_lines)]
