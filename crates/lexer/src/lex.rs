@@ -24,6 +24,8 @@
 
 // Many false positives
 #![allow(clippy::pattern_type_mismatch)]
+// See line 313
+#![allow(clippy::indexing_slicing, clippy::string_slice)]
 
 /////////////
 // IMPORTS //
