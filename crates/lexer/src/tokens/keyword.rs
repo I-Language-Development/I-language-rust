@@ -76,6 +76,8 @@ pub enum Keyword {
     Try,
     /// The `use` keyword. Used to enable language features.
     Use,
+    /// The `var` keyword. Used to define a variable without binding it to a type.
+    Var,
     /// The `while` keyword. Used to crate a loop which will iterates as long as a condition is true.
     While,
 }
@@ -186,6 +188,11 @@ impl GetToken for Keyword {
                 location,
                 content: "use".to_owned(),
                 token_type: TokenType::Keyword(Keyword::Use),
+            }),
+            "var" => Some(Token {
+                location,
+                content: "var".to_owned(),
+                token_type: TokenType::Keyword(Keyword::Var),
             }),
             "while" => Some(Token {
                 location,

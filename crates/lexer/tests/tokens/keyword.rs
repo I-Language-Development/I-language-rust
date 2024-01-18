@@ -155,6 +155,11 @@ mod tests {
         ));
         assert!(generate_test(
             &location,
+            "var",
+            lexer::tokens::keyword::Keyword::Var
+        ));
+        assert!(generate_test(
+            &location,
             "while",
             lexer::tokens::keyword::Keyword::While
         ));
