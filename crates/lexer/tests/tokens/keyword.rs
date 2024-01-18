@@ -75,6 +75,11 @@ mod tests {
         ));
         assert!(generate_test(
             &location,
+            "const",
+            lexer::tokens::keyword::Keyword::Const
+        ));
+        assert!(generate_test(
+            &location,
             "continue",
             lexer::tokens::keyword::Keyword::Continue
         ));

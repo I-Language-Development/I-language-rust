@@ -44,6 +44,8 @@ pub enum Keyword {
     Catch,
     /// The `class` keyword. Used to define classes.
     Class,
+    /// The `const` keyword. Used to define a variable as constant.
+    Const,
     /// The `continue` keyword. Used to continue a loop before all of it's code is executed.
     Continue,
     /// The `default` keyword. Used in combination with the [`match`](`Keyword::Match`) and [`case`](`Keyword::Case`) keywords to match the default case.
@@ -104,6 +106,11 @@ impl GetToken for Keyword {
                 location,
                 content: "class".to_owned(),
                 token_type: TokenType::Keyword(Keyword::Class),
+            }),
+            "const" => Some(Token {
+                location,
+                content: "const".to_owned(),
+                token_type: TokenType::Keyword(Keyword::Const),
             }),
             "continue" => Some(Token {
                 location,
