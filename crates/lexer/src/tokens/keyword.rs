@@ -1,3 +1,4 @@
+//! The lexers keywords, which are tokens like `break`, `if` or `class`.
 // I Language lexer keywords.
 // Version: 1.0.0
 

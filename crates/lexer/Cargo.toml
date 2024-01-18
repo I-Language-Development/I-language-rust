@@ -1,6 +1,6 @@
 [package]
 name = "lexer"
-description = "I-Language lexer is the lexer for the I-Programming-Language."
+description = "I-Language lexer is the lexer (tokenizer) for the I-Programming-Language."
 version = "1.0.0"
 authors = [
 	"ElBe-Plaq <elbe.dev.plaq@gmail.com>",

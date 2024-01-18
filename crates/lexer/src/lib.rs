@@ -1,3 +1,4 @@
+//! I-Language lexer is the lexer (tokenizer) for the I-Programming-Language.
 // I Language lexer.
 // Version: 1.0.0
 

@@ -1,3 +1,4 @@
+//! The lexers different kinds of tokens, which are the output of a lexer.
 // I Language tokens.
 // Version: 1.0.0
 

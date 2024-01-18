@@ -1,3 +1,4 @@
+//! The lexer constants, including type names (`str`, `int`, etc.) and constants (`true`, `false`, `none`).
 // I Language lexer constants.
 // Version: 1.0.0
 

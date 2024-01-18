@@ -1,3 +1,4 @@
+//! The lexers marks, which are tokens like `+`, `-` or `=`.
 // I Language lexer marks.
 // Version: 1.0.0
 
@@ -32,54 +33,102 @@ use crate::tokens::token::{GetToken, Location, Token, TokenType};
 // MARK //
 //////////
 
+/// Mark tokens representing a mark (`+`, `=`, etc.) in the lexer.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum Mark {
+    /// The `+` mark. Used for adding the left and right values together.
     Add,
+    /// The `+=` mark. Used for adding the right value to the variable and assigning that value to the variable.
     AddAssign,
+    /// The `&&` (**logical** and) mark. Used for creating a true/false value based on whether both the left and right tokens are true.
     And,
+    /// The `->` mark. Used for indicating what value will be returned from a function.
     Arrow,
+    /// The `=` mark. Used for assigning a value to a variable.
     Assign,
+    /// The `@` mark. Currently, it has no use, but it's reserved for later usage and will probably be used in future.
     At,
+    /// The `!` (**logical** not) mark. Used for flipping a true value to false and vice versa.
     Bang,
+    /// The `&` (**bitwise** and) mark. Used for performing the bitwise-and operation with the left and right tokens.
     BitAnd,
+    /// The `&=` (**bitwise** and assign) mark. Used for performing the bitwise-and operation with the value stored in the variable and the value of the right token and assigning that value to the variable.
     BitAndAssign,
+    /// The `|` (**bitwise** or) mark. Used for performing the bitwise-or operation with the left and right tokens.
     BitOr,
+    /// The `|=` (**bitwise** or assign) mark. Used for performing the bitwise-or operation with the value stored in the variable and the value of the right token and assigning that value to the variable.
     BitOrAssign,
+    /// The `^` (**bitwise** exclusive or) mark. Used for performing the bitwise-xor operation with the left and right tokens.
     BitXor,
+    /// The `^=` (**bitwise** exclusive or assign) mark. Used for performing the bitwise-xor operation with the value stored in the variable and the value of the right token and assigning that value to the variable.
     BitXorAssign,
+    /// The `{` mark. Used for opening a code block and defining a set and dictionary (hashmap).
     BraceOpen,
+    /// The `}` mark. Used for closing a code block and defining a set and dictionary (hashmap).
     BraceClose,
+    /// The `[` mark. Used for indexing a value and opening an array.
     BracketOpen,
+    /// The `]` mark. Used for indexing a value and closing an array.
     BracketClose,
+    /// The `:` mark. Used for defining type parameters and as a separator between a dictionary's key and value.
     Colon,
+    /// The `,` mark. Used for adding more items to a data structure.
     Comma,
+    /// The `--` mark. Used for decreasing the left token by one.
     Decrease,
+    /// The `/` mark. Used for dividing the left token by the right token.
     Divide,
+    /// The `/=` mark. Used for dividing the variable by the right token and assigning that value to the variable.
     DivideAssign,
+    /// The `.` mark. Used for accessing sub items of a scope and starting floats.
     Dot,
+    /// The `==` mark. Used for checking if the left and right tokens are equal.
     Equal,
+    /// The `**` mark. Used for exponentiation with the left token with the right token.
     Exponentiation,
+    /// The `>` mark. Used for checking whether the left value is greater than the right value.
     Greater,
+    /// The `>=` mark. Used for checking whether the left value is greater than or the same as the right value.
     GreaterEqual,
+    /// The `++` mark. Used for increasing the left token by one.
     Increase,
+    /// The `<` mark. Used for checking whether the left value is smaller than the right value.
     Less,
+    /// The `<=` mark. Used for checking whether the left value is smaller than or the same as the right value.
     LessEqual,
+    /// The `%` mark. Used for performing a modulo operation on the left and right values.
     Modulo,
+    /// The `%=` mark. Used for performing a modulo operation on the variable and the right value and assigning that value to the variable.
     ModuloAssign,
+    /// The `*` mark. Used for multiplying the left and right values.
     Multiply,
+    /// The `*=` mark. Used for multiplying the variable and the right value and assigning that value to the variable.
     MultiplyAssign,
+    /// The `!=` mark. Used for checking if the left and right values are *not* equal.
     NotEqual,
+    /// The `||` (**logical** or) mark. Used for checking if either the left or the right values are true. If both are true, it will still return true.
     Or,
+    /// The `(` mark. Used for function parameters and operator precedence for mathematical operations.
     ParenthesisOpen,
+    /// The `)` mark. Used for function parameters and operator precedence for mathematical operations.
     ParenthesisClose,
+    /// The `?` mark. Currently, it has no use, but it's reserved for later usage and will probably be used in future.
     QuestionMark,
+    /// The `..` mark. Used to create a range for indexing or looping. Currently, only ranges with spaces around them are supported, `1..2` will not work and returns a float.
     Range,
+    /// The `;` mark. Used to end a line of code.
     Semicolon,
+    /// The `<<` (**bitwise** left shift) mark. Used to shift bytes n digits to the left, where n is the right value.
     ShiftLeft,
+    /// The `<<=` (**bitwise** left shift assign) mark. Used to shift bytes n digits to the left, where n is the right value, and assigning that value to the variable.
     ShiftLeftAssign,
+    /// The `>>` (**bitwise** right shift) mark. Used to shift bytes n digits to the right, where n is the right value.
     ShiftRight,
+    /// The `>>=` (**bitwise** right shift assign) mark. Used to shift bytes n digits to the right, where n is the right value, and assigning that value to the variable.
     ShiftRightAssign,
+    /// The `-` mark. Used for subtracting the right value from the left value.
     Subtract,
+    /// The `-=` mark. Used for subtracting the right value from the variable and assigning that value to the variable.
     SubtractAssign,
 }
 
