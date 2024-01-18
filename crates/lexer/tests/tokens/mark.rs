@@ -96,6 +96,16 @@ mod tests {
         ));
         assert!(generate_test(
             &location,
+            "~",
+            lexer::tokens::mark::Mark::BitNot
+        ));
+        assert!(generate_test(
+            &location,
+            "~=",
+            lexer::tokens::mark::Mark::BitNotAssign
+        ));
+        assert!(generate_test(
+            &location,
             "|",
             lexer::tokens::mark::Mark::BitOr
         ));

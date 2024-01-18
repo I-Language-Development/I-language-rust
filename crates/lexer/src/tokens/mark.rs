@@ -54,6 +54,10 @@ pub enum Mark {
     BitAnd,
     /// The `&=` (**bitwise** and assign) mark. Used for performing the bitwise-and operation with the value stored in the variable and the value of the right token and assigning that value to the variable.
     BitAndAssign,
+    /// The `~` (**bitwise** not) mark. Used for performing the bitwise-not operation with the left and right tokens.
+    BitNot,
+    /// The `~=` (**bitwise** not assign) mark. Used for performing the bitwise-not operation with the value stored in the variable and the value of the right token and assigning that value to the variable.
+    BitNotAssign,
     /// The `|` (**bitwise** or) mark. Used for performing the bitwise-or operation with the left and right tokens.
     BitOr,
     /// The `|=` (**bitwise** or assign) mark. Used for performing the bitwise-or operation with the value stored in the variable and the value of the right token and assigning that value to the variable.
@@ -183,6 +187,16 @@ impl GetToken for Mark {
                 location,
                 content: "&=".to_owned(),
                 token_type: TokenType::Mark(Mark::BitAndAssign),
+            }),
+            "~" => Some(Token {
+                location,
+                content: "~".to_owned(),
+                token_type: TokenType::Mark(Mark::BitNot),
+            }),
+            "~=" => Some(Token {
+                location,
+                content: "~=".to_owned(),
+                token_type: TokenType::Mark(Mark::BitNotAssign),
             }),
             "|" => Some(Token {
                 location,
