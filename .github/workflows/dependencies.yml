@@ -44,4 +44,4 @@ jobs:
               if: ${{ github.event_name != 'push' }}
             - name: Dependency Review
               if: ${{ github.event_name != 'push' }}
-              uses: actions/dependency-review-action@v3
+              uses: actions/dependency-review-action@v4
