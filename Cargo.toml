@@ -1,7 +1,7 @@
 # Note:
 # All edits to this file, for example rust version updates, should be committed only on a new release.
 
-# Uncomment line 47, 72 and 73 if you want to check for missing documentation.
+# Uncomment line 48, 73 and 74 if you want to check for missing documentation.
 
 [package]
 name = "I-Language"
@@ -24,6 +24,7 @@ categories = [
 	"compilers",
 	"development-tools",
 ]
+build = "src/build.rs"
 
 [workspace]
 members = ["crates/*"]
@@ -74,7 +75,7 @@ std_instead_of_core = "allow" # Doesn't work until rust-lang/cargo/12918 is fixe
 
 [dependencies]
 # annotate-snippets = { version = "0.10.0", optional = true }
-clap = { version = "4.4.11", features = ["derive", "wrap_help"], optional = true }
+clap = { version = "4.4.11", features = ["derive", "string", "wrap_help"], optional = true }
 clap-verbosity-flag = { version = "2.1.1", optional = true }
 localizer-rs = { version = "1.2.0", optional = true }
 log = { version = "0.4.20", optional = true }

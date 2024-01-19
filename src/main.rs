@@ -37,7 +37,7 @@ use log::{debug, error, trace};
 ///////////////////
 
 #[derive(Parser)]
-#[command(author, version, about)]
+#[command(author, version, about, long_version(format!("{} ({})", env!("CARGO_PKG_VERSION"), env!("GIT_HASH"))))]
 struct Cli {
     /// The path of the program to run
     file: Option<String>,

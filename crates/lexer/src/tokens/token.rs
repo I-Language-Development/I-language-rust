@@ -98,8 +98,6 @@ pub enum TypeDefinition {
     Str,
     /// The integer literal. Examples: `1`, `123`, `-10`, `1_000_000`
     Integer,
-    /// The float literal. Examples: `1.0`, `1.23`, `-10.0`, `1_000_000.20`
-    Float,
     /// The boolean literal. The only values are `true` and `false`.
     Boolean(Constant),
     /// The none type. Also referred to as null type. The only value is `none`.

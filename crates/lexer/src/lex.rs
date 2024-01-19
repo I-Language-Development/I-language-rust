@@ -24,7 +24,7 @@
 
 // Many false positives
 #![allow(clippy::pattern_type_mismatch)]
-// See line 313
+// See line 311
 #![allow(clippy::indexing_slicing, clippy::string_slice)]
 
 /////////////
@@ -39,14 +39,13 @@ use crate::tokens::token::{GetToken, Location, Token, TokenType, TypeDefinition}
 use tools::error;
 use tools::iterator::ConditionalPeeking;
 
-use log::{error, trace};
+use log::trace;
 
 
 //////////////////
 // LEX FUNCTION //
 //////////////////
 
-// TODO (ElBe): Examples and tests
 /// Lexes (tokenizes) a input string into a vector of [`Token`]s.
 ///
 /// # Parameters
@@ -326,57 +325,18 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                 buffer.push(character);
                 buffer.append(
                     &mut iterator
-                        .peek_while(|&(_, next_character)| {
-                            next_character.is_ascii_digit()
-                                || next_character == '_'
-                                || next_character == '.'
-                        })
+                        .peek_while(|&(_, next_character)| next_character.is_ascii_digit())
                         .iter()
                         .map(|(_, found)| *found)
                         .collect::<Vec<char>>(),
                 );
 
-                if buffer.contains(&'.') {
-                    if buffer
-                        .iter()
-                        .filter(|filter_character| **filter_character == '.')
-                        .count()
-                        > 1
-                    {
-                        let dots: std::cell::Cell<u8> = std::cell::Cell::new(0);
-                        let found_dots: Vec<&char> =
-                            buffer.iter().peekable().peek_until(|&&next_character| {
-                                if next_character == '.' {
-                                    dots.set(dots.get() + 1);
-                                } else {
-                                    dots.set(0);
-                                }
-
-                                dots.get() > 2
-                            });
-                        if found_dots.len() != buffer.len() {
-                            error!(
-                                "Invalid float literal at {index}:\n{}\n{}^ = help: to many dots",
-                                buffer.iter().collect::<String>(),
-                                " ".repeat(found_dots.len())
-                            );
-                        }
-                    }
-
-                    result.push(Token {
-                        location: location.clone(),
-                        content: buffer.iter().collect::<String>(),
-                        token_type: TokenType::TypeDefinition(TypeDefinition::Float),
-                    });
-                    buffer.clear();
-                } else {
-                    result.push(Token {
-                        location: location.clone(),
-                        content: buffer.iter().collect::<String>(),
-                        token_type: TokenType::TypeDefinition(TypeDefinition::Integer),
-                    });
-                    buffer.clear();
-                }
+                result.push(Token {
+                    location: location.clone(),
+                    content: buffer.iter().collect::<String>(),
+                    token_type: TokenType::TypeDefinition(TypeDefinition::Integer),
+                });
+                buffer.clear();
             } else if character.is_alphabetic() || character == '_' {
                 buffer.push(character);
                 buffer.append(
