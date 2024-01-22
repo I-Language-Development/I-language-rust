@@ -111,12 +111,8 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
     let mut result: Vec<Token> = vec![];
 
     let mut iterator: std::iter::Peekable<std::iter::Enumerate<std::str::Chars>>;
-    let mut index: usize;
-
     let mut buffer: Vec<char>;
-    let mut buffer_location: Option<Location> = None;
-
-    let mut skips: usize = 0;
+    let mut index: usize;
 
     'outer: for (mut line_number, line) in input.split('\n').enumerate() {
         line_number += 1;
@@ -125,11 +121,6 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
         iterator = line.chars().enumerate().peekable();
 
         while let Some((zero_based_index, character)) = iterator.next() {
-            if skips > 0 {
-                skips -= 1;
-                continue;
-            }
-
             if character.is_whitespace() {
                 continue;
             }
@@ -348,10 +339,6 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                         .map(|(_, found)| *found)
                         .collect::<Vec<char>>(),
                 );
-
-                if buffer_location.is_none() {
-                    buffer_location = Some(location.clone());
-                }
 
                 if let Some(value) = Keyword::get_token(location.clone(), &buffer) {
                     result.push(value);
