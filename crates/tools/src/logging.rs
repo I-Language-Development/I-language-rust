@@ -21,6 +21,8 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+#![allow(rustdoc::private_intra_doc_links)]
+
 /////////////
 // IMPORTS //
 /////////////
