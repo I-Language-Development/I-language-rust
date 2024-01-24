@@ -28,6 +28,57 @@
 #[cfg(test)]
 mod tests {
     #[test]
+    fn test_lex_string() {
+        use lexer::tokens::token::{Location, Token, TokenType, TypeDefinition};
+        use std;
+
+        let location: Location = Location {
+            file: "tests".to_owned(),
+            line: 1,
+            column: 1,
+        };
+
+        let input: &str = "my string'"; // For lexing, the first quote has to be removed
+        let mut iterator: std::iter::Peekable<std::iter::Enumerate<std::str::Chars>> =
+            input.chars().enumerate().peekable();
+
+        assert_eq!(
+            TypeDefinition::lex_string(&mut iterator, input, location.clone(), '\''),
+            Token {
+                location: location,
+                content: "my string".to_owned(),
+                token_type: TokenType::TypeDefinition(TypeDefinition::String)
+            }
+        );
+    }
+
+    #[test]
+    fn test_lex_mark() {
+        use lexer::tokens::mark::Mark;
+        use lexer::tokens::token::{Location, Token, TokenType};
+        use std;
+
+        let location: Location = Location {
+            file: "tests".to_owned(),
+            line: 1,
+            column: 1,
+        };
+
+        let input: &str = "==";
+        let mut iterator: std::iter::Peekable<std::iter::Enumerate<std::str::Chars>> =
+            input.chars().enumerate().peekable();
+
+        assert_eq!(
+            TokenType::lex_mark(&mut iterator, input, location.clone(), '='),
+            Some(Token {
+                location: location,
+                content: "==".to_owned(),
+                token_type: TokenType::Mark(Mark::Equal)
+            })
+        );
+    }
+
+    #[test]
     fn test_location_debug() {
         let location: lexer::tokens::token::Location = lexer::tokens::token::Location {
             file: "tests".to_owned(),

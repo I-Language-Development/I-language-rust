@@ -33,7 +33,6 @@
 
 use crate::tokens::constant::{Constant, Type};
 use crate::tokens::keyword::Keyword;
-use crate::tokens::mark::Mark;
 use crate::tokens::token::{GetToken, Location, Token, TokenType, TypeDefinition};
 
 use tools::error;
@@ -114,7 +113,7 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
     let mut buffer: Vec<char>;
     let mut index: usize;
 
-    'outer: for (mut line_number, line) in input.split('\n').enumerate() {
+    for (mut line_number, line) in input.split('\n').enumerate() {
         line_number += 1;
 
         buffer = vec![];
@@ -134,90 +133,8 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
 
             trace!("Lexing character {character} in line {line_number}, column {index}.");
 
-            if character == '"' {
-                let last_character: std::cell::Cell<char> = std::cell::Cell::new('\0');
-                buffer = iterator
-                    .peek_while(|&(_, next_character)| {
-                        let value: bool = last_character.get() != '\\' && next_character == '"';
-                        last_character.set(next_character);
-                        !value
-                    })
-                    .iter()
-                    .map(|(_, found)| *found)
-                    .collect::<Vec<char>>();
-
-                let unterminated_string_error = || {
-                    let source: &str = &format!("   {line_number} | {line}");
-
-                    let underline: &str = &format!(
-                        "{0}^",
-                        " ".repeat(line_number.to_string().len() + index + buffer.len() +  6 /* < Amount of extra characters, in this case the pipe symbol and the five spaces*/)
-                    );
-
-                    error::Error::new(
-                        "Error",
-                        &format!("Unterminated string literal\n --> {location}"),
-                        1,
-                    )
-                    .raise(&format!("{source}\n{underline} = help: Add a `\"` here"));
-                };
-
-                if let Some((_, next_character)) = iterator.next() {
-                    if next_character != '"' {
-                        unterminated_string_error();
-                    }
-                } else {
-                    unterminated_string_error();
-                }
-
-                result.push(Token {
-                    location,
-                    content: buffer.iter().collect::<String>(),
-                    token_type: TokenType::TypeDefinition(TypeDefinition::Str),
-                });
-                buffer.clear();
-            } else if character == '\'' {
-                let last_character: std::cell::Cell<char> = std::cell::Cell::new('\0');
-                buffer = iterator
-                    .peek_while(|&(_, next_character)| {
-                        let value: bool = last_character.get() != '\\' && next_character == '\'';
-                        last_character.set(next_character);
-                        !value
-                    })
-                    .iter()
-                    .map(|(_, found)| *found)
-                    .collect::<Vec<char>>();
-
-                let unterminated_string_error = || {
-                    let source: &str = &format!("   {line_number} | {line}");
-
-                    let underline: &str = &format!(
-                        "{0}^",
-                        " ".repeat(line_number.to_string().len() + index + buffer.len() +  6 /* < Amount of extra characters, in this case the pipe symbol and the five spaces*/)
-                    );
-
-                    error::Error::new(
-                        "Error",
-                        &format!("Unterminated string literal\n --> {location}"),
-                        1,
-                    )
-                    .raise(&format!("{source}\n{underline} = help: Add a `'` here"));
-                };
-
-                if let Some((_, next_character)) = iterator.next() {
-                    if next_character != '\'' {
-                        unterminated_string_error();
-                    }
-                } else {
-                    unterminated_string_error();
-                }
-
-                result.push(Token {
-                    location,
-                    content: buffer.iter().collect::<String>(),
-                    token_type: TokenType::TypeDefinition(TypeDefinition::Str),
-                });
-                buffer.clear();
+            if character == '"' || character == '\'' {
+                TypeDefinition::lex_string(&mut iterator, line, location, character);
             } else if matches!(
                 character,
                 '+' | '-'
@@ -243,74 +160,10 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                     | '['
                     | ']'
             ) {
-                buffer.push(character);
-
-                if let Some(&(_, next_character)) = iterator.clone().peek() {
-                    #[allow(clippy::else_if_without_else)]
-                    if matches!(
-                        next_character,
-                        '+' | '-' | '/' | '*' | '=' | '&' | '|' | '.'
-                    ) {
-                        iterator.next();
-                        buffer.push(next_character);
-                    /* Three character exceptions ("<<=", ">>=") */
-                    } else if matches!(next_character, '<' | '>') {
-                        iterator.next();
-                        buffer.push(next_character);
-
-                        if let Some(&(_, '=')) = iterator.clone().peek() {
-                            iterator.next();
-                            buffer.push('=');
-                        }
-                    }
-                }
-
-                #[allow(clippy::else_if_without_else)]
-                if &buffer.iter().collect::<String>() == "/*" {
-                    let last_character: std::cell::Cell<char> = std::cell::Cell::new('\0');
-                    buffer = iterator
-                        .peek_until(|&(_, next_character)| {
-                            let value: bool = last_character.get() == '*' && next_character == '/';
-                            last_character.set(next_character);
-                            value
-                        })
-                        .iter()
-                        .map(|(_, found)| *found)
-                        .collect::<Vec<char>>();
-
-                    if buffer.last() != Some(&'*') {
-                        eprintln!("Unclosed comment...");
-                        eprintln!("Proper errors soon...");
-                        std::process::exit(1);
-                    }
-
-                    iterator.next();
-
-                    // We can be assured the slicing won't panic unless the comment immediately
-                    #[allow(clippy::indexing_slicing)]
-                    result.push(Token {
-                        location,
-                        content: buffer[..(buffer.len() - 1)]
-                            .iter()
-                            .collect::<String>()
-                            .trim()
-                            .to_owned(),
-                        token_type: TokenType::Comment,
-                    });
-                    buffer.clear();
-                } else if &buffer.iter().collect::<String>() == "//" {
-                    buffer = line[(index + 1)..].chars().collect::<Vec<char>>();
-
-                    result.push(Token {
-                        location,
-                        content: buffer.iter().collect::<String>().trim().to_owned(),
-                        token_type: TokenType::Comment,
-                    });
-
-                    continue 'outer;
-                } else if let Some(value) = Mark::get_token(location.clone(), &buffer) {
+                if let Some(value) = TokenType::lex_mark(&mut iterator, line, location, character) {
                     result.push(value);
-                    buffer.clear();
+                } else {
+                    // Syntax error
                 }
             } else if character.is_ascii_digit() {
                 buffer.push(character);
