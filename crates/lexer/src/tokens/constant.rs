@@ -26,47 +26,7 @@
 // IMPORTS //
 /////////////
 
-use crate::tokens::token::{GetToken, Location, Token, TokenType, TypeDefinition};
-
-
-////////////////////
-// TRUE CONSTANTS //
-////////////////////
-
-/// Constant tokens representing constants (`true`, `false`) in the lexer.
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub enum Constant {
-    /// The `true` constant. Indicates a truthful expression.
-    True,
-    /// The `false` constant. Indicates a falsy expression.
-    False,
-}
-
-impl GetToken for Constant {
-    #[inline(always)]
-    fn get_token(location: Location, buffer: &Vec<char>) -> Option<Token> {
-        let content: &str = &buffer.iter().collect::<String>();
-
-        match content {
-            "true" => Some(Token {
-                location,
-                content: "true".to_owned(),
-                token_type: TokenType::TypeDefinition(TypeDefinition::Boolean(Constant::True)),
-            }),
-            "false" => Some(Token {
-                location,
-                content: "false".to_owned(),
-                token_type: TokenType::TypeDefinition(TypeDefinition::Boolean(Constant::False)),
-            }),
-            "None" => Some(Token {
-                location,
-                content: "None".to_owned(),
-                token_type: TokenType::TypeDefinition(TypeDefinition::None),
-            }),
-            _ => None,
-        }
-    }
-}
+use crate::tokens::token::{GetToken, Location, Token, TokenType};
 
 
 ////////////////

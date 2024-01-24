@@ -27,147 +27,51 @@
 
 #[cfg(test)]
 mod tests {
-    use lexer::tokens::token::GetToken;
+    use lexer::tokens::keyword::Keyword;
+    use lexer::tokens::token::{GetToken, Location, Token, TokenType};
 
-    fn generate_test(
-        location: &lexer::tokens::token::Location,
-        input: &str,
-        keyword: lexer::tokens::keyword::Keyword,
-    ) -> bool {
-        lexer::tokens::keyword::Keyword::get_token(
-            location.clone(),
-            &input.chars().collect::<Vec<char>>(),
-        ) == Some(lexer::tokens::token::Token {
-            location: location.clone(),
-            content: input.to_owned(),
-            token_type: lexer::tokens::token::TokenType::Keyword(keyword),
-        })
+    fn generate_test(location: &Location, input: &str, keyword: Keyword) -> bool {
+        Keyword::get_token(location.clone(), &input.chars().collect::<Vec<char>>())
+            == Some(Token {
+                location: location.clone(),
+                content: input.to_owned(),
+                token_type: TokenType::Keyword(keyword),
+            })
     }
 
     #[test]
     #[allow(clippy::too_many_lines)]
     fn test_keyword() {
-        let location: lexer::tokens::token::Location = lexer::tokens::token::Location {
+        let location: Location = Location {
             file: "tests".to_owned(),
             line: 1,
             column: 1,
         };
 
-        assert!(generate_test(
-            &location,
-            "break",
-            lexer::tokens::keyword::Keyword::Break
-        ));
-        assert!(generate_test(
-            &location,
-            "case",
-            lexer::tokens::keyword::Keyword::Case
-        ));
-        assert!(generate_test(
-            &location,
-            "catch",
-            lexer::tokens::keyword::Keyword::Catch
-        ));
-        assert!(generate_test(
-            &location,
-            "class",
-            lexer::tokens::keyword::Keyword::Class
-        ));
-        assert!(generate_test(
-            &location,
-            "const",
-            lexer::tokens::keyword::Keyword::Const
-        ));
-        assert!(generate_test(
-            &location,
-            "continue",
-            lexer::tokens::keyword::Keyword::Continue
-        ));
-        assert!(generate_test(
-            &location,
-            "default",
-            lexer::tokens::keyword::Keyword::Default
-        ));
-        assert!(generate_test(
-            &location,
-            "delete",
-            lexer::tokens::keyword::Keyword::Delete
-        ));
-        assert!(generate_test(
-            &location,
-            "else",
-            lexer::tokens::keyword::Keyword::Else
-        ));
-        assert!(generate_test(
-            &location,
-            "finally",
-            lexer::tokens::keyword::Keyword::Finally
-        ));
-        assert!(generate_test(
-            &location,
-            "for",
-            lexer::tokens::keyword::Keyword::For
-        ));
-        assert!(generate_test(
-            &location,
-            "function",
-            lexer::tokens::keyword::Keyword::Function
-        ));
-        assert!(generate_test(
-            &location,
-            "if",
-            lexer::tokens::keyword::Keyword::If
-        ));
-        assert!(generate_test(
-            &location,
-            "import",
-            lexer::tokens::keyword::Keyword::Import
-        ));
-        assert!(generate_test(
-            &location,
-            "match",
-            lexer::tokens::keyword::Keyword::Match
-        ));
-        assert!(generate_test(
-            &location,
-            "pub",
-            lexer::tokens::keyword::Keyword::Pub
-        ));
-        assert!(generate_test(
-            &location,
-            "return",
-            lexer::tokens::keyword::Keyword::Return
-        ));
-        assert!(generate_test(
-            &location,
-            "throw",
-            lexer::tokens::keyword::Keyword::Throw
-        ));
-        assert!(generate_test(
-            &location,
-            "try",
-            lexer::tokens::keyword::Keyword::Try
-        ));
-        assert!(generate_test(
-            &location,
-            "use",
-            lexer::tokens::keyword::Keyword::Use
-        ));
-        assert!(generate_test(
-            &location,
-            "var",
-            lexer::tokens::keyword::Keyword::Var
-        ));
-        assert!(generate_test(
-            &location,
-            "while",
-            lexer::tokens::keyword::Keyword::While
-        ));
+        assert!(generate_test(&location, "break", Keyword::Break));
+        assert!(generate_test(&location, "case", Keyword::Case));
+        assert!(generate_test(&location, "catch", Keyword::Catch));
+        assert!(generate_test(&location, "class", Keyword::Class));
+        assert!(generate_test(&location, "const", Keyword::Const));
+        assert!(generate_test(&location, "continue", Keyword::Continue));
+        assert!(generate_test(&location, "default", Keyword::Default));
+        assert!(generate_test(&location, "delete", Keyword::Delete));
+        assert!(generate_test(&location, "else", Keyword::Else));
+        assert!(generate_test(&location, "finally", Keyword::Finally));
+        assert!(generate_test(&location, "for", Keyword::For));
+        assert!(generate_test(&location, "function", Keyword::Function));
+        assert!(generate_test(&location, "if", Keyword::If));
+        assert!(generate_test(&location, "import", Keyword::Import));
+        assert!(generate_test(&location, "match", Keyword::Match));
+        assert!(generate_test(&location, "pub", Keyword::Pub));
+        assert!(generate_test(&location, "return", Keyword::Return));
+        assert!(generate_test(&location, "throw", Keyword::Throw));
+        assert!(generate_test(&location, "try", Keyword::Try));
+        assert!(generate_test(&location, "use", Keyword::Use));
+        assert!(generate_test(&location, "var", Keyword::Var));
+        assert!(generate_test(&location, "while", Keyword::While));
         assert_eq!(
-            lexer::tokens::keyword::Keyword::get_token(
-                location.clone(),
-                &" ".chars().collect::<Vec<char>>()
-            ),
+            Keyword::get_token(location.clone(), &" ".chars().collect::<Vec<char>>()),
             None
         );
     }

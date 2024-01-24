@@ -27,278 +27,78 @@
 
 #[cfg(test)]
 mod tests {
-    use lexer::tokens::token::GetToken;
+    use lexer::tokens::mark::Mark;
+    use lexer::tokens::token::{GetToken, Location, Token, TokenType};
 
-    fn generate_test(
-        location: &lexer::tokens::token::Location,
-        input: &str,
-        mark: lexer::tokens::mark::Mark,
-    ) -> bool {
-        lexer::tokens::mark::Mark::get_token(
-            location.clone(),
-            &input.chars().collect::<Vec<char>>(),
-        ) == Some(lexer::tokens::token::Token {
-            location: location.clone(),
-            content: input.to_owned(),
-            token_type: lexer::tokens::token::TokenType::Mark(mark),
-        })
+    fn generate_test(location: &Location, input: &str, mark: Mark) -> bool {
+        Mark::get_token(location.clone(), &input.chars().collect::<Vec<char>>())
+            == Some(Token {
+                location: location.clone(),
+                content: input.to_owned(),
+                token_type: TokenType::Mark(mark),
+            })
     }
 
     #[test]
     #[allow(clippy::too_many_lines)]
     fn test_mark() {
-        let location: lexer::tokens::token::Location = lexer::tokens::token::Location {
+        let location: Location = Location {
             file: "tests".to_owned(),
             line: 1,
             column: 1,
         };
 
-        assert!(generate_test(
-            &location,
-            "+",
-            lexer::tokens::mark::Mark::Add
-        ));
-        assert!(generate_test(
-            &location,
-            "+=",
-            lexer::tokens::mark::Mark::AddAssign
-        ));
-        assert!(generate_test(
-            &location,
-            "&&",
-            lexer::tokens::mark::Mark::And
-        ));
-        assert!(generate_test(
-            &location,
-            "->",
-            lexer::tokens::mark::Mark::Arrow
-        ));
-        assert!(generate_test(
-            &location,
-            "=",
-            lexer::tokens::mark::Mark::Assign
-        ));
-        assert!(generate_test(&location, "@", lexer::tokens::mark::Mark::At));
-        assert!(generate_test(
-            &location,
-            "!",
-            lexer::tokens::mark::Mark::Bang
-        ));
-        assert!(generate_test(
-            &location,
-            "&",
-            lexer::tokens::mark::Mark::BitAnd
-        ));
-        assert!(generate_test(
-            &location,
-            "&=",
-            lexer::tokens::mark::Mark::BitAndAssign
-        ));
-        assert!(generate_test(
-            &location,
-            "~",
-            lexer::tokens::mark::Mark::BitNot
-        ));
-        assert!(generate_test(
-            &location,
-            "~=",
-            lexer::tokens::mark::Mark::BitNotAssign
-        ));
-        assert!(generate_test(
-            &location,
-            "|",
-            lexer::tokens::mark::Mark::BitOr
-        ));
-        assert!(generate_test(
-            &location,
-            "|=",
-            lexer::tokens::mark::Mark::BitOrAssign
-        ));
-        assert!(generate_test(
-            &location,
-            "^",
-            lexer::tokens::mark::Mark::BitXor
-        ));
-        assert!(generate_test(
-            &location,
-            "^=",
-            lexer::tokens::mark::Mark::BitXorAssign
-        ));
-        assert!(generate_test(
-            &location,
-            "{",
-            lexer::tokens::mark::Mark::BraceOpen
-        ));
-        assert!(generate_test(
-            &location,
-            "}",
-            lexer::tokens::mark::Mark::BraceClose
-        ));
-        assert!(generate_test(
-            &location,
-            "[",
-            lexer::tokens::mark::Mark::BracketOpen
-        ));
-        assert!(generate_test(
-            &location,
-            "]",
-            lexer::tokens::mark::Mark::BracketClose
-        ));
-        assert!(generate_test(
-            &location,
-            ":",
-            lexer::tokens::mark::Mark::Colon
-        ));
-        assert!(generate_test(
-            &location,
-            ",",
-            lexer::tokens::mark::Mark::Comma
-        ));
-        assert!(generate_test(
-            &location,
-            "--",
-            lexer::tokens::mark::Mark::Decrease
-        ));
-        assert!(generate_test(
-            &location,
-            "/",
-            lexer::tokens::mark::Mark::Divide
-        ));
-        assert!(generate_test(
-            &location,
-            "/=",
-            lexer::tokens::mark::Mark::DivideAssign
-        ));
-        assert!(generate_test(
-            &location,
-            ".",
-            lexer::tokens::mark::Mark::Dot
-        ));
-        assert!(generate_test(
-            &location,
-            "==",
-            lexer::tokens::mark::Mark::Equal
-        ));
-        assert!(generate_test(
-            &location,
-            "**",
-            lexer::tokens::mark::Mark::Exponentiation
-        ));
-        assert!(generate_test(
-            &location,
-            ">",
-            lexer::tokens::mark::Mark::Greater
-        ));
-        assert!(generate_test(
-            &location,
-            ">=",
-            lexer::tokens::mark::Mark::GreaterEqual
-        ));
-        assert!(generate_test(
-            &location,
-            "++",
-            lexer::tokens::mark::Mark::Increase
-        ));
-        assert!(generate_test(
-            &location,
-            "<",
-            lexer::tokens::mark::Mark::Less
-        ));
-        assert!(generate_test(
-            &location,
-            "<=",
-            lexer::tokens::mark::Mark::LessEqual
-        ));
-        assert!(generate_test(
-            &location,
-            "%",
-            lexer::tokens::mark::Mark::Modulo
-        ));
-        assert!(generate_test(
-            &location,
-            "%=",
-            lexer::tokens::mark::Mark::ModuloAssign
-        ));
-        assert!(generate_test(
-            &location,
-            "*",
-            lexer::tokens::mark::Mark::Multiply
-        ));
-        assert!(generate_test(
-            &location,
-            "*=",
-            lexer::tokens::mark::Mark::MultiplyAssign
-        ));
-        assert!(generate_test(
-            &location,
-            "!=",
-            lexer::tokens::mark::Mark::NotEqual
-        ));
-        assert!(generate_test(
-            &location,
-            "||",
-            lexer::tokens::mark::Mark::Or
-        ));
-        assert!(generate_test(
-            &location,
-            "(",
-            lexer::tokens::mark::Mark::ParenthesisOpen
-        ));
-        assert!(generate_test(
-            &location,
-            ")",
-            lexer::tokens::mark::Mark::ParenthesisClose
-        ));
-        assert!(generate_test(
-            &location,
-            "?",
-            lexer::tokens::mark::Mark::QuestionMark
-        ));
-        assert!(generate_test(
-            &location,
-            "..",
-            lexer::tokens::mark::Mark::Range
-        ));
-        assert!(generate_test(
-            &location,
-            ";",
-            lexer::tokens::mark::Mark::Semicolon
-        ));
-        assert!(generate_test(
-            &location,
-            "<<",
-            lexer::tokens::mark::Mark::ShiftLeft
-        ));
-        assert!(generate_test(
-            &location,
-            "<<=",
-            lexer::tokens::mark::Mark::ShiftLeftAssign
-        ));
-        assert!(generate_test(
-            &location,
-            ">>",
-            lexer::tokens::mark::Mark::ShiftRight
-        ));
-        assert!(generate_test(
-            &location,
-            ">>=",
-            lexer::tokens::mark::Mark::ShiftRightAssign
-        ));
-        assert!(generate_test(
-            &location,
-            "-",
-            lexer::tokens::mark::Mark::Subtract
-        ));
-        assert!(generate_test(
-            &location,
-            "-=",
-            lexer::tokens::mark::Mark::SubtractAssign
-        ));
+        assert!(generate_test(&location, "+", Mark::Add));
+        assert!(generate_test(&location, "+=", Mark::AddAssign));
+        assert!(generate_test(&location, "&&", Mark::And));
+        assert!(generate_test(&location, "->", Mark::Arrow));
+        assert!(generate_test(&location, "=", Mark::Assign));
+        assert!(generate_test(&location, "@", Mark::At));
+        assert!(generate_test(&location, "!", Mark::Bang));
+        assert!(generate_test(&location, "&", Mark::BitAnd));
+        assert!(generate_test(&location, "&=", Mark::BitAndAssign));
+        assert!(generate_test(&location, "~", Mark::BitNot));
+        assert!(generate_test(&location, "~=", Mark::BitNotAssign));
+        assert!(generate_test(&location, "|", Mark::BitOr));
+        assert!(generate_test(&location, "|=", Mark::BitOrAssign));
+        assert!(generate_test(&location, "^", Mark::BitXor));
+        assert!(generate_test(&location, "^=", Mark::BitXorAssign));
+        assert!(generate_test(&location, "{", Mark::BraceOpen));
+        assert!(generate_test(&location, "}", Mark::BraceClose));
+        assert!(generate_test(&location, "[", Mark::BracketOpen));
+        assert!(generate_test(&location, "]", Mark::BracketClose));
+        assert!(generate_test(&location, ":", Mark::Colon));
+        assert!(generate_test(&location, ",", Mark::Comma));
+        assert!(generate_test(&location, "--", Mark::Decrease));
+        assert!(generate_test(&location, "/", Mark::Divide));
+        assert!(generate_test(&location, "/=", Mark::DivideAssign));
+        assert!(generate_test(&location, ".", Mark::Dot));
+        assert!(generate_test(&location, "==", Mark::Equal));
+        assert!(generate_test(&location, "**", Mark::Exponentiation));
+        assert!(generate_test(&location, ">", Mark::Greater));
+        assert!(generate_test(&location, ">=", Mark::GreaterEqual));
+        assert!(generate_test(&location, "++", Mark::Increase));
+        assert!(generate_test(&location, "<", Mark::Less));
+        assert!(generate_test(&location, "<=", Mark::LessEqual));
+        assert!(generate_test(&location, "%", Mark::Modulo));
+        assert!(generate_test(&location, "%=", Mark::ModuloAssign));
+        assert!(generate_test(&location, "*", Mark::Multiply));
+        assert!(generate_test(&location, "*=", Mark::MultiplyAssign));
+        assert!(generate_test(&location, "!=", Mark::NotEqual));
+        assert!(generate_test(&location, "||", Mark::Or));
+        assert!(generate_test(&location, "(", Mark::ParenthesisOpen));
+        assert!(generate_test(&location, ")", Mark::ParenthesisClose));
+        assert!(generate_test(&location, "?", Mark::QuestionMark));
+        assert!(generate_test(&location, "..", Mark::Range));
+        assert!(generate_test(&location, ";", Mark::Semicolon));
+        assert!(generate_test(&location, "<<", Mark::ShiftLeft));
+        assert!(generate_test(&location, "<<=", Mark::ShiftLeftAssign));
+        assert!(generate_test(&location, ">>", Mark::ShiftRight));
+        assert!(generate_test(&location, ">>=", Mark::ShiftRightAssign));
+        assert!(generate_test(&location, "-", Mark::Subtract));
+        assert!(generate_test(&location, "-=", Mark::SubtractAssign));
         assert_eq!(
-            lexer::tokens::mark::Mark::get_token(
-                location.clone(),
-                &" ".chars().collect::<Vec<char>>()
-            ),
+            Mark::get_token(location.clone(), &" ".chars().collect::<Vec<char>>()),
             None
         );
     }

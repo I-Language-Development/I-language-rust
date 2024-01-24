@@ -28,7 +28,7 @@
 
 use std;
 
-use crate::tokens::constant::{Constant, Type};
+use crate::tokens::constant::Type;
 use crate::tokens::keyword::Keyword;
 use crate::tokens::mark::Mark;
 
@@ -69,7 +69,7 @@ pub trait GetToken {
     ///     fn get_token(location: Location, buffer: &Vec<char>) -> Option<Token> {
     ///         if *buffer == vec!['f', 'o', 'o'] {
     ///             Some(Token {
-    ///                 location: location,
+    ///                 location,
     ///                 content: "foo".to_owned(),
     ///                 token_type: TokenType::MyKeyword(MyKeyword::Foo),
     ///             })
@@ -101,10 +101,38 @@ pub enum TypeDefinition {
     String,
     /// The integer literal. Examples: `1`, `123`, `-10`, `1_000_000`
     Integer,
-    /// The boolean literal. The only values are `true` and `false`.
-    Boolean(Constant),
+    /// The `true` literal.
+    True,
+    /// The `false` literal.
+    False,
     /// The none type. Also referred to as null type. The only value is `none`.
     None,
+}
+
+impl GetToken for TypeDefinition {
+    #[inline(always)]
+    fn get_token(location: Location, buffer: &Vec<char>) -> Option<Token> {
+        let content: &str = &buffer.iter().collect::<String>();
+
+        match content {
+            "true" => Some(Token {
+                location,
+                content: "true".to_owned(),
+                token_type: TokenType::TypeDefinition(TypeDefinition::True),
+            }),
+            "false" => Some(Token {
+                location,
+                content: "false".to_owned(),
+                token_type: TokenType::TypeDefinition(TypeDefinition::False),
+            }),
+            "none" => Some(Token {
+                location,
+                content: "none".to_owned(),
+                token_type: TokenType::TypeDefinition(TypeDefinition::None),
+            }),
+            _ => None,
+        }
+    }
 }
 
 impl TypeDefinition {
@@ -139,7 +167,7 @@ impl TypeDefinition {
     /// #    column: 1,
     /// # };
     /// assert_eq!(TypeDefinition::lex_string(&mut iterator, input, location.clone(), '\''), Token {
-    ///     location: location,
+    ///     location,
     ///     content: "my string".to_owned(),
     ///     token_type: TokenType::TypeDefinition(TypeDefinition::String)
     /// });
@@ -260,7 +288,7 @@ impl TokenType {
     /// #    column: 1,
     /// # };
     /// assert_eq!(TokenType::lex_mark(&mut iterator, input, location.clone(), '='), Some(Token {
-    ///     location: location,
+    ///     location,
     ///     content: "==".to_owned(),
     ///     token_type: TokenType::Mark(Mark::Equal)
     /// }));

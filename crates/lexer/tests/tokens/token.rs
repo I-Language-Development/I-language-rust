@@ -27,10 +27,53 @@
 
 #[cfg(test)]
 mod tests {
+    use lexer::tokens::token::{GetToken, Location, Token, TokenType};
+
+    #[test]
+    fn test_literal() {
+        use lexer::tokens::token::TypeDefinition;
+
+        let location: Location = Location {
+            file: "tests".to_owned(),
+            line: 1,
+            column: 1,
+        };
+
+        assert_eq!(
+            TypeDefinition::get_token(location.clone(), &"true".chars().collect::<Vec<char>>()),
+            Some(Token {
+                location: location.clone(),
+                content: "true".to_owned(),
+                token_type: TokenType::TypeDefinition(TypeDefinition::True),
+            })
+        );
+        assert_eq!(
+            TypeDefinition::get_token(location.clone(), &"false".chars().collect::<Vec<char>>()),
+            Some(Token {
+                location: location.clone(),
+                content: "false".to_owned(),
+                token_type: TokenType::TypeDefinition(TypeDefinition::False),
+            })
+        );
+        assert_eq!(
+            TypeDefinition::get_token(location.clone(), &"none".chars().collect::<Vec<char>>()),
+            Some(Token {
+                location: location.clone(),
+                content: "none".to_owned(),
+                token_type: TokenType::TypeDefinition(TypeDefinition::None),
+            })
+        );
+        assert_eq!(
+            TypeDefinition::get_token(location.clone(), &"/".chars().collect::<Vec<char>>()),
+            None
+        );
+    }
+
     #[test]
     fn test_lex_string() {
-        use lexer::tokens::token::{Location, Token, TokenType, TypeDefinition};
         use std;
+
+        use lexer::tokens::token::TypeDefinition;
 
         let location: Location = Location {
             file: "tests".to_owned(),
@@ -45,7 +88,7 @@ mod tests {
         assert_eq!(
             TypeDefinition::lex_string(&mut iterator, input, location.clone(), '\''),
             Token {
-                location: location,
+                location,
                 content: "my string".to_owned(),
                 token_type: TokenType::TypeDefinition(TypeDefinition::String)
             }
@@ -54,9 +97,9 @@ mod tests {
 
     #[test]
     fn test_lex_mark() {
-        use lexer::tokens::mark::Mark;
-        use lexer::tokens::token::{Location, Token, TokenType};
         use std;
+
+        use lexer::tokens::mark::Mark;
 
         let location: Location = Location {
             file: "tests".to_owned(),
@@ -71,7 +114,7 @@ mod tests {
         assert_eq!(
             TokenType::lex_mark(&mut iterator, input, location.clone(), '='),
             Some(Token {
-                location: location,
+                location,
                 content: "==".to_owned(),
                 token_type: TokenType::Mark(Mark::Equal)
             })
@@ -80,7 +123,7 @@ mod tests {
 
     #[test]
     fn test_location_debug() {
-        let location: lexer::tokens::token::Location = lexer::tokens::token::Location {
+        let location: Location = Location {
             file: "tests".to_owned(),
             line: 1,
             column: 1,

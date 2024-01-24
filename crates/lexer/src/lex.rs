@@ -22,16 +22,11 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-// Many false positives
-#![allow(clippy::pattern_type_mismatch)]
-// See line 311
-#![allow(clippy::indexing_slicing, clippy::string_slice)]
-
 /////////////
 // IMPORTS //
 /////////////
 
-use crate::tokens::constant::{Constant, Type};
+use crate::tokens::constant::Type;
 use crate::tokens::keyword::Keyword;
 use crate::tokens::token::{GetToken, Location, Token, TokenType, TypeDefinition};
 
@@ -171,7 +166,7 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                     &mut iterator
                         .peek_while(|&(_, next_character)| next_character.is_ascii_digit())
                         .iter()
-                        .map(|(_, found)| *found)
+                        .map(|&(_, found)| found)
                         .collect::<Vec<char>>(),
                 );
 
@@ -189,7 +184,7 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                             next_character.is_alphabetic() || next_character == '_'
                         })
                         .iter()
-                        .map(|(_, found)| *found)
+                        .map(|&(_, found)| found)
                         .collect::<Vec<char>>(),
                 );
 
@@ -199,7 +194,7 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                 } else if let Some(value) = Type::get_token(location.clone(), &buffer) {
                     result.push(value);
                     buffer.clear();
-                } else if let Some(value) = Constant::get_token(location.clone(), &buffer) {
+                } else if let Some(value) = TypeDefinition::get_token(location.clone(), &buffer) {
                     result.push(value);
                     buffer.clear();
                 } else {

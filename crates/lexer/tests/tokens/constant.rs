@@ -27,53 +27,11 @@
 
 #[cfg(test)]
 mod tests {
+    use lexer::tokens::constant::Type;
     use lexer::tokens::token::{GetToken, Location, Token, TokenType};
 
     #[test]
-    fn test_constant() {
-        use lexer::tokens::constant::Constant;
-        use lexer::tokens::token::TypeDefinition;
-
-        let location: Location = Location {
-            file: "tests".to_owned(),
-            line: 1,
-            column: 1,
-        };
-
-        assert_eq!(
-            Constant::get_token(location.clone(), &"true".chars().collect::<Vec<char>>()),
-            Some(Token {
-                location: location.clone(),
-                content: "true".to_owned(),
-                token_type: TokenType::TypeDefinition(TypeDefinition::Boolean(Constant::True)),
-            })
-        );
-        assert_eq!(
-            Constant::get_token(location.clone(), &"false".chars().collect::<Vec<char>>()),
-            Some(Token {
-                location: location.clone(),
-                content: "false".to_owned(),
-                token_type: TokenType::TypeDefinition(TypeDefinition::Boolean(Constant::False)),
-            })
-        );
-        assert_eq!(
-            Constant::get_token(location.clone(), &"None".chars().collect::<Vec<char>>()),
-            Some(Token {
-                location: location.clone(),
-                content: "None".to_owned(),
-                token_type: TokenType::TypeDefinition(TypeDefinition::None),
-            })
-        );
-        assert_eq!(
-            Constant::get_token(location.clone(), &"/".chars().collect::<Vec<char>>()),
-            None
-        );
-    }
-
-    #[test]
     fn test_type() {
-        use lexer::tokens::constant::Type;
-
         let location: Location = Location {
             file: "tests".to_owned(),
             line: 1,
