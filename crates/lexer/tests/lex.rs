@@ -31,7 +31,7 @@ mod tests {
     fn test_lex() {
         assert_eq!(
             lexer::lex::lex("1 + 1", "<stdin>"),
-            [
+            Ok(vec![
                 lexer::tokens::token::Token {
                     location: lexer::tokens::token::Location {
                         file: "<stdin>".to_owned(),
@@ -65,12 +65,12 @@ mod tests {
                         lexer::tokens::token::TypeDefinition::Integer,
                     ),
                 },
-            ]
+            ])
         );
 
         assert_eq!(
             lexer::lex::lex("my/* cool */code // works", "<stdin>"),
-            [
+            Ok(vec![
                 lexer::tokens::token::Token {
                     location: lexer::tokens::token::Location {
                         file: "<stdin>".to_owned(),
@@ -107,7 +107,7 @@ mod tests {
                     content: "works".to_owned(),
                     token_type: lexer::tokens::token::TokenType::Comment,
                 },
-            ]
+            ])
         );
     }
 }

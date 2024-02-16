@@ -113,11 +113,11 @@ mod tests {
 
         assert_eq!(
             TokenType::lex_mark(&mut iterator, input, location.clone(), '='),
-            Some(Token {
+            Ok(Some(Token {
                 location,
                 content: "==".to_owned(),
                 token_type: TokenType::Mark(Mark::Equal)
-            })
+            }))
         );
     }
 

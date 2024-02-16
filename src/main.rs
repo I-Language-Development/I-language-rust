@@ -86,8 +86,9 @@ fn main() {
     {
         file_name = "main.il".to_owned();
     } else {
-        error!("Neither `src/main.il` nor `main.il` exist.");
-        std::process::exit(1); // TODO (ElBe): Proper errors
+        eprintln!("No file was specified and neither `src/mail.il` nor `main.il` exist.");
+        error!("No file was specified and neither `src/main.il` nor `main.il` exist.");
+        std::process::exit(1);
     }
 
     trace!("Attempting to open file `{file_name}`.");
@@ -99,24 +100,34 @@ fn main() {
     let input: String = std::io::read_to_string(reader).unwrap();
 
     let start: std::time::Instant = std::time::Instant::now();
-    let output: Vec<lexer::tokens::token::Token> = lexer::lex::lex(input.trim(), &file_name);
+    let output: Result<Vec<lexer::tokens::token::Token>, String> =
+        lexer::lex::lex(input.trim(), &file_name);
     debug!(
         "Lexing `{file_name}` took {}ms.",
         start.elapsed().as_millis()
     );
 
-    let mut file: std::fs::File =
-        std::fs::File::create(String::new() + &arguments.output + "/tokens").unwrap_or_else(|_| {
-            panic!(
-                "Could not open file \"{}{}\" for writing.",
-                &arguments.output, "/tokens"
-            )
-        });
-    file.write_all(format!("{:#?}", output).as_bytes())
-        .unwrap_or_else(|_| {
-            panic!(
-                "Could not write to file \"{}{}\"",
-                &arguments.output, "/tokens"
-            )
-        });
+    match output {
+        Err(error) => {
+            eprintln!("Compiling `{file_name}` was not successful:\n{error}");
+            std::process::exit(1);
+        }
+        Ok(tokens) => {
+            let mut file: std::fs::File =
+                std::fs::File::create(String::new() + &arguments.output + "/tokens")
+                    .unwrap_or_else(|_| {
+                        panic!(
+                            "Could not open file \"{}{}\" for writing.",
+                            &arguments.output, "/tokens"
+                        )
+                    });
+            file.write_all(format!("{:#?}", tokens).as_bytes())
+                .unwrap_or_else(|_| {
+                    panic!(
+                        "Could not write to file \"{}{}\"",
+                        &arguments.output, "/tokens"
+                    )
+                });
+        }
+    }
 }

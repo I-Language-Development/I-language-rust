@@ -30,9 +30,9 @@ use crate::tokens::constant::Type;
 use crate::tokens::keyword::Keyword;
 use crate::tokens::token::{GetToken, Location, Token, TokenType, TypeDefinition};
 
-use tools::error;
 use tools::iterator::ConditionalPeeking;
 
+use annotate_snippets;
 use log::trace;
 
 
@@ -45,11 +45,15 @@ use log::trace;
 /// # Parameters
 ///
 /// - `input`: The input string to lex.
-/// - `file`: The file name to show in errors and include in locations of tokens. Can be `<stdin>`.
+/// - `file`: The file name of the input. Can be `<stdin>`.
 ///
 /// # Returns
 ///
-/// A vector of lexed [`Token`]s.
+/// A result of a vector of lexed [`Token`]s.
+///
+/// # Errors
+///
+/// Errors when there are any kind of syntax errors, that are detectable in the lexer (e.g. `if = false` will be detected in the parser).
 ///
 /// # Examples
 ///
@@ -58,7 +62,7 @@ use log::trace;
 /// # use lexer::tokens::mark;
 /// # use lexer::tokens::token;
 /// assert_eq!(lex::lex("1 + 1", "<stdin>"),
-/// [
+/// Ok(vec![
 ///     token::Token {
 ///         location: token::Location {
 ///             file: "<stdin>".to_owned(),
@@ -92,7 +96,7 @@ use log::trace;
 ///             token::TypeDefinition::Integer,
 ///         ),
 ///     },
-/// ]);
+/// ]));
 /// ```
 ///
 /// # See also
@@ -101,7 +105,9 @@ use log::trace;
 /// - [`Location`]
 #[inline] // Suggesting inlining due to rare calls to the function
 #[allow(clippy::too_many_lines)]
-pub fn lex(input: &str, file: &str) -> Vec<Token> {
+// TODO (ElBe, Ranastra): Switch to custom error type
+pub fn lex(input: &str, file: &str) -> Result<Vec<Token>, String> {
+    let mut error: Option<String> = None;
     let mut result: Vec<Token> = vec![];
 
     let mut iterator: std::iter::Peekable<std::iter::Enumerate<std::str::Chars>>;
@@ -115,6 +121,7 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
         iterator = line.chars().enumerate().peekable();
 
         while let Some((zero_based_index, character)) = iterator.next() {
+            let start: std::time::Instant = std::time::Instant::now();
             if character.is_whitespace() {
                 continue;
             }
@@ -126,10 +133,13 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                 column: index,
             };
 
-            trace!("Lexing character {character} in line {line_number}, column {index}.");
-
             if character == '"' || character == '\'' {
-                TypeDefinition::lex_string(&mut iterator, line, location, character);
+                result.push(TypeDefinition::lex_string(
+                    &mut iterator,
+                    line,
+                    location,
+                    character,
+                ));
             } else if matches!(
                 character,
                 '+' | '-'
@@ -148,6 +158,7 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                     | '.'
                     | ','
                     | ';'
+                    | '~'
                     | '('
                     | ')'
                     | '{'
@@ -155,10 +166,35 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                     | '['
                     | ']'
             ) {
-                if let Some(value) = TokenType::lex_mark(&mut iterator, line, location, character) {
+                if let Ok(Some(value)) =
+                    TokenType::lex_mark(&mut iterator, line, location.clone(), character)
+                {
                     result.push(value);
                 } else {
-                    // Syntax error
+                    let snippet: annotate_snippets::Snippet = annotate_snippets::Snippet {
+                        title: Some(annotate_snippets::Annotation {
+                            id: Some("E0001"),
+                            label: Some("Syntax error"),
+                            annotation_type: annotate_snippets::AnnotationType::Error,
+                        }),
+                        footer: vec![],
+                        slices: vec![annotate_snippets::Slice {
+                            source: line,
+                            line_start: line_number,
+                            origin: Some(file),
+                            annotations: vec![annotate_snippets::SourceAnnotation {
+                                range: (index - 1, line.len() - iterator.clone().count()),
+                                label: "Invalid mark",
+                                annotation_type: annotate_snippets::AnnotationType::Error,
+                            }],
+                            fold: false,
+                        }],
+                    };
+
+                    let renderer: annotate_snippets::Renderer =
+                        annotate_snippets::Renderer::styled();
+                    eprintln!("{}", renderer.render(snippet));
+                    error = Some(format!("Syntax error: Invalid mark at {location}"));
                 }
             } else if character.is_ascii_digit() {
                 buffer.push(character);
@@ -207,23 +243,40 @@ pub fn lex(input: &str, file: &str) -> Vec<Token> {
                     buffer.clear();
                 }
             } else {
-                let source: &str = &format!("   {line_number} | {line}");
-                let underline: &str = &format!(
-                    "{0:>1$}",
-                    '^',
-                    line_number.to_string().len() + index + 6 /* < Amount of extra characters, in this case the pipe symbol and the five spaces*/
-                );
-                error::Error::new(
-                    "Error",
-                    &format!("Syntax error\n --> {file}:{line_number}:{index}"),
-                    2,
-                )
-                .raise(&format!(
-                    "{source}\n{underline} = help: Unexpected character `{character}`"
-                ));
+                let snippet: annotate_snippets::Snippet = annotate_snippets::Snippet {
+                    title: Some(annotate_snippets::Annotation {
+                        id: Some("E0001"),
+                        label: Some("Syntax error"),
+                        annotation_type: annotate_snippets::AnnotationType::Error,
+                    }),
+                    footer: vec![],
+                    slices: vec![annotate_snippets::Slice {
+                        source: line,
+                        line_start: line_number,
+                        origin: Some(file),
+                        annotations: vec![annotate_snippets::SourceAnnotation {
+                            range: (index - 1, index),
+                            label: "Unexpected character",
+                            annotation_type: annotate_snippets::AnnotationType::Error,
+                        }],
+                        fold: false,
+                    }],
+                };
+
+                let renderer: annotate_snippets::Renderer = annotate_snippets::Renderer::styled();
+                eprintln!("{}", renderer.render(snippet));
+                error = Some(format!("Syntax error: Unexpected character at {location}"));
             }
+
+            trace!(
+                "Lexing character {character} in line {line_number}, column {index} took {}ms.",
+                start.elapsed().as_millis()
+            );
         }
     }
 
-    result
+    match error {
+        Some(message) => Err(format!("Error during lexing (last): {message}")),
+        None => Ok(result),
+    }
 }

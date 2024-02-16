@@ -26,15 +26,16 @@
 // IMPORTS //
 /////////////
 
+use core;
 use std;
 
 use crate::tokens::constant::Type;
 use crate::tokens::keyword::Keyword;
 use crate::tokens::mark::Mark;
 
-use tools::error;
 use tools::iterator::ConditionalPeeking;
 
+use annotate_snippets;
 
 ////////////
 // TRAITS //
@@ -181,13 +182,14 @@ impl TypeDefinition {
     /// - [`TypeDefinition`]
     /// - [`TypeDefinition::String`]
     #[inline(always)]
+    // TODO: Errors
     pub fn lex_string(
         iterator: &mut std::iter::Peekable<std::iter::Enumerate<std::str::Chars>>,
         line: &str,
         location: Location,
         quote_type: char,
     ) -> Token {
-        let last_character: std::cell::Cell<char> = std::cell::Cell::new('\0');
+        let last_character: core::cell::Cell<char> = core::cell::Cell::new('\0');
         let buffer: Vec<char> = iterator
             .peek_while(|&(_, next_character)| {
                 let value: bool = last_character.get() != '\\' && next_character == quote_type;
@@ -198,30 +200,53 @@ impl TypeDefinition {
             .map(|&(_, found)| found)
             .collect::<Vec<char>>();
 
-        let unterminated_string_error = || {
-            let source: &str = &format!("   {} | {line}", location.line);
-
-            let underline: &str = &format!(
-                "{0}^",
-                " ".repeat(location.line.to_string().len() + location.column + buffer.len() +  6 /* < Amount of extra characters, in this case the pipe symbol and the five spaces*/)
-            );
-
-            error::Error::new(
-                "Error",
-                &format!("Unterminated string literal\n --> {location}"),
-                1,
-            )
-            .raise(&format!(
-                "{source}\n{underline} = help: Add a `{quote_type}` here"
-            ));
+        let help: String = format!("Add `{quote_type}` here");
+        let snippet: annotate_snippets::Snippet = annotate_snippets::Snippet {
+            title: Some(annotate_snippets::Annotation {
+                id: Some("E0002"),
+                label: Some("Unterminated string literal"),
+                annotation_type: annotate_snippets::AnnotationType::Error,
+            }),
+            footer: if buffer.last() == Some(&'\\') {
+                vec![annotate_snippets::Annotation {
+                    id: None,
+                    label: Some("Good help"),
+                    annotation_type: annotate_snippets::AnnotationType::Help,
+                }]
+            } else {
+                vec![]
+            },
+            slices: vec![annotate_snippets::Slice {
+                source: line,
+                line_start: location.line,
+                origin: Some(&location.file),
+                annotations: vec![
+                    annotate_snippets::SourceAnnotation {
+                        range: (location.column - 1, location.column),
+                        label: "String started here",
+                        annotation_type: annotate_snippets::AnnotationType::Help,
+                    },
+                    annotate_snippets::SourceAnnotation {
+                        range: (
+                            location.column + buffer.len() - 1,
+                            location.column + buffer.len(),
+                        ),
+                        label: &help,
+                        annotation_type: annotate_snippets::AnnotationType::Help,
+                    },
+                ],
+                fold: false,
+            }],
         };
 
         if let Some((_, next_character)) = iterator.next() {
             if next_character != quote_type {
-                unterminated_string_error();
+                let renderer: annotate_snippets::Renderer = annotate_snippets::Renderer::styled();
+                eprintln!("{}", renderer.render(snippet));
             }
         } else {
-            unterminated_string_error();
+            let renderer: annotate_snippets::Renderer = annotate_snippets::Renderer::styled();
+            eprintln!("{}", renderer.render(snippet));
         }
 
         Token {
@@ -287,11 +312,11 @@ impl TokenType {
     /// #    line: 1,
     /// #    column: 1,
     /// # };
-    /// assert_eq!(TokenType::lex_mark(&mut iterator, input, location.clone(), '='), Some(Token {
+    /// assert_eq!(TokenType::lex_mark(&mut iterator, input, location.clone(), '='), Ok(Some(Token {
     ///     location,
     ///     content: "==".to_owned(),
     ///     token_type: TokenType::Mark(Mark::Equal)
-    /// }));
+    /// })));
     ///
     ///
     /// ```
@@ -301,14 +326,15 @@ impl TokenType {
     /// - [`Token`]
     /// - [`TokenType`]
     /// - [`Mark`]
-    // TODO (ElBe): Rewrite (speed, readability)
     #[inline(always)]
+    #[allow(clippy::indexing_slicing)]
+    #[allow(clippy::string_slice)]
     pub fn lex_mark(
         iterator: &mut std::iter::Peekable<std::iter::Enumerate<std::str::Chars>>,
         line: &str,
         location: Location,
         character: char,
-    ) -> Option<Token> {
+    ) -> Result<Option<Token>, String> {
         let mut buffer: Vec<char> = vec![character];
 
         if let Some(&(_, next_character)) = iterator.clone().peek() {
@@ -332,7 +358,7 @@ impl TokenType {
 
         #[allow(clippy::else_if_without_else)]
         if &buffer.iter().collect::<String>() == "/*" {
-            let last_character: std::cell::Cell<char> = std::cell::Cell::new('\0');
+            let last_character: core::cell::Cell<char> = core::cell::Cell::new('\0');
             buffer = iterator
                 .peek_until(|&(_, next_character)| {
                     let value: bool = last_character.get() == '*' && next_character == '/';
@@ -344,46 +370,54 @@ impl TokenType {
                 .collect::<Vec<char>>();
 
             if buffer.last() != Some(&'*') {
-                eprintln!("Unclosed comment...");
-                eprintln!("Proper errors soon...");
-                std::process::exit(1);
+                let snippet: annotate_snippets::Snippet = annotate_snippets::Snippet {
+                    title: Some(annotate_snippets::Annotation {
+                        id: Some("E0001"),
+                        label: Some("Syntax error"),
+                        annotation_type: annotate_snippets::AnnotationType::Error,
+                    }),
+                    footer: vec![],
+                    slices: vec![annotate_snippets::Slice {
+                        source: line,
+                        line_start: location.line,
+                        origin: Some(&location.file),
+                        annotations: vec![annotate_snippets::SourceAnnotation {
+                            range: (location.column - 1, line.len() - iterator.clone().count()),
+                            label: "Unterminated comment",
+                            annotation_type: annotate_snippets::AnnotationType::Error,
+                        }],
+                        fold: false,
+                    }],
+                };
+
+                let renderer: annotate_snippets::Renderer = annotate_snippets::Renderer::styled();
+                eprintln!("{}", renderer.render(snippet));
+                return Err(format!("Syntax error: Unterminated comment at {location}"));
             }
 
             iterator.next();
 
-            return Some(Token {
-                location,
-                content: buffer
-                    .get(..buffer.len() - 1)
-                    .unwrap_or_else(|| {
-                        eprintln!("Good errors soon");
-                        &['\0']
-                    })
+            return Ok(Some(Token {
+                location: location.clone(),
+                content: buffer[..buffer.len() - 1]
                     .iter()
                     .collect::<String>()
                     .trim()
                     .to_owned(),
                 token_type: TokenType::Comment,
-            });
+            }));
         } else if &buffer.iter().collect::<String>() == "//" {
-            buffer = line
-                .get((location.column + 1)..)
-                .unwrap_or_else(|| {
-                    eprintln!("Errors soon");
-                    ""
-                })
-                .chars()
-                .collect::<Vec<char>>();
+            buffer = line[location.column + 1..].chars().collect::<Vec<char>>();
             iterator.peek_while(|_| true);
 
-            return Some(Token {
+            return Ok(Some(Token {
                 location,
                 content: buffer.iter().collect::<String>().trim().to_owned(),
                 token_type: TokenType::Comment,
-            });
+            }));
         }
 
-        Mark::get_token(location.clone(), &buffer)
+        Ok(Mark::get_token(location.clone(), &buffer))
     }
 }
 
@@ -398,9 +432,9 @@ pub struct Location {
     pub column: usize,
 }
 
-impl std::fmt::Display for Location {
+impl core::fmt::Display for Location {
     #[inline]
-    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, formatter: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         write!(formatter, "{}:{}:{}", self.file, self.line, self.column)
     }
 }
