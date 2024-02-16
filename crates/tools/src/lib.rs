@@ -1,5 +1,6 @@
+//! I-Language tools is a collection of tools used with the I-Programming-Language.
 // I Language tools.
-// Version: 1.0.0
+// Version: 1.1.0
 
 // Copyright (c) 2023-present I Language Development.
 
@@ -26,7 +27,6 @@
 /////////////
 
 pub mod beta;
-pub mod error;
 pub mod iterator;
 pub mod logging;
 pub mod panic_handler;
