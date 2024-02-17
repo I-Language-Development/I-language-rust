@@ -8,6 +8,7 @@ alias l := lint
 alias r := run
 alias t := test
 
+alias cl := update-changelog
 alias id := install-doc-requirements
 alias sd := serve-docs
 alias fmt := format
@@ -47,13 +48,14 @@ format *ARGUMENTS:
 install-binary:
 	@cargo install --path .
 
-# Installs the executable development dependencies
+# Installs the executable development dependencies (this is gonna take a while)
 install-dev-dependencies:
+	@cargo install git-cliff
 	@cargo install cargo-audit
 
 # Install documentation dependencies
 install-doc-requirements:
-	@pip install -r Docs/.requirements.txt
+	@pip install -r Docs\.requirements.txt
 
 # See rust-lang/cargo/12918 for why `-A clippy::std-instead-of-core` is needed
 # Lints the rust source files
@@ -71,6 +73,11 @@ serve-docs *ARGUMENTS:
 # Runs the tests
 test *ARGUMENTS:
 	@cargo test --workspace {{ARGUMENTS}}
+
+# Updated the changelog using git-cliff
+update-changelog *ARGUMENTS:
+	@git cliff -c .github\cliff.toml -o Docs\Docs\CHANGELOG.md {{ARGUMENTS}}
+	@echo Updated changelog.
 
 # Update all submodules
 update-submodules:
