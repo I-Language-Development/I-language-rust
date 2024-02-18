@@ -66,7 +66,7 @@ pub trait GetToken {
     ///     Foo,
     /// };
     ///
-    /// impl GetToken for Keyword {
+    /// impl GetToken for MyKeyword {
     ///     fn get_token(location: Location, buffer: &Vec<char>) -> Option<Token> {
     ///         if *buffer == vec!['f', 'o', 'o'] {
     ///             Some(Token {
