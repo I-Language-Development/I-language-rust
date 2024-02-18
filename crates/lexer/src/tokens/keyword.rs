@@ -36,6 +36,8 @@ use crate::tokens::token::{GetToken, Location, Token, TokenType};
 /// Keyword tokens representing a keyword (`if`, `class`, etc.) in the lexer.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum Keyword {
+    /// The `as` keyword. Used with the [`import`](`Keyword::Import`) keyword to import items into a specific namespace.
+    As,
     /// The `break` keyword. Used for exiting out of a loop.
     Break,
     /// The `case` keyword. Used in combination with the [`match`](`Keyword::Match`) keyword to match a specific case.
@@ -89,6 +91,11 @@ impl GetToken for Keyword {
         let content: &str = &buffer.iter().collect::<String>();
 
         match content {
+            "as" => Some(Token {
+                location,
+                content: "as".to_owned(),
+                token_type: TokenType::Keyword(Keyword::As),
+            }),
             "break" => Some(Token {
                 location,
                 content: "break".to_owned(),

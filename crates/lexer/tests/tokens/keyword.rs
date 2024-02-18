@@ -48,6 +48,7 @@ mod tests {
             column: 1,
         };
 
+        assert!(generate_test(&location, "as", Keyword::As));
         assert!(generate_test(&location, "break", Keyword::Break));
         assert!(generate_test(&location, "case", Keyword::Case));
         assert!(generate_test(&location, "catch", Keyword::Catch));
