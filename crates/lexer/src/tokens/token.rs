@@ -432,6 +432,17 @@ pub struct Location {
     pub column: usize,
 }
 
+impl Default for Location {
+    #[inline]
+    fn default() -> Location {
+        Location {
+            file: "<stdin>".to_owned(),
+            line: 1,
+            column: 1,
+        }
+    }
+}
+
 impl core::fmt::Display for Location {
     #[inline]
     fn fmt(&self, formatter: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
