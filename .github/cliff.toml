@@ -49,7 +49,7 @@ commit_parsers = [
 
 	{ message = "^feat", group = "<!-- 0 -->Added" },
 	{ message = "^chore\\(depr\\)", group = "<!-- 2-->Deprecated"},
-	{ message = "^chore\\(del\\)", group = "<!-- 3 -->Removed"},
+	{ message = "^del", group = "<!-- 3 -->Removed"},
 	{ message = "^fix", group = "<!-- 4 -->Fixed" },
 	{ message = "^sec", group = "<!-- 5 -->Security" },
 	{ message = "^perf", group = "<!-- 6 -->Performance" },
