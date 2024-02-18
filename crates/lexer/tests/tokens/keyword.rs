@@ -56,7 +56,6 @@ mod tests {
         assert!(generate_test(&location, "const", Keyword::Const));
         assert!(generate_test(&location, "continue", Keyword::Continue));
         assert!(generate_test(&location, "default", Keyword::Default));
-        assert!(generate_test(&location, "delete", Keyword::Delete));
         assert!(generate_test(&location, "else", Keyword::Else));
         assert!(generate_test(&location, "finally", Keyword::Finally));
         assert!(generate_test(&location, "for", Keyword::For));

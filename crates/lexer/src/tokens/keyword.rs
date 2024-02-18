@@ -52,8 +52,6 @@ pub enum Keyword {
     Continue,
     /// The `default` keyword. Used in combination with the [`match`](`Keyword::Match`) and [`case`](`Keyword::Case`) keywords to match the default case.
     Default,
-    /// The `delete` keyword. May be replaced by the `gc.delete()` function. Used to remove a variable from the current scope.
-    Delete, // TODO (ElBe): Replace with "gc.delete"?
     /// The `else` keyword. Used to define the "otherwise" block of an [`if`](`Keyword::If`) statement.
     Else,
     /// The `finally` keyword. Used in combination with the [`try`](`Keyword::Try`) keyword to execute code even after an exception has been raised.
@@ -130,11 +128,6 @@ impl GetToken for Keyword {
                 location,
                 content: "default".to_owned(),
                 token_type: TokenType::Keyword(Keyword::Default),
-            }),
-            "delete" => Some(Token {
-                location,
-                content: "delete".to_owned(),
-                token_type: TokenType::Keyword(Keyword::Delete),
             }),
             "else" => Some(Token {
                 location,
