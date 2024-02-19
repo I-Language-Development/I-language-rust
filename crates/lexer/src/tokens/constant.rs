@@ -41,7 +41,7 @@ pub enum Type {
     /// The `int` type. Alias: `integer`. The type of integer literals (e.g. `12`).
     Int,
     /// The `bool` type. Alias: `boolean`. The type of boolean literals (`true`, `false`).
-    Boolean,
+    Bool,
 }
 
 impl GetToken for Type {
@@ -63,7 +63,7 @@ impl GetToken for Type {
             "bool" | "boolean" => Some(Token {
                 location,
                 content: "boolean".to_owned(),
-                token_type: TokenType::Type(Type::Boolean),
+                token_type: TokenType::Type(Type::Bool),
             }),
             _ => None,
         }

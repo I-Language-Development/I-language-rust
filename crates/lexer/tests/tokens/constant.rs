@@ -75,7 +75,7 @@ mod tests {
             Some(Token {
                 location: location.clone(),
                 content: "boolean".to_owned(),
-                token_type: TokenType::Type(Type::Boolean),
+                token_type: TokenType::Type(Type::Bool),
             },)
         );
         assert_eq!(
@@ -83,7 +83,7 @@ mod tests {
             Some(Token {
                 location: location.clone(),
                 content: "boolean".to_owned(),
-                token_type: TokenType::Type(Type::Boolean),
+                token_type: TokenType::Type(Type::Bool),
             },)
         );
         assert_eq!(
