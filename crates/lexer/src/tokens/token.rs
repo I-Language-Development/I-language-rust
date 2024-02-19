@@ -37,6 +37,7 @@ use tools::iterator::ConditionalPeeking;
 
 use annotate_snippets;
 
+
 ////////////
 // TRAITS //
 ////////////
@@ -106,8 +107,22 @@ pub enum TypeDefinition {
     True,
     /// The `false` literal.
     False,
-    /// The none type. Also referred to as null type. The only value is `none`.
+    /// The none type. Also referred to as null type.
     None,
+}
+
+impl core::fmt::Display for TypeDefinition {
+    #[inline]
+    #[allow(clippy::match_ref_pats)]
+    fn fmt(&self, formatter: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        match self {
+            &Self::String => write!(formatter, "string literal"),
+            &Self::Integer => write!(formatter, "integer literal"),
+            &Self::True => write!(formatter, "`true`"),
+            &Self::False => write!(formatter, "`false`"),
+            &Self::None => write!(formatter, "`none`"),
+        }
+    }
 }
 
 impl GetToken for TypeDefinition {
@@ -278,6 +293,21 @@ pub enum TokenType {
     Identifier,
     /// A token representing a comment, e.g. `// comment`.
     Comment,
+}
+
+impl core::fmt::Display for TokenType {
+    #[inline]
+    #[allow(clippy::pattern_type_mismatch)]
+    fn fmt(&self, formatter: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::Type(type_name) => write!(formatter, "{type_name}"),
+            Self::TypeDefinition(type_definition) => write!(formatter, "{type_definition}"),
+            Self::Keyword(keyword) => write!(formatter, "{keyword}"),
+            Self::Mark(mark) => write!(formatter, "{mark}"),
+            Self::Identifier => write!(formatter, "identifier"),
+            Self::Comment => write!(formatter, "comment"),
+        }
+    }
 }
 
 impl TokenType {

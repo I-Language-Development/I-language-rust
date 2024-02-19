@@ -26,6 +26,8 @@
 // IMPORTS //
 /////////////
 
+use core;
+
 use crate::tokens::token::{GetToken, Location, Token, TokenType};
 
 
@@ -80,6 +82,37 @@ pub enum Keyword {
     Var,
     /// The `while` keyword. Used to crate a loop which will iterates as long as a condition is true.
     While,
+}
+
+impl core::fmt::Display for Keyword {
+    #[inline]
+    #[allow(clippy::match_ref_pats)]
+    fn fmt(&self, formatter: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        match self {
+            &Self::As => write!(formatter, "as"),
+            &Self::Break => write!(formatter, "break"),
+            &Self::Case => write!(formatter, "case"),
+            &Self::Catch => write!(formatter, "catch"),
+            &Self::Class => write!(formatter, "class"),
+            &Self::Const => write!(formatter, "const"),
+            &Self::Continue => write!(formatter, "continue"),
+            &Self::Default => write!(formatter, "default"),
+            &Self::Else => write!(formatter, "else"),
+            &Self::Finally => write!(formatter, "finally"),
+            &Self::For => write!(formatter, "for"),
+            &Self::Function => write!(formatter, "function"),
+            &Self::If => write!(formatter, "if"),
+            &Self::Import => write!(formatter, "import"),
+            &Self::Match => write!(formatter, "match"),
+            &Self::Pub => write!(formatter, "pub"),
+            &Self::Return => write!(formatter, "return"),
+            &Self::Throw => write!(formatter, "throw"),
+            &Self::Try => write!(formatter, "try"),
+            &Self::Use => write!(formatter, "use"),
+            &Self::Var => write!(formatter, "var"),
+            &Self::While => write!(formatter, "while"),
+        }
+    }
 }
 
 impl GetToken for Keyword {

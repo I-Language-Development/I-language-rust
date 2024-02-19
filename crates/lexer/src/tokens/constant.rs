@@ -26,6 +26,8 @@
 // IMPORTS //
 /////////////
 
+use core;
+
 use crate::tokens::token::{GetToken, Location, Token, TokenType};
 
 
@@ -42,6 +44,18 @@ pub enum Type {
     Int,
     /// The `bool` type. Alias: `boolean`. The type of boolean literals (`true`, `false`).
     Bool,
+}
+
+impl core::fmt::Display for Type {
+    #[inline]
+    #[allow(clippy::match_ref_pats)]
+    fn fmt(&self, formatter: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        match self {
+            &Self::Str => write!(formatter, "string"),
+            &Self::Int => write!(formatter, "integer"),
+            &Self::Bool => write!(formatter, "boolean"),
+        }
+    }
 }
 
 impl GetToken for Type {

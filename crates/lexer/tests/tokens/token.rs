@@ -30,6 +30,17 @@ mod tests {
     use lexer::tokens::token::{GetToken, Location, Token, TokenType};
 
     #[test]
+    fn test_literal_display() {
+        use lexer::tokens::token::TypeDefinition;
+
+        assert_eq!(&format!("{}", TypeDefinition::String), "string literal");
+        assert_eq!(&format!("{}", TypeDefinition::Integer), "integer literal");
+        assert_eq!(&format!("{}", TypeDefinition::True), "`true`");
+        assert_eq!(&format!("{}", TypeDefinition::False), "`false`");
+        assert_eq!(&format!("{}", TypeDefinition::None), "`none`");
+    }
+
+    #[test]
     fn test_literal() {
         use lexer::tokens::token::TypeDefinition;
 

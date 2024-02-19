@@ -40,6 +40,59 @@ mod tests {
     }
 
     #[test]
+    fn test_display() {
+        assert_eq!(&format!("{}", Mark::Add), "+");
+        assert_eq!(&format!("{}", Mark::AddAssign), "+=");
+        assert_eq!(&format!("{}", Mark::And), "&&");
+        assert_eq!(&format!("{}", Mark::Arrow), "->");
+        assert_eq!(&format!("{}", Mark::Assign), "=");
+        assert_eq!(&format!("{}", Mark::At), "@");
+        assert_eq!(&format!("{}", Mark::Bang), "!");
+        assert_eq!(&format!("{}", Mark::BitAnd), "&");
+        assert_eq!(&format!("{}", Mark::BitAndAssign), "&=");
+        assert_eq!(&format!("{}", Mark::BitNot), "~");
+        assert_eq!(&format!("{}", Mark::BitNotAssign), "~=");
+        assert_eq!(&format!("{}", Mark::BitOr), "|");
+        assert_eq!(&format!("{}", Mark::BitOrAssign), "|=");
+        assert_eq!(&format!("{}", Mark::BitXor), "^");
+        assert_eq!(&format!("{}", Mark::BitXorAssign), "^=");
+        assert_eq!(&format!("{}", Mark::BraceOpen), "{");
+        assert_eq!(&format!("{}", Mark::BraceClose), "}");
+        assert_eq!(&format!("{}", Mark::BracketOpen), "[");
+        assert_eq!(&format!("{}", Mark::BracketClose), "]");
+        assert_eq!(&format!("{}", Mark::Colon), ":");
+        assert_eq!(&format!("{}", Mark::Comma), ",");
+        assert_eq!(&format!("{}", Mark::Decrease), "--");
+        assert_eq!(&format!("{}", Mark::Divide), "/");
+        assert_eq!(&format!("{}", Mark::DivideAssign), "/=");
+        assert_eq!(&format!("{}", Mark::Dot), ".");
+        assert_eq!(&format!("{}", Mark::Equal), "==");
+        assert_eq!(&format!("{}", Mark::Exponentiation), "**");
+        assert_eq!(&format!("{}", Mark::Greater), ">");
+        assert_eq!(&format!("{}", Mark::GreaterEqual), ">=");
+        assert_eq!(&format!("{}", Mark::Increase), "++");
+        assert_eq!(&format!("{}", Mark::Less), "<");
+        assert_eq!(&format!("{}", Mark::LessEqual), "<=");
+        assert_eq!(&format!("{}", Mark::Modulo), "%");
+        assert_eq!(&format!("{}", Mark::ModuloAssign), "%=");
+        assert_eq!(&format!("{}", Mark::Multiply), "*");
+        assert_eq!(&format!("{}", Mark::MultiplyAssign), "*=");
+        assert_eq!(&format!("{}", Mark::NotEqual), "!=");
+        assert_eq!(&format!("{}", Mark::Or), "||");
+        assert_eq!(&format!("{}", Mark::ParenthesisOpen), "(");
+        assert_eq!(&format!("{}", Mark::ParenthesisClose), ")");
+        assert_eq!(&format!("{}", Mark::QuestionMark), "?");
+        assert_eq!(&format!("{}", Mark::Range), "..");
+        assert_eq!(&format!("{}", Mark::Semicolon), ";");
+        assert_eq!(&format!("{}", Mark::ShiftLeft), "<<");
+        assert_eq!(&format!("{}", Mark::ShiftLeftAssign), "<<=");
+        assert_eq!(&format!("{}", Mark::ShiftRight), ">>");
+        assert_eq!(&format!("{}", Mark::ShiftRightAssign), ">>=");
+        assert_eq!(&format!("{}", Mark::Subtract), "-");
+        assert_eq!(&format!("{}", Mark::SubtractAssign), "-=");
+    }
+
+    #[test]
     #[allow(clippy::too_many_lines)]
     fn test_mark() {
         let location: Location = Location {

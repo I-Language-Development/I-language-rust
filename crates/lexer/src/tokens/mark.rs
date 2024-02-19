@@ -26,6 +26,8 @@
 // IMPORTS //
 /////////////
 
+use core;
+
 use crate::tokens::token::{GetToken, Location, Token, TokenType};
 
 
@@ -134,6 +136,64 @@ pub enum Mark {
     Subtract,
     /// The `-=` mark. Used for subtracting the right value from the variable and assigning that value to the variable.
     SubtractAssign,
+}
+
+impl core::fmt::Display for Mark {
+    #[inline]
+    #[allow(clippy::match_ref_pats)]
+    fn fmt(&self, formatter: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        match self {
+            &Self::Add => write!(formatter, "+"),
+            &Self::AddAssign => write!(formatter, "+="),
+            &Self::And => write!(formatter, "&&"),
+            &Self::Arrow => write!(formatter, "->"),
+            &Self::Assign => write!(formatter, "="),
+            &Self::At => write!(formatter, "@"),
+            &Self::Bang => write!(formatter, "!"),
+            &Self::BitAnd => write!(formatter, "&"),
+            &Self::BitAndAssign => write!(formatter, "&="),
+            &Self::BitNot => write!(formatter, "~"),
+            &Self::BitNotAssign => write!(formatter, "~="),
+            &Self::BitOr => write!(formatter, "|"),
+            &Self::BitOrAssign => write!(formatter, "|="),
+            &Self::BitXor => write!(formatter, "^"),
+            &Self::BitXorAssign => write!(formatter, "^="),
+            &Self::BraceOpen => write!(formatter, "{{"),
+            &Self::BraceClose => write!(formatter, "}}"),
+            &Self::BracketOpen => write!(formatter, "["),
+            &Self::BracketClose => write!(formatter, "]"),
+            &Self::Colon => write!(formatter, ":"),
+            &Self::Comma => write!(formatter, ","),
+            &Self::Decrease => write!(formatter, "--"),
+            &Self::Divide => write!(formatter, "/"),
+            &Self::DivideAssign => write!(formatter, "/="),
+            &Self::Dot => write!(formatter, "."),
+            &Self::Equal => write!(formatter, "=="),
+            &Self::Exponentiation => write!(formatter, "**"),
+            &Self::Greater => write!(formatter, ">"),
+            &Self::GreaterEqual => write!(formatter, ">="),
+            &Self::Increase => write!(formatter, "++"),
+            &Self::Less => write!(formatter, "<"),
+            &Self::LessEqual => write!(formatter, "<="),
+            &Self::Modulo => write!(formatter, "%"),
+            &Self::ModuloAssign => write!(formatter, "%="),
+            &Self::Multiply => write!(formatter, "*"),
+            &Self::MultiplyAssign => write!(formatter, "*="),
+            &Self::NotEqual => write!(formatter, "!="),
+            &Self::Or => write!(formatter, "||"),
+            &Self::ParenthesisOpen => write!(formatter, "("),
+            &Self::ParenthesisClose => write!(formatter, ")"),
+            &Self::QuestionMark => write!(formatter, "?"),
+            &Self::Range => write!(formatter, ".."),
+            &Self::Semicolon => write!(formatter, ";"),
+            &Self::ShiftLeft => write!(formatter, "<<"),
+            &Self::ShiftLeftAssign => write!(formatter, "<<="),
+            &Self::ShiftRight => write!(formatter, ">>"),
+            &Self::ShiftRightAssign => write!(formatter, ">>="),
+            &Self::Subtract => write!(formatter, "-"),
+            &Self::SubtractAssign => write!(formatter, "-="),
+        }
+    }
 }
 
 impl GetToken for Mark {

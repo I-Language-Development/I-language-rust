@@ -31,6 +31,13 @@ mod tests {
     use lexer::tokens::token::{GetToken, Location, Token, TokenType};
 
     #[test]
+    fn test_display() {
+        assert_eq!(&format!("{}", Type::Str), "string");
+        assert_eq!(&format!("{}", Type::Int), "integer");
+        assert_eq!(&format!("{}", Type::Bool), "boolean");
+    }
+
+    #[test]
     fn test_type() {
         let location: Location = Location {
             file: "tests".to_owned(),

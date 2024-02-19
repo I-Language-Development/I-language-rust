@@ -40,6 +40,32 @@ mod tests {
     }
 
     #[test]
+    fn test_display() {
+        assert_eq!(&format!("{}", Keyword::As), "as");
+        assert_eq!(&format!("{}", Keyword::Break), "break");
+        assert_eq!(&format!("{}", Keyword::Case), "case");
+        assert_eq!(&format!("{}", Keyword::Catch), "catch");
+        assert_eq!(&format!("{}", Keyword::Class), "class");
+        assert_eq!(&format!("{}", Keyword::Const), "const");
+        assert_eq!(&format!("{}", Keyword::Continue), "continue");
+        assert_eq!(&format!("{}", Keyword::Default), "default");
+        assert_eq!(&format!("{}", Keyword::Else), "else");
+        assert_eq!(&format!("{}", Keyword::Finally), "finally");
+        assert_eq!(&format!("{}", Keyword::For), "for");
+        assert_eq!(&format!("{}", Keyword::Function), "function");
+        assert_eq!(&format!("{}", Keyword::If), "if");
+        assert_eq!(&format!("{}", Keyword::Import), "import");
+        assert_eq!(&format!("{}", Keyword::Match), "match");
+        assert_eq!(&format!("{}", Keyword::Pub), "pub");
+        assert_eq!(&format!("{}", Keyword::Return), "return");
+        assert_eq!(&format!("{}", Keyword::Throw), "throw");
+        assert_eq!(&format!("{}", Keyword::Try), "try");
+        assert_eq!(&format!("{}", Keyword::Use), "use");
+        assert_eq!(&format!("{}", Keyword::Var), "var");
+        assert_eq!(&format!("{}", Keyword::While), "while");
+    }
+
+    #[test]
     #[allow(clippy::too_many_lines)]
     fn test_keyword() {
         let location: Location = Location {
