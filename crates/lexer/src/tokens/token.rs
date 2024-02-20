@@ -205,9 +205,14 @@ impl TypeDefinition {
         quote_type: char,
     ) -> Token {
         let last_character: core::cell::Cell<char> = core::cell::Cell::new('\0');
+        let second_to_last_character: core::cell::Cell<char> = core::cell::Cell::new('\0');
         let buffer: Vec<char> = iterator
             .peek_while(|&(_, next_character)| {
-                let value: bool = last_character.get() != '\\' && next_character == quote_type;
+                let value: bool = ((second_to_last_character.get() == '\\'
+                    && last_character.get() == '\\')
+                    || (second_to_last_character.get() != '\\' && last_character.get() != '\\'))
+                    && next_character == quote_type;
+                second_to_last_character.set(last_character.get());
                 last_character.set(next_character);
                 !value
             })
@@ -222,15 +227,7 @@ impl TypeDefinition {
                 label: Some("Unterminated string literal"),
                 annotation_type: annotate_snippets::AnnotationType::Error,
             }),
-            footer: if buffer.last() == Some(&'\\') {
-                vec![annotate_snippets::Annotation {
-                    id: None,
-                    label: Some("Good help"),
-                    annotation_type: annotate_snippets::AnnotationType::Help,
-                }]
-            } else {
-                vec![]
-            },
+            footer: vec![],
             slices: vec![annotate_snippets::Slice {
                 source: line,
                 line_start: location.line,
@@ -238,16 +235,31 @@ impl TypeDefinition {
                 annotations: vec![
                     annotate_snippets::SourceAnnotation {
                         range: (location.column - 1, location.column),
-                        label: "String started here",
+                        label: "String starts here",
                         annotation_type: annotate_snippets::AnnotationType::Help,
                     },
-                    annotate_snippets::SourceAnnotation {
-                        range: (
-                            location.column + buffer.len() - 1,
-                            location.column + buffer.len(),
-                        ),
-                        label: &help,
-                        annotation_type: annotate_snippets::AnnotationType::Help,
+                    if buffer.get(
+                        TryInto::<usize>::try_into(buffer.len() - 2).unwrap_or(buffer.len() - 1),
+                    ) == Some(&'\\')
+                        && buffer.last() == Some(&'"')
+                    {
+                        annotate_snippets::SourceAnnotation {
+                            range: (
+                                location.column + buffer.len() - 2,
+                                location.column + buffer.len() - 1,
+                            ),
+                            label: "Remove the `\\` here",
+                            annotation_type: annotate_snippets::AnnotationType::Help,
+                        }
+                    } else {
+                        annotate_snippets::SourceAnnotation {
+                            range: (
+                                location.column + buffer.len(),
+                                location.column + buffer.len() + 1,
+                            ),
+                            label: &help,
+                            annotation_type: annotate_snippets::AnnotationType::Help,
+                        }
                     },
                 ],
                 fold: false,
