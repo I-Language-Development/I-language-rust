@@ -25,7 +25,7 @@ body = """
 """
 
 footer = """
-For the old changelog from `v1.0.0-alpha1` to `v1.0.0-alpha3`, see the old [`CHANGELOG.md`](https://github.com/I-Language-Development/I-language-rust/blob/76abd0edb5e1636a90421e424b35c0c6645921eb/Docs/Docs/CHANGELOG.md).
+For the old changelog from `v1.0.0-alpha1` to `v1.0.0-alpha3`, see the old [`CHANGELOG.md`](<REPOSITORY>/blob/76abd0edb5e1636a90421e424b35c0c6645921eb/Docs/Docs/CHANGELOG.md).
 """
 
 trim = true
@@ -33,7 +33,7 @@ postprocessors = [
 	{ pattern = '@((\w|-)+)', replace = "[@${1}](https://github.com/${1})" },
 	{ pattern = '`([[:xdigit:]]{7})`', replace = "[`${1}`](<REPOSITORY>/commit/${1})" },
 	{ pattern = '#([0-9]+)', replace = "([#${1}](<REPOSITORY>/issues/${1}))" },
-	{ pattern = "<REPOSITORY>", replace = "https://github.com/I-Language-Development/I-language-rust/" },
+	{ pattern = "<REPOSITORY>", replace = "https://github.com/I-Language-Development/I-language-rust" },
 ]
 
 [git]
