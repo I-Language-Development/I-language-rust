@@ -75,15 +75,9 @@ fn main() {
     let file_name: String;
     if let Some(custom_file_name) = arguments.file {
         file_name = custom_file_name;
-    } else if std::path::Path::new("src/main.il")
-        .try_exists()
-        .expect("Could not check whether `src/main.il` exists")
-    {
+    } else if std::path::Path::new("src/main.il").exists() {
         file_name = "src/main.il".to_owned();
-    } else if std::path::Path::new("main.il")
-        .try_exists()
-        .expect("Could not check whether `main.il` exists")
-    {
+    } else if std::path::Path::new("main.il").exists() {
         file_name = "main.il".to_owned();
     } else {
         eprintln!("No file was specified and neither `src/mail.il` nor `main.il` exist.");
