@@ -35,6 +35,8 @@ jobs:
             - name: Install dev-dependencies from Cargo.toml
               run: cargo test --no-run
               # ^ This is the only way to install dev-dependencies
+            - name: Install just dependencies
+              run: just install-dev-dependencies
 
     dependency-review:
         runs-on: ubuntu-latest
