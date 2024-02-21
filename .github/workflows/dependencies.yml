@@ -33,8 +33,7 @@ jobs:
             - name: Install dependencies from Cargo.toml
               run: cargo update
             - name: Install dev-dependencies from Cargo.toml
-              run: cargo test --no-run
-              # ^ This is the only way to install dev-dependencies
+              run: cargo install just
             - name: Install just dependencies
               run: just install-dev-dependencies
 
