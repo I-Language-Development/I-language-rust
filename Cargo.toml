@@ -87,7 +87,6 @@ parser = { path = "crates/parser" }
 tools = { path = "crates/tools" }
 
 [dev-dependencies]
-cargo-audit = "0.18.3"
 just = "1.14.0"
 
 [features]
