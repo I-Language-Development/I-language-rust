@@ -55,7 +55,7 @@ install-dev-dependencies:
 
 # Install documentation dependencies
 install-doc-requirements:
-	@pip install -r Docs\.requirements.txt
+	@pip install -r docs\.requirements.txt
 
 # See rust-lang/cargo/12918 for why `-A clippy::std-instead-of-core` is needed
 # Lints the rust source files
@@ -68,7 +68,7 @@ run *ARGUMENTS:
 
 # Serve documentation locally
 serve-docs *ARGUMENTS:
-	@mkdocs serve -f Docs\.mkdocs.yml {{ARGUMENTS}}
+	@mkdocs serve -f docs\.mkdocs.yml {{ARGUMENTS}}
 
 # Runs the tests
 test *ARGUMENTS:
@@ -76,7 +76,7 @@ test *ARGUMENTS:
 
 # Updated the changelog using git-cliff
 update-changelog *ARGUMENTS:
-	@git cliff -c .github\cliff.toml -o Docs\Docs\CHANGELOG.md {{ARGUMENTS}}
+	@git cliff -c .github\cliff.toml -o docs\docs\CHANGELOG.md {{ARGUMENTS}}
 	@echo Updated changelog.
 
 # Update all submodules
