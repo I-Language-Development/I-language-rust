@@ -1,5 +1,5 @@
 ; I Language windows installer.
-; Version: 1.1.1
+; Version: 1.2.0
 
 ; Copyright (c) 2023-present I Language Development.
 
@@ -46,8 +46,8 @@ LicenseFile="../../../LICENSE.txt"
 ShowLanguageDialog=yes
 
 [Languages]
-Name: "de"; MessagesFile: "../../../Translations/Installer/german.islu"
-Name: "en"; MessagesFile: "../../../Translations/Installer/default.islu"
+Name: "de"; MessagesFile: "../../../translations/installer/german.islu"
+Name: "en"; MessagesFile: "../../../translations/installer/default.islu"
 
 [Tasks]
 Name: associateFileExtension; Description: "{cm:AssociateFileExtension,.il,I Language}"
@@ -57,36 +57,26 @@ Name: installForAllUsers; Description: "{cm:InstallForAllUsers}"; Flags: uncheck
 
 [InstallDelete]
 Type: files; Name: {autodesktop}/I Language.ink; Tasks: not createDesktopIcon
-Type: filesandordirs; Name: "{app}/src/Installer"
-Type: filesandordirs; Name: "{app}/Translations/Installer"
+Type: filesandordirs; Name: "{app}/src/installer"
+Type: filesandordirs; Name: "{app}/translations/installer"
 Type: filesandordirs; Name: "{app}/.github"
 Type: filesandordirs; Name: "{app}/.vscode"
 
 [Files]
 Source: "../../../LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion touch
 Source: "../../../.github/logo.ico"; DestDir: "{app}"; Flags: ignoreversion touch
-; Todo (ElBe): Clone README as txt
-Source: "../../../.github/README.md"; DestDir: "{app}/Docs"; Flags: ignoreversion touch isreadme
-Source: "../../../Modules/*"; DestDir: "{app}/Modules/stdlib"; Flags: ignoreversion touch
-Source: "../../../Docs/*"; DestDir: "{app}/Docs"; Flags: ignoreversion touch
-Source: "../../../Tools/*"; DestDir: "{app}/Tools"; Flags: ignoreversion touch
-Source: "*.bat"; DestDir: "{app}/Tools"; Flags: ignoreversion touch
-
-[INI]
-Filename: "{app}/config.ini"; Section: "Settings"; Key: "UseUnstableFeatures"; String: "yes"
+Source: "../../../.github/README.md"; DestDir: "{app}/docs"; Flags: ignoreversion touch isreadme
+Source: "../../../modules/*"; DestDir: "{app}/modules/stdlib"; Flags: ignoreversion touch
+Source: "../../../docs/*"; DestDir: "{app}/docs"; Flags: ignoreversion touch
+Source: "../../../tools/*"; DestDir: "{app}/tools"; Flags: ignoreversion touch
+Source: "*.bat"; DestDir: "{app}/tools"; Flags: ignoreversion touch
 
 [UninstallDelete]
-Type: files; Name: "{app}/config.ini"
-Type: filesandordirs; Name: "{app}/Modules"
-
-[Icons]
-; Todo (ElBe): Add icons
-; Coming soon...
+Type: filesandordirs; Name: "{app}/modules"
 
 [Run]
-Filename: "{app}/Tools/add_desktop_icon.bat"; StatusMsg: "{cm:CreatingDesktopIcon}"; Parameters: {app}; Tasks: createDesktopIcon; Flags: runhidden
-Filename: "{app}/Tools/associate_file_extension.bat"; StatusMsg: "{cm:AssociatingFileExtension,.il,I Language}"; Tasks: associateFileExtension; Flags: runhidden
-Filename: "{app}/Tools/add_to_path.bat"; StatusMsg: "{cm:AddingToPath,I Language}"; Parameters: {app}; Tasks: addToPath; Flags: runhidden
+Filename: "{app}/tools/associate_file_extension.bat"; StatusMsg: "{cm:AssociatingFileExtension,.il,I Language}"; Tasks: associateFileExtension; Flags: runhidden
+Filename: "{app}/tools/add_to_path.bat"; StatusMsg: "{cm:AddingToPath,I Language}"; Parameters: {app}; Tasks: addToPath; Flags: runhidden
 
 [UninstallRun]
-Filename: "{app}/Tools/unassociate_file_extension.bat"; RunOnceId: "{cm:UnassociatingFileExtension,.il,I Language}"; Tasks: associateFileExtension; Flags: runhidden
+Filename: "{app}/tools/unassociate_file_extension.bat"; RunOnceId: "{cm:UnassociatingFileExtension,.il,I Language}"; Tasks: associateFileExtension; Flags: runhidden
