@@ -2,4 +2,4 @@
 *                            @ElBe-Plaq
 
 # Errors and tests
-src/Tests/*.rs               @Ranastra
+crates/*/tests/*.rs               @Ranastra

@@ -6,7 +6,7 @@ site_author: I-Language-Development
 copyright: >
     Copyright © 2023-present I Language Development.
     <a href="#__consent">Change cookie settings</a>
-docs_dir: Docs
+docs_dir: docs
 site_dir: ../build
 site_url: https://i-language-rust.readthedocs.io/en/latest/
 
@@ -29,42 +29,42 @@ nav:
                 - Style guide: ILEPs/Intro/008.md
                 - Comments and documentation: ILEPs/Intro/009.md
     - Source code:
-          - Dev/index.md
-          - Index: Dev/index.md
-          - lib.rs: Dev/lib.rs.md
-          - main.rs: Dev/main.rs.md
+          - dev/index.md
+          - Index: dev/index.md
+          - lib.rs: dev/lib.rs.md
+          - main.rs: dev/main.rs.md
           - Compiler:
-                - Dev/Compiler/compiler.rs.md
-                - compiler.rs: Dev/Compiler/compiler.rs.md
-                - mod.rs: Dev/Compiler/mod.rs.md
+                - dev/compiler/compiler.rs.md
+                - compiler.rs: dev/compiler/compiler.rs.md
+                - mod.rs: dev/compiler/mod.rs.md
           - Grammar:
-                - Dev/Grammar/grammar.pest.md
-                - fileextensions: Dev/Grammar/fileextensions.md
-                - grammar.pest: Dev/Grammar/grammar.pest.md
-                - grammar.rs: Dev/Grammar/grammar.rs.md
-                - mod.rs: Dev/Grammar/mod.rs.md
+                - dev/grammar/grammar.pest.md
+                - fileextensions: dev/grammar/fileextensions.md
+                - grammar.pest: dev/grammar/grammar.pest.md
+                - grammar.rs: dev/grammar/grammar.rs.md
+                - mod.rs: dev/grammar/mod.rs.md
           - Installer:
                 - Linux:
-                      - Dev/Installer/Linux/installer.bash.md
-                      - installer.bash: Dev/Installer/Linux/installer.bash.md
+                      - dev/installer/linux/installer.bash.md
+                      - installer.bash: dev/installer/linux/installer.bash.md
                 - Windows:
-                      - Dev/Installer/Windows/setup.iss.md
+                      - dev/installer/windows/setup.iss.md
                       - Server:
-                            - Dev/Installer/Windows/Server/installer.bat.md
-                            - installer.bat: Dev/Installer/Windows/Server/installer.bat.md
-                      - add_desktop_icon.bat: Dev/Installer/Windows/add_desktop_icon.bat.md
-                      - add_to_path.bat: Dev/Installer/Windows/add_to_path.bat.md
-                      - associate_file_extension.bat: Dev/Installer/Windows/associate_file_extension.bat.md
-                      - setup.iss: Dev/Installer/Windows/setup.iss.md
-                      - unassociate_file_extension.bat: Dev/Installer/Windows/unassociate_file_extension.bat.md
+                            - dev/installer/windows/server/installer.bat.md
+                            - installer.bat: dev/installer/windows/server/installer.bat.md
+                      - add_desktop_icon.bat: dev/installer/windows/add_desktop_icon.bat.md
+                      - add_to_path.bat: dev/installer/windows/add_to_path.bat.md
+                      - associate_file_extension.bat: dev/installer/windows/associate_file_extension.bat.md
+                      - setup.iss: dev/installer/windows/setup.iss.md
+                      - unassociate_file_extension.bat: dev/installer/windows/unassociate_file_extension.bat.md
           - Lexer:
-                - Dev/Lexer/lexer.rs.md
-                - lexer.rs: Dev/Lexer/lexer.rs.md
-                - mod.rs: Dev/Lexer/mod.rs.md
+                - dev/lexer/lexer.rs.md
+                - lexer.rs: dev/lexer/lexer.rs.md
+                - mod.rs: dev/lexer/mod.rs.md
           - Parser:
-                - Dev/Parser/parser.rs.md
-                - lexer.rs: Dev/Parser/parser.rs.md
-                - mod.rs: Dev/Parser/mod.rs.md
+                - dev/parser/parser.rs.md
+                - lexer.rs: dev/parser/parser.rs.md
+                - mod.rs: dev/parser/mod.rs.md
     - Acknowledgements: acknowledgements.md
     - Issues: https://github.com/I-Language-Development/I-Language-Rust/issues
 
@@ -105,7 +105,7 @@ markdown_extensions:
     - pymdownx.superfences
 
 hooks:
-    - ../Tools/replace_variables.py
+    - ../tools/replace_variables.py
 
 plugins:
     - search

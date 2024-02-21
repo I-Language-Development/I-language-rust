@@ -5,8 +5,8 @@ dependencies:
 
 documentation:
     - changed-files:
-          - any-glob-to-any-file: "Docs/**"
+          - any-glob-to-any-file: "docs/**"
 
 module:
     - changed-files:
-          - any-glob-to-any-file: "Modules/**"
+          - any-glob-to-any-file: "modules/**"
