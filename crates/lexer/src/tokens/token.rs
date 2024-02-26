@@ -241,7 +241,7 @@ impl TypeDefinition {
                     if buffer.get(
                         TryInto::<usize>::try_into(buffer.len() - 2).unwrap_or(buffer.len() - 1),
                     ) == Some(&'\\')
-                        && buffer.last() == Some(&'"')
+                        && buffer.last() == Some(&quote_type)
                     {
                         annotate_snippets::SourceAnnotation {
                             range: (
