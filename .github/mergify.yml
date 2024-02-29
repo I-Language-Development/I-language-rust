@@ -3,7 +3,7 @@ pull_request_rules:
     - name: Merge trusted bot updates, no conflicts are present and approved
       conditions:
           - or:
-                - "label~=Approved"
+                - "label~=approved"
                 - "-#approved-reviews-by=0"
           - "-conflict"
           - "-draft"
@@ -41,8 +41,8 @@ pull_request_rules:
       conditions:
           - or:
                 - "-#approved-reviews-by=0"
-                - "label~=Approved"
-          - "label~=Able to merge"
+                - "label~=approved"
+          - "label~=able to merge"
           - "-conflict"
           - "-draft"
           - "-locked"
@@ -78,10 +78,10 @@ pull_request_rules:
       conditions:
           - or:
                 - "#approved-reviews-by=0"
-                - "-label~=Approved"
+                - "-label~=approved"
           - "-title~=^[WIP].*"
-          - "-label~=Declined"
-          - "-label~=Review requested"
+          - "-label~=declined"
+          - "-label~=review requested"
           - "-draft"
           - "-locked"
           - "-conflict"
