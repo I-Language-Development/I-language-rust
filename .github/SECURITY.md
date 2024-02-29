@@ -7,7 +7,8 @@
 | `v1.0.0-alpha1` | :x: (End of life)                   |
 | `v1.0.0-alpha2` | :x: (End of life)                   |
 | `v1.0.0-alpha3` | :white_check_mark:                  |
-| `v1.0.0-alpha4` | :white_check_mark: (In development) |
+| `v1.0.0-alpha.4` | :white_check_mark: |
+| `v1.0.0-alpha.5` | :white_check_mark: (In development) |
 
 ## Reporting a Vulnerability
 

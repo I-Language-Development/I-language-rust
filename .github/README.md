@@ -39,7 +39,7 @@ To make a simple hello world program follow the instructions below:
 1. Create a file named `hello.il`.
 2. Open the file and write the following lines to it.
 ``` py
-output("Hello world!");
+print("Hello world!");
 ```
 3. Open the path of the file in your terminal and type `ilanguage hello.il`
 4. You should see "Hello world!" in your terminal.

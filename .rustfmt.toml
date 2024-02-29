@@ -1,0 +1,4 @@
+# The following requires you to use the nightly version of rust
+# Run `just f` or `just format` to use it automatically
+unstable_features = true
+blank_lines_upper_bound = 2

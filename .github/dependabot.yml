@@ -1,7 +1,3 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 ---
 version: 2
 updates:
@@ -13,6 +9,8 @@ updates:
           - "ElBe-Plaq"
       labels:
           - "dependencies"
+      commit-message:
+          prefix: "chore(deps)"
 
     - package-ecosystem: "cargo"
       directory: "/"
@@ -22,6 +20,8 @@ updates:
           - "ElBe-Plaq"
       labels:
           - "dependencies"
+      commit-message:
+          prefix: "chore(deps)"
 
     - package-ecosystem: "github-actions"
       directory: "/"
@@ -31,6 +31,9 @@ updates:
           - "ElBe-Plaq"
       labels:
           - "dependencies"
+      commit-message:
+          prefix: "chore(deps)"
+
     - package-ecosystem: "gitsubmodule"
       directory: "/"
       schedule:
@@ -39,3 +42,5 @@ updates:
           - "ElBe-Plaq"
       labels:
           - "dependencies"
+      commit-message:
+          prefix: "chore(deps)"

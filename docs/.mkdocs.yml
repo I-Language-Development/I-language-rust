@@ -1,0 +1,138 @@
+---
+site_name: I Language
+repo_url: https://github.com/I-Language-Development/I-Language-Rust
+site_description: The I programming language is a high level programming language written in rust.
+site_author: I-Language-Development
+copyright: >
+    Copyright © 2023-present I Language Development.
+    <a href="#__consent">Change cookie settings</a>
+docs_dir: docs
+site_dir: ../build
+site_url: https://i-language-rust.readthedocs.io/en/latest/
+
+nav:
+    - Home: index.md
+    - About: about.md
+    - Installation: install.md
+    - Changelog: CHANGELOG.md
+    - I Language Enhancement Proposals:
+          - ILEPs/Intro/001.md
+          - Intro:
+                - ILEPs/Intro/001.md
+                - Index: ILEPs/Intro/001.md
+                - What is this language?: ILEPs/Intro/002.md
+                - What is this language not?: ILEPs/Intro/003.md
+                - (Built-in) Modules: ILEPs/Intro/004.md
+                - Examples: ILEPs/Intro/005.md
+                - Contributing: ILEPs/Intro/006.md
+                - Decisions: ILEPs/Intro/007.md
+                - Style guide: ILEPs/Intro/008.md
+                - Comments and documentation: ILEPs/Intro/009.md
+    - Source code:
+          - dev/index.md
+          - Index: dev/index.md
+          - lib.rs: dev/lib.rs.md
+          - main.rs: dev/main.rs.md
+          - Compiler:
+                - dev/compiler/compiler.rs.md
+                - compiler.rs: dev/compiler/compiler.rs.md
+                - mod.rs: dev/compiler/mod.rs.md
+          - Grammar:
+                - dev/grammar/grammar.pest.md
+                - fileextensions: dev/grammar/fileextensions.md
+                - grammar.pest: dev/grammar/grammar.pest.md
+                - grammar.rs: dev/grammar/grammar.rs.md
+                - mod.rs: dev/grammar/mod.rs.md
+          - Installer:
+                - Linux:
+                      - dev/installer/linux/installer.bash.md
+                      - installer.bash: dev/installer/linux/installer.bash.md
+                - Windows:
+                      - dev/installer/windows/setup.iss.md
+                      - Server:
+                            - dev/installer/windows/server/installer.bat.md
+                            - installer.bat: dev/installer/windows/server/installer.bat.md
+                      - add_desktop_icon.bat: dev/installer/windows/add_desktop_icon.bat.md
+                      - add_to_path.bat: dev/installer/windows/add_to_path.bat.md
+                      - associate_file_extension.bat: dev/installer/windows/associate_file_extension.bat.md
+                      - setup.iss: dev/installer/windows/setup.iss.md
+                      - unassociate_file_extension.bat: dev/installer/windows/unassociate_file_extension.bat.md
+          - Lexer:
+                - dev/lexer/lexer.rs.md
+                - lexer.rs: dev/lexer/lexer.rs.md
+                - mod.rs: dev/lexer/mod.rs.md
+          - Parser:
+                - dev/parser/parser.rs.md
+                - lexer.rs: dev/parser/parser.rs.md
+                - mod.rs: dev/parser/mod.rs.md
+    - Acknowledgements: acknowledgements.md
+    - Issues: https://github.com/I-Language-Development/I-Language-Rust/issues
+
+theme:
+    name: material
+    favicon: https://raw.githubusercontent.com/I-Language-Development/I-language-rust/main/.github/logo.ico
+    icon:
+        repo: fontawesome/brands/github
+    palette:
+        - media: "(prefers-color-scheme: light)"
+          scheme: default
+          toggle:
+              icon: material/brightness-7
+              name: Switch to dark mode
+        - media: "(prefers-color-scheme: dark)"
+          scheme: slate
+          toggle:
+              icon: material/brightness-4
+              name: Switch to light mode
+    features:
+        - announce.dismiss
+        - content.code.copy
+        - toc.integrate
+        - navigation.footer
+    logo: https://github.com/I-Language-Development/I-language-rust/blob/main/.github/logo.png?raw=true
+    custom_dir: overrides/
+
+markdown_extensions:
+    - admonition
+    - pymdownx.highlight:
+          auto_title: true
+          linenums: true
+          anchor_linenums: true
+    - pymdownx.inlinehilite
+    - pymdownx.snippets
+    - pymdownx.details
+    - pymdownx.keys
+    - pymdownx.superfences
+
+hooks:
+    - ../tools/replace_variables.py
+
+plugins:
+    - search
+    - git-revision-date-localized:
+          type: timeago
+    - macros
+    - section-index
+
+extra_css:
+    - extra/CSS/admonition_license.css
+    - extra/CSS/round_button.css
+    - extra/CSS/round_logo.css
+
+extra_javascript:
+    - https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js
+    - extra/JS/tablesort.js
+
+extra:
+    social:
+        - icon: fontawesome/brands/github
+          link: https://github.com/I-Language-Development/I-Language-Rust
+        - icon: fontawesome/brands/discord
+          link: https://discord.gg/JVyyDukQqV
+    consent:
+        title: Cookie consent
+        description: >
+            We use cookies to recognize your repeated visits and preferences, as well
+            as to measure the effectiveness of our documentation and whether users
+            find what they're searching for. With your consent, you're helping us to
+            make our documentation better.

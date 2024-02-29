@@ -1,1 +1,12 @@
+---
+dependencies:
+    - changed-files:
+          - any-glob-to-any-file: ["**/Cargo.toml", "**/requirements.txt"]
 
+documentation:
+    - changed-files:
+          - any-glob-to-any-file: "docs/**"
+
+module:
+    - changed-files:
+          - any-glob-to-any-file: "modules/**"

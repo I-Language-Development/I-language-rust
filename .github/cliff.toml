@@ -1,0 +1,76 @@
+[changelog]
+header = """
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+"""
+
+body = """
+{% if version -%}
+	## [`{{ version }}`](<REPOSITORY>/releases/tag/{{ version }}) - {{ timestamp | date(format="%m/%d/%Y") }}
+{% else -%}
+	## Unreleased
+{% endif -%}
+{% for group, commits in commits | filter(attribute="merge_commit", value=false) | group_by(attribute="group") %}
+	### {{ group | striptags | upper_first }}
+	{% for commit in commits %}
+		- {% if commit.scope -%}{{ commit.scope }}: {% endif -%}{{ commit.message | upper_first | trim_end_matches(pat=".") }} by @{% if commit.author.name == "ElBe" -%}ElBe-Plaq{% else -%}{{ commit.author.name }}{% endif -%}\
+		<!-- SEPARATOR --> in {% if commit.github.pr_number -%}#{{ commit.github.pr_number }}{% else -%}`{{ commit.id | truncate(length=7, end="") }}`{% endif -%}.\
+	{% endfor %}
+{% endfor %}\n
+"""
+
+footer = """
+For the old changelog from `v1.0.0-alpha1` to `v1.0.0-alpha3`, see the old [`CHANGELOG.md`](<REPOSITORY>/blob/76abd0edb5e1636a90421e424b35c0c6645921eb/Docs/Docs/CHANGELOG.md).
+"""
+
+trim = true
+postprocessors = [
+	{ pattern = '@((\w|-)+)', replace = "[@${1}](https://github.com/${1})" },
+	{ pattern = '`([[:xdigit:]]{7})`', replace = "[`${1}`](<REPOSITORY>/commit/${1})" },
+	{ pattern = '#([0-9]+)', replace = "([#${1}](<REPOSITORY>/issues/${1}))" },
+	{ pattern = "<REPOSITORY>", replace = "https://github.com/I-Language-Development/I-language-rust" },
+]
+
+[git]
+conventional_commits = true
+filter_unconventional = true
+split_commits = false
+commit_preprocessors = []
+
+commit_parsers = [
+	# Remove old non-conventional commits
+	{ message = '^\[(#|gh-)?([0-9]+)\]', skip = true },
+	{ message = "gh-9: Added math module", skip = true },
+
+	{ message = "^feat", group = "<!-- 0 -->Added" },
+	{ message = "^chore\\(depr\\)", group = "<!-- 2-->Deprecated"},
+	{ message = "^del", group = "<!-- 3 -->Removed"},
+	{ message = "^fix", group = "<!-- 4 -->Fixed" },
+	{ message = "^sec", group = "<!-- 5 -->Security" },
+	{ message = "^perf", group = "<!-- 6 -->Performance" },
+	{ message = "^test", group = "<!-- 7 -->Testing" },
+	{ message = "^doc", group = "<!-- 8 -->Documentation" },
+	{ message = "^style", group = "<!-- 9 -->Styling" },
+	{ message = "^chore|ci", group = "<!-- 90 -->Other" },
+
+	# Ignore bot commits
+	{ message = "^chore\\(release\\)", skip = true },
+	{ message = "^chore\\(deps\\)", skip = true },
+	{ message = "^chore\\(pr\\)", skip = true },
+	{ message = "^chore\\(pull\\)", skip = true },
+
+	{ message = "^.*", group = "<!-- 1 -->Changed" }
+]
+protect_breaking_commits = false
+filter_commits = false
+tag_pattern = 'v[0-9]+\.[0-9]+\.[0-9]+(-(alpha|beta|pr)\.?[0-9]+)?'
+
+skip_tags = ""
+ignore_tags = ""
+topo_order = false
+sort_commits = "newest"
