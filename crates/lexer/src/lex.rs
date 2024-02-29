@@ -26,6 +26,7 @@
 // IMPORTS //
 /////////////
 
+use crate::error::LexerError;
 use crate::tokens::constant::Type;
 use crate::tokens::keyword::Keyword;
 use crate::tokens::token::{GetToken, Location, Token, TokenType, TypeDefinition};
@@ -105,9 +106,8 @@ use log::trace;
 /// - [`Location`]
 #[inline] // Suggesting inlining due to rare calls to the function
 #[allow(clippy::too_many_lines)]
-// TODO (ElBe, Ranastra): Switch to custom error type
-pub fn lex(input: &str, file: &str) -> Result<Vec<Token>, String> {
-    let mut error: Option<String> = None;
+pub fn lex(input: &str, file: &str) -> Result<Vec<Token>, LexerError> {
+    let mut error: Option<LexerError> = None;
     let mut result: Vec<Token> = vec![];
 
     let mut iterator: std::iter::Peekable<std::iter::Enumerate<std::str::Chars>>;
@@ -134,12 +134,10 @@ pub fn lex(input: &str, file: &str) -> Result<Vec<Token>, String> {
             };
 
             if character == '"' || character == '\'' {
-                result.push(TypeDefinition::lex_string(
-                    &mut iterator,
-                    line,
-                    location,
-                    character,
-                ));
+                match TypeDefinition::lex_string(&mut iterator, line, location, character) {
+                    Ok(value) => result.push(value),
+                    Err(error_value) => error = Some(error_value),
+                };
             } else if matches!(
                 character,
                 '+' | '-'
@@ -194,7 +192,7 @@ pub fn lex(input: &str, file: &str) -> Result<Vec<Token>, String> {
                     let renderer: annotate_snippets::Renderer =
                         annotate_snippets::Renderer::styled();
                     eprintln!("{}", renderer.render(snippet));
-                    error = Some(format!("Syntax error: Invalid mark at {location}"));
+                    error = Some(LexerError::InvalidMark { location });
                 }
             } else if character.is_ascii_digit() {
                 buffer.push(character);
@@ -265,7 +263,10 @@ pub fn lex(input: &str, file: &str) -> Result<Vec<Token>, String> {
 
                 let renderer: annotate_snippets::Renderer = annotate_snippets::Renderer::styled();
                 eprintln!("{}", renderer.render(snippet));
-                error = Some(format!("Syntax error: Unexpected character at {location}"));
+                error = Some(LexerError::UnexpectedCharacter {
+                    character,
+                    location,
+                });
             }
 
             trace!(
@@ -276,7 +277,7 @@ pub fn lex(input: &str, file: &str) -> Result<Vec<Token>, String> {
     }
 
     match error {
-        Some(message) => Err(format!("Error during lexing (last): {message}")),
+        Some(error_value) => Err(error_value),
         None => Ok(result),
     }
 }

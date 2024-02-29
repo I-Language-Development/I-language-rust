@@ -41,6 +41,7 @@ publish = false
 [workspace.dependencies]
 annotate-snippets = "0.10.0"
 log = "0.4.20"
+thiserror = "1.0.57"
 
 tools = { path = "crates/tools" }
 

@@ -94,7 +94,7 @@ fn main() {
     let input: String = std::io::read_to_string(reader).unwrap();
 
     let start: std::time::Instant = std::time::Instant::now();
-    let output: Result<Vec<lexer::tokens::token::Token>, String> =
+    let output: Result<Vec<lexer::tokens::token::Token>, lexer::error::LexerError> =
         lexer::lex::lex(input.trim(), &file_name);
     debug!(
         "Lexing `{file_name}` took {}ms.",

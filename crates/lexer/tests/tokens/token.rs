@@ -98,11 +98,11 @@ mod tests {
 
         assert_eq!(
             TypeDefinition::lex_string(&mut iterator, input, location.clone(), '\''),
-            Token {
+            Ok(Token {
                 location,
                 content: "my string".to_owned(),
                 token_type: TokenType::TypeDefinition(TypeDefinition::String)
-            }
+            })
         );
     }
 

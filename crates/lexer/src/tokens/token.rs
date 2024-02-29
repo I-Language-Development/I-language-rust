@@ -29,6 +29,7 @@
 use core;
 use std;
 
+use crate::error::LexerError;
 use crate::tokens::constant::Type;
 use crate::tokens::keyword::Keyword;
 use crate::tokens::mark::Mark;
@@ -163,7 +164,7 @@ impl TypeDefinition {
     ///
     /// # Returns
     ///
-    /// The string as a [`Token`].
+    /// A result of the string as a [`Token`].
     ///
     /// # Errors
     ///
@@ -182,11 +183,11 @@ impl TypeDefinition {
     /// #    line: 1,
     /// #    column: 1,
     /// # };
-    /// assert_eq!(TypeDefinition::lex_string(&mut iterator, input, location.clone(), '\''), Token {
+    /// assert_eq!(TypeDefinition::lex_string(&mut iterator, input, location.clone(), '\''), Ok(Token {
     ///     location,
     ///     content: "my string".to_owned(),
     ///     token_type: TokenType::TypeDefinition(TypeDefinition::String)
-    /// });
+    /// }));
     ///
     ///
     /// ```
@@ -197,13 +198,12 @@ impl TypeDefinition {
     /// - [`TypeDefinition`]
     /// - [`TypeDefinition::String`]
     #[inline(always)]
-    // TODO: Errors
     pub fn lex_string(
         iterator: &mut std::iter::Peekable<std::iter::Enumerate<std::str::Chars>>,
         line: &str,
         location: Location,
         quote_type: char,
-    ) -> Token {
+    ) -> Result<Token, LexerError> {
         let last_character: core::cell::Cell<char> = core::cell::Cell::new('\0');
         let second_to_last_character: core::cell::Cell<char> = core::cell::Cell::new('\0');
         let buffer: Vec<char> = iterator
@@ -270,17 +270,19 @@ impl TypeDefinition {
             if next_character != quote_type {
                 let renderer: annotate_snippets::Renderer = annotate_snippets::Renderer::styled();
                 eprintln!("{}", renderer.render(snippet));
+                return Err(LexerError::UnterminatedString { location });
             }
         } else {
             let renderer: annotate_snippets::Renderer = annotate_snippets::Renderer::styled();
             eprintln!("{}", renderer.render(snippet));
+            return Err(LexerError::UnterminatedString { location });
         }
 
-        Token {
+        Ok(Token {
             location,
             content: buffer.iter().collect::<String>(),
             token_type: TokenType::TypeDefinition(TypeDefinition::String),
-        }
+        })
     }
 }
 
@@ -376,7 +378,7 @@ impl TokenType {
         line: &str,
         location: Location,
         character: char,
-    ) -> Result<Option<Token>, String> {
+    ) -> Result<Option<Token>, LexerError> {
         let mut buffer: Vec<char> = vec![character];
 
         if let Some(&(_, next_character)) = iterator.clone().peek() {
@@ -434,7 +436,7 @@ impl TokenType {
 
                 let renderer: annotate_snippets::Renderer = annotate_snippets::Renderer::styled();
                 eprintln!("{}", renderer.render(snippet));
-                return Err(format!("Syntax error: Unterminated comment at {location}"));
+                return Err(LexerError::UnterminatedComment { location });
             }
 
             iterator.next();
