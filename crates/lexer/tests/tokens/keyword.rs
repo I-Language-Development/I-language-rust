@@ -51,7 +51,6 @@ mod tests {
         assert_eq!(&format!("{}", Keyword::Else), "else");
         assert_eq!(&format!("{}", Keyword::Finally), "finally");
         assert_eq!(&format!("{}", Keyword::For), "for");
-        assert_eq!(&format!("{}", Keyword::Function), "function");
         assert_eq!(&format!("{}", Keyword::If), "if");
         assert_eq!(&format!("{}", Keyword::Import), "import");
         assert_eq!(&format!("{}", Keyword::Match), "match");
@@ -83,7 +82,6 @@ mod tests {
         assert!(generate_test(&location, "else", Keyword::Else));
         assert!(generate_test(&location, "finally", Keyword::Finally));
         assert!(generate_test(&location, "for", Keyword::For));
-        assert!(generate_test(&location, "function", Keyword::Function));
         assert!(generate_test(&location, "if", Keyword::If));
         assert!(generate_test(&location, "import", Keyword::Import));
         assert!(generate_test(&location, "match", Keyword::Match));

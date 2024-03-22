@@ -58,8 +58,6 @@ pub enum Keyword {
     Finally,
     /// The `for` keyword. Used to create a loop over an iterator.
     For,
-    /// The `function` keyword. Will probably be replaced by either `fn` or `func` soon. Used to define a function.
-    Function, // TODO (ElBe): Replace with "fn" or "func"?
     /// The `if` keyword. Used to check whether a condition is true or false and execute code based on that condition.
     If,
     /// The `import` keyword. Used to import code from other modules.
@@ -97,7 +95,6 @@ impl core::fmt::Display for Keyword {
             &Self::Else => write!(formatter, "else"),
             &Self::Finally => write!(formatter, "finally"),
             &Self::For => write!(formatter, "for"),
-            &Self::Function => write!(formatter, "function"),
             &Self::If => write!(formatter, "if"),
             &Self::Import => write!(formatter, "import"),
             &Self::Match => write!(formatter, "match"),
@@ -168,11 +165,6 @@ impl GetToken for Keyword {
                 location,
                 content: "for".to_owned(),
                 token_type: TokenType::Keyword(Keyword::For),
-            }),
-            "function" => Some(Token {
-                location,
-                content: "function".to_owned(),
-                token_type: TokenType::Keyword(Keyword::Function),
             }),
             "if" => Some(Token {
                 location,
