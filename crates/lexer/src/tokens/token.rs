@@ -314,10 +314,10 @@ impl core::fmt::Display for TokenType {
     #[allow(clippy::pattern_type_mismatch)]
     fn fmt(&self, formatter: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         match self {
-            Self::Type(type_name) => write!(formatter, "{type_name}"),
-            Self::TypeDefinition(type_definition) => write!(formatter, "{type_definition}"),
-            Self::Keyword(keyword) => write!(formatter, "{keyword}"),
-            Self::Mark(mark) => write!(formatter, "{mark}"),
+            Self::Type(type_name) => type_name.fmt(formatter),
+            Self::TypeDefinition(type_definition) => type_definition.fmt(formatter),
+            Self::Keyword(keyword) => keyword.fmt(formatter),
+            Self::Mark(mark) => mark.fmt(formatter),
             Self::Identifier => write!(formatter, "identifier"),
             Self::Comment => write!(formatter, "comment"),
         }
