@@ -221,6 +221,7 @@ impl TypeDefinition {
             .collect::<Vec<char>>();
 
         let help: String = format!("Add `{quote_type}` here");
+        let file: String = location.file.clone();
         let snippet: annotate_snippets::Snippet = annotate_snippets::Snippet {
             title: Some(annotate_snippets::Annotation {
                 id: Some("E0002"),
@@ -231,7 +232,7 @@ impl TypeDefinition {
             slices: vec![annotate_snippets::Slice {
                 source: line,
                 line_start: location.line,
-                origin: Some(&location.file),
+                origin: Some(&file),
                 annotations: vec![
                     annotate_snippets::SourceAnnotation {
                         range: (location.column - 1, location.column),
@@ -268,14 +269,20 @@ impl TypeDefinition {
 
         if let Some((_, next_character)) = iterator.next() {
             if next_character != quote_type {
-                let renderer: annotate_snippets::Renderer = annotate_snippets::Renderer::styled();
-                eprintln!("{}", renderer.render(snippet));
-                return Err(LexerError::UnterminatedString { location });
+                return Err(LexerError::UnterminatedString {
+                    location,
+                    error: annotate_snippets::Renderer::styled()
+                        .render(snippet)
+                        .to_string(),
+                });
             }
         } else {
-            let renderer: annotate_snippets::Renderer = annotate_snippets::Renderer::styled();
-            eprintln!("{}", renderer.render(snippet));
-            return Err(LexerError::UnterminatedString { location });
+            return Err(LexerError::UnterminatedString {
+                location,
+                error: annotate_snippets::Renderer::styled()
+                    .render(snippet)
+                    .to_string(),
+            });
         }
 
         Ok(Token {
@@ -414,6 +421,7 @@ impl TokenType {
                 .collect::<Vec<char>>();
 
             if buffer.last() != Some(&'*') {
+                let file: String = location.file.clone();
                 let snippet: annotate_snippets::Snippet = annotate_snippets::Snippet {
                     title: Some(annotate_snippets::Annotation {
                         id: Some("E0001"),
@@ -424,7 +432,7 @@ impl TokenType {
                     slices: vec![annotate_snippets::Slice {
                         source: line,
                         line_start: location.line,
-                        origin: Some(&location.file),
+                        origin: Some(&file),
                         annotations: vec![annotate_snippets::SourceAnnotation {
                             range: (location.column - 1, line.len() - iterator.clone().count()),
                             label: "Unterminated comment",
@@ -434,9 +442,12 @@ impl TokenType {
                     }],
                 };
 
-                let renderer: annotate_snippets::Renderer = annotate_snippets::Renderer::styled();
-                eprintln!("{}", renderer.render(snippet));
-                return Err(LexerError::UnterminatedComment { location });
+                return Err(LexerError::UnterminatedComment {
+                    location,
+                    error: annotate_snippets::Renderer::styled()
+                        .render(snippet)
+                        .to_string(),
+                });
             }
 
             iterator.next();

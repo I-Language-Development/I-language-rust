@@ -103,6 +103,25 @@ fn main() {
 
     match output {
         Err(error) => {
+            let (lexer::error::LexerError::InvalidMark {
+                error: error_message,
+                ..
+            }
+            | lexer::error::LexerError::UnexpectedCharacter {
+                error: error_message,
+                ..
+            }
+            | lexer::error::LexerError::UnterminatedComment {
+                error: error_message,
+                ..
+            }
+            | lexer::error::LexerError::UnterminatedString {
+                error: error_message,
+                ..
+            }) = error;
+
+            eprintln!("{error_message}");
+
             eprintln!("Compiling `{file_name}` was not successful:\n{error}");
             std::process::exit(1);
         }

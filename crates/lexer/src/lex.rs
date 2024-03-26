@@ -189,10 +189,12 @@ pub fn lex(input: &str, file: &str) -> Result<Vec<Token>, LexerError> {
                         }],
                     };
 
-                    let renderer: annotate_snippets::Renderer =
-                        annotate_snippets::Renderer::styled();
-                    eprintln!("{}", renderer.render(snippet));
-                    error = Some(LexerError::InvalidMark { location });
+                    error = Some(LexerError::InvalidMark {
+                        location,
+                        error: annotate_snippets::Renderer::styled()
+                            .render(snippet)
+                            .to_string(),
+                    });
                 }
             } else if character.is_ascii_digit() {
                 buffer.push(character);
@@ -261,11 +263,12 @@ pub fn lex(input: &str, file: &str) -> Result<Vec<Token>, LexerError> {
                     }],
                 };
 
-                let renderer: annotate_snippets::Renderer = annotate_snippets::Renderer::styled();
-                eprintln!("{}", renderer.render(snippet));
                 error = Some(LexerError::UnexpectedCharacter {
                     character,
                     location,
+                    error: annotate_snippets::Renderer::styled()
+                        .render(snippet)
+                        .to_string(),
                 });
             }
 
