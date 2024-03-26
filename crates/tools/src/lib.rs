@@ -30,5 +30,6 @@ pub mod beta;
 pub mod iterator;
 pub mod logging;
 pub mod panic_handler;
+pub mod terminal;
 #[cfg(feature = "localization")]
 pub mod translation;
