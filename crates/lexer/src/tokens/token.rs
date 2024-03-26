@@ -314,6 +314,8 @@ pub enum TokenType {
     Identifier,
     /// A token representing a comment, e.g. `// comment`.
     Comment,
+    /// A token representing a comment across multiple lines, e.g. `/* comment */`.
+    BlockComment,
 }
 
 impl core::fmt::Display for TokenType {
@@ -327,6 +329,7 @@ impl core::fmt::Display for TokenType {
             Self::Mark(mark) => mark.fmt(formatter),
             Self::Identifier => write!(formatter, "identifier"),
             Self::Comment => write!(formatter, "comment"),
+            Self::BlockComment => write!(formatter, "block comment"),
         }
     }
 }
@@ -459,7 +462,7 @@ impl TokenType {
                     .collect::<String>()
                     .trim()
                     .to_owned(),
-                token_type: TokenType::Comment,
+                token_type: TokenType::BlockComment,
             }));
         } else if &buffer.iter().collect::<String>() == "//" {
             buffer = line[location.column + 1..].chars().collect::<Vec<char>>();
