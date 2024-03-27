@@ -43,18 +43,22 @@ pub enum LexerError {
     /// An error which will be returned if a mark was invalid for some reason.
     /// This can occur when the starting character of a mark is valid, but the character after it is not.
     #[error("invalid mark at {location}")]
-    InvalidMark { location: Location },
+    InvalidMark { location: Location, error: String },
 
     /// An error which will be returned if an unexpected character is encountered.
     /// this is most likely to occur when using unicode characters as they are not supported.
     #[error("unexpected character `{character}` at {location}")]
-    UnexpectedCharacter { character: char, location: Location },
+    UnexpectedCharacter {
+        character: char,
+        location: Location,
+        error: String,
+    },
 
     /// An error which will be returned if a comment is not terminated by a closing `*/`.
     #[error("unterminated comment at {location}")]
-    UnterminatedComment { location: Location },
+    UnterminatedComment { location: Location, error: String },
 
     /// An error which will be returned if a string is not terminated by a closing quote or the quote is escaped.
     #[error("unterminated string at {location}")]
-    UnterminatedString { location: Location },
+    UnterminatedString { location: Location, error: String },
 }

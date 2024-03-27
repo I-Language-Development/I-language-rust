@@ -48,11 +48,9 @@ mod tests {
         assert_eq!(&format!("{}", Keyword::Class), "class");
         assert_eq!(&format!("{}", Keyword::Const), "const");
         assert_eq!(&format!("{}", Keyword::Continue), "continue");
-        assert_eq!(&format!("{}", Keyword::Default), "default");
         assert_eq!(&format!("{}", Keyword::Else), "else");
         assert_eq!(&format!("{}", Keyword::Finally), "finally");
         assert_eq!(&format!("{}", Keyword::For), "for");
-        assert_eq!(&format!("{}", Keyword::Function), "function");
         assert_eq!(&format!("{}", Keyword::If), "if");
         assert_eq!(&format!("{}", Keyword::Import), "import");
         assert_eq!(&format!("{}", Keyword::Match), "match");
@@ -81,11 +79,9 @@ mod tests {
         assert!(generate_test(&location, "class", Keyword::Class));
         assert!(generate_test(&location, "const", Keyword::Const));
         assert!(generate_test(&location, "continue", Keyword::Continue));
-        assert!(generate_test(&location, "default", Keyword::Default));
         assert!(generate_test(&location, "else", Keyword::Else));
         assert!(generate_test(&location, "finally", Keyword::Finally));
         assert!(generate_test(&location, "for", Keyword::For));
-        assert!(generate_test(&location, "function", Keyword::Function));
         assert!(generate_test(&location, "if", Keyword::If));
         assert!(generate_test(&location, "import", Keyword::Import));
         assert!(generate_test(&location, "match", Keyword::Match));

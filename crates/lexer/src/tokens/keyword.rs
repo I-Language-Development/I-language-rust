@@ -52,21 +52,17 @@ pub enum Keyword {
     Const,
     /// The `continue` keyword. Used to continue a loop before all of it's code is executed.
     Continue,
-    /// The `default` keyword. Used in combination with the [`match`](`Keyword::Match`) and [`case`](`Keyword::Case`) keywords to match the default case.
-    Default,
     /// The `else` keyword. Used to define the "otherwise" block of an [`if`](`Keyword::If`) statement.
     Else,
     /// The `finally` keyword. Used in combination with the [`try`](`Keyword::Try`) keyword to execute code even after an exception has been raised.
     Finally,
     /// The `for` keyword. Used to create a loop over an iterator.
     For,
-    /// The `function` keyword. Will probably be replaced by either `fn` or `func` soon. Used to define a function.
-    Function, // TODO (ElBe): Replace with "fn" or "func"?
     /// The `if` keyword. Used to check whether a condition is true or false and execute code based on that condition.
     If,
     /// The `import` keyword. Used to import code from other modules.
     Import,
-    /// The `match` keyword. Used in combination with the [`case`](`Keyword::Case`) and [`default`](`Keyword::Default`) keywords.
+    /// The `match` keyword. Used in combination with the [`case`](`Keyword::Case`) keyword.
     Match,
     /// The `pub` keyword. Used to export an item out of the current scope.
     Pub,
@@ -96,11 +92,9 @@ impl core::fmt::Display for Keyword {
             &Self::Class => write!(formatter, "class"),
             &Self::Const => write!(formatter, "const"),
             &Self::Continue => write!(formatter, "continue"),
-            &Self::Default => write!(formatter, "default"),
             &Self::Else => write!(formatter, "else"),
             &Self::Finally => write!(formatter, "finally"),
             &Self::For => write!(formatter, "for"),
-            &Self::Function => write!(formatter, "function"),
             &Self::If => write!(formatter, "if"),
             &Self::Import => write!(formatter, "import"),
             &Self::Match => write!(formatter, "match"),
@@ -157,11 +151,6 @@ impl GetToken for Keyword {
                 content: "continue".to_owned(),
                 token_type: TokenType::Keyword(Keyword::Continue),
             }),
-            "default" => Some(Token {
-                location,
-                content: "default".to_owned(),
-                token_type: TokenType::Keyword(Keyword::Default),
-            }),
             "else" => Some(Token {
                 location,
                 content: "else".to_owned(),
@@ -176,11 +165,6 @@ impl GetToken for Keyword {
                 location,
                 content: "for".to_owned(),
                 token_type: TokenType::Keyword(Keyword::For),
-            }),
-            "function" => Some(Token {
-                location,
-                content: "function".to_owned(),
-                token_type: TokenType::Keyword(Keyword::Function),
             }),
             "if" => Some(Token {
                 location,
