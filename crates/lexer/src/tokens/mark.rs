@@ -44,6 +44,8 @@ pub enum Mark {
     AddAssign,
     /// The `&&` (**logical** and) mark. Used for creating a true/false value based on whether both the left and right tokens are true.
     And,
+    /// The `->` mark. Used for indicating what value will be returned from a function.
+    Arrow,
     /// The `=` mark. Used for assigning a value to a variable.
     Assign,
     /// The `@` mark. Currently, it has no use, but it's reserved for later usage and will probably be used in future.
@@ -144,6 +146,7 @@ impl core::fmt::Display for Mark {
             &Self::Add => write!(formatter, "+"),
             &Self::AddAssign => write!(formatter, "+="),
             &Self::And => write!(formatter, "&&"),
+            &Self::Arrow => write!(formatter, "->"),
             &Self::Assign => write!(formatter, "="),
             &Self::At => write!(formatter, "@"),
             &Self::Bang => write!(formatter, "!"),
@@ -214,6 +217,11 @@ impl GetToken for Mark {
                 location,
                 content: "&&".to_owned(),
                 token_type: TokenType::Mark(Mark::And),
+            }),
+            "->" => Some(Token {
+                location,
+                content: "->".to_owned(),
+                token_type: TokenType::Mark(Mark::Arrow),
             }),
             "=" => Some(Token {
                 location,
