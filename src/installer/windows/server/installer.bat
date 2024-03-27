@@ -27,14 +27,14 @@
 net session >nul 2>&1 || (powershell start -verb runas '%~0' %1 & exit /b)
 
 : Show header and ask weather to continue
-echo  _____            _                                                             
-echo |_   _|          | |                                                            
-echo   | |    ______  | |        __ _   _ __     __ _   _   _    __ _    __ _    ___ 
+echo  _____            _
+echo |_   _|          | |
+echo   | |    ______  | |        __ _   _ __     __ _   _   _    __ _    __ _    ___
 echo   | |   |______| | |       / _` | | '_ \   / _` | | | | |  / _` |  / _` |  / _ \
 echo  _| |_           | |____  | (_| | | | | | | (_| | | |_| | | (_| | | (_| | |  __/
 echo |_____|          |______|  \__,_| |_| |_|  \__, |  \__,_|  \__,_|  \__, |  \___|
-echo                                             __/ |                   __/ |       
-echo                                            |___/                   |___/        
+echo                                             __/ |                   __/ |
+echo                                            |___/                   |___/
 echo:
 echo:
 echo     This will install the I programming language on your computer.
