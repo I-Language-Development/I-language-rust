@@ -44,6 +44,7 @@ mod tests {
         assert_eq!(&format!("{}", Mark::Add), "+");
         assert_eq!(&format!("{}", Mark::AddAssign), "+=");
         assert_eq!(&format!("{}", Mark::And), "&&");
+        assert_eq!(&format!("{}", Mark::Arrow), "->");
         assert_eq!(&format!("{}", Mark::Assign), "=");
         assert_eq!(&format!("{}", Mark::At), "@");
         assert_eq!(&format!("{}", Mark::Bang), "!");
@@ -103,6 +104,7 @@ mod tests {
         assert!(generate_test(&location, "+", Mark::Add));
         assert!(generate_test(&location, "+=", Mark::AddAssign));
         assert!(generate_test(&location, "&&", Mark::And));
+        assert!(generate_test(&location, "->", Mark::Arrow));
         assert!(generate_test(&location, "=", Mark::Assign));
         assert!(generate_test(&location, "@", Mark::At));
         assert!(generate_test(&location, "!", Mark::Bang));
