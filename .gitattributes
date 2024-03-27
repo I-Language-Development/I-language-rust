@@ -1,9 +1,12 @@
 # Binary diff for executables
-*.bin binary
-*.deb binary
-*.exe binary
-*.rpm binary
-*.gz binary
+*.bin binary // universal
+*.deb binary // universal
+*.exe binary // for windows
+*.msi binary // for windows
+*.rpm binary // for linux
+*.tar.gz // for linux
+*.gz binary // for linux
+*.dmg binary // for mac
 
 # Binary diff for archives
 *.7z binary
