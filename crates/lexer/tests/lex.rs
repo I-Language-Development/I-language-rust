@@ -87,7 +87,7 @@ mod tests {
                         column: 3,
                     },
                     content: "cool".to_owned(),
-                    token_type: lexer::tokens::token::TokenType::Comment,
+                    token_type: lexer::tokens::token::TokenType::BlockComment,
                 },
                 lexer::tokens::token::Token {
                     location: lexer::tokens::token::Location {
