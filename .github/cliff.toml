@@ -47,16 +47,17 @@ commit_parsers = [
 	{ message = '^\[(#|gh-)?([0-9]+)\]', skip = true },
 	{ message = "gh-9: Added math module", skip = true },
 
-	{ message = "^feat", group = "<!-- 0 -->Added" },
-	{ message = "^chore\\(depr\\)", group = "<!-- 2-->Deprecated"},
-	{ message = "^del", group = "<!-- 3 -->Removed"},
-	{ message = "^fix", group = "<!-- 4 -->Fixed" },
-	{ message = "^sec", group = "<!-- 5 -->Security" },
-	{ message = "^perf", group = "<!-- 6 -->Performance" },
-	{ message = "^test", group = "<!-- 7 -->Testing" },
-	{ message = "^doc", group = "<!-- 8 -->Documentation" },
-	{ message = "^style", group = "<!-- 9 -->Styling" },
-	{ message = "^chore|ci", group = "<!-- 90 -->Other" },
+	{ message = "^feat", group = "<!-- A -->Added" },
+	{ message = "^chore\\(depr\\)", group = "<!-- C -->Deprecated"},
+	{ message = "^del", group = "<!-- D -->Removed"},
+	{ message = "^fix", group = "<!-- E -->Fixed" },
+	{ message = "^sec", group = "<!-- F -->Security" },
+	{ message = "^perf", group = "<!-- G -->Performance" },
+	{ message = "^test", group = "<!-- H -->Testing" },
+	{ message = "^doc", group = "<!-- I -->Documentation" },
+	{ message = "^style", group = "<!-- J -->Styling" },
+	{ message = "^ci|\\[pre-commit\\.ci\\]", group = "<!-- K --> Continuous Integration"},
+	{ message = "^chore", group = "<!-- L -->Other" },
 
 	# Ignore bot commits
 	{ message = "^chore\\(release\\)", skip = true },
@@ -64,7 +65,7 @@ commit_parsers = [
 	{ message = "^chore\\(pr\\)", skip = true },
 	{ message = "^chore\\(pull\\)", skip = true },
 
-	{ message = "^.*", group = "<!-- 1 -->Changed" }
+	{ message = "^.*", group = "<!-- B -->Changed" }
 ]
 protect_breaking_commits = false
 filter_commits = false
