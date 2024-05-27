@@ -25,7 +25,7 @@
 // BETA BUILD //
 ////////////////
 
-/// Whether or not the current version is a beta build
+/// Whether or not the current version is a beta build.
 pub const BETA_BUILD: bool = cfg!(feature = "beta");
 
 

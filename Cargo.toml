@@ -90,7 +90,7 @@ tools = { path = "crates/tools" }
 just = "1.14.0"
 
 [features]
-beta = []
+beta = ["tools/beta"]
 cli = ["dep:clap", "dep:clap-verbosity-flag", "dep:log", "tools/cli"]
 localization = [
 	"dep:localizer-rs",

@@ -25,6 +25,7 @@ regex = "1.10.4"
 log.workspace = true
 
 [features]
+beta = []
 cli = ["dep:clap-verbosity-flag"]
 localization = ["dep:current_locale", "dep:localizer-rs"]
 
