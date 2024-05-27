@@ -69,6 +69,10 @@ fn main() {
     tools::beta::BETA_FLAG.store(arguments.beta, Ordering::Release);
     tools::logging::setup(arguments.verbosity.log_level_filter());
 
+    if arguments.beta {
+        trace!("Using beta features due to passed `--beta` flag.");
+    }
+
     let file_name: String;
     if let Some(custom_file_name) = arguments.file {
         file_name = custom_file_name;
