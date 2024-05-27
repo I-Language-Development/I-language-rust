@@ -123,7 +123,7 @@ fn main() {
 
             eprintln!("{error_message}");
 
-            eprintln!("Compiling `{file_name}` was not successful:\n{error}");
+            eprintln!("\nCompiling `{file_name}` was not successful:\n    {error}");
             std::process::exit(1);
         }
         Ok(tokens) => {
