@@ -25,6 +25,7 @@
 // IMPORTS //
 /////////////
 
+use core::sync::atomic::Ordering;
 use std::{self, io::Write};
 
 use clap::Parser;
@@ -65,11 +66,7 @@ fn main() {
 
     let arguments: Cli = Cli::parse();
 
-    #[allow(unsafe_code)]
-    unsafe {
-        tools::beta::BETA_FLAG = arguments.beta;
-    }
-
+    tools::beta::BETA_FLAG.store(arguments.beta, Ordering::Release);
     tools::logging::setup(arguments.verbosity.log_level_filter());
 
     let file_name: String;

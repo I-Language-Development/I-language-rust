@@ -21,6 +21,14 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+/////////////
+// IMPORTS //
+/////////////
+
+use core::sync::atomic::AtomicBool;
+use std::sync::LazyLock;
+
+
 ////////////////
 // BETA BUILD //
 ////////////////
@@ -33,5 +41,5 @@ pub const BETA_BUILD: bool = cfg!(feature = "beta");
 // BETA FLAG //
 ///////////////
 
-/// Whether or not the `--beta` flag was used
-pub static mut BETA_FLAG: bool = false;
+/// Whether or not the `--beta` flag was used.
+pub static BETA_FLAG: LazyLock<AtomicBool> = LazyLock::new(|| AtomicBool::new(false));
