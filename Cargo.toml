@@ -51,8 +51,8 @@ non_snake_case = "allow"
 unsafe_code = "deny"
 
 [workspace.lints.clippy]
-pedantic = "warn"
-restriction = "warn"
+pedantic = { level = "warn", priority = -1 }
+restriction = { level = "warn", priority = -1 }
 
 # Explicit allows
 absolute_paths = "allow"
