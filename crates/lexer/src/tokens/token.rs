@@ -518,3 +518,28 @@ pub struct Token {
     /// The type of the token. This should be used for matching tokens.
     pub token_type: TokenType,
 }
+
+/// A token in the lexer only used to compare to [`Token`] without comparing the location.
+#[allow(clippy::module_name_repetitions)]
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct DummyToken {
+    /// The content of the token. Will only be used for matching when `token_type` is [`TokenType::Identifier`] and the content is not empty.
+    pub content: String,
+    /// The type of the token.
+    pub token_type: TokenType,
+}
+
+impl PartialEq<Token> for DummyToken {
+    #[inline]
+    fn eq(&self, other: &Token) -> bool {
+        if self.token_type != other.token_type {
+            return false;
+        }
+
+        if self.token_type == TokenType::Identifier && !self.content.is_empty() {
+            self.content == other.content
+        } else {
+            true
+        }
+    }
+}

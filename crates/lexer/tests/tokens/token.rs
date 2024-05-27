@@ -27,7 +27,7 @@
 
 #[cfg(test)]
 mod tests {
-    use lexer::tokens::token::{GetToken, Location, Token, TokenType};
+    use lexer::tokens::token::{DummyToken, GetToken, Location, Token, TokenType};
 
     #[test]
     fn test_literal_display() {
@@ -141,5 +141,45 @@ mod tests {
         };
 
         assert_eq!(&format!("{location}"), "tests:1:1");
+    }
+
+    #[test]
+    fn test_dummy_token() {
+        let location: Location = Location {
+            file: "tests".to_owned(),
+            line: 1,
+            column: 1,
+        };
+
+        assert!(
+            DummyToken {
+                content: String::new(),
+                token_type: TokenType::Comment
+            } == Token {
+                location: location.clone(),
+                content: String::new(),
+                token_type: TokenType::Comment
+            }
+        );
+        assert!(
+            DummyToken {
+                content: "test".to_owned(),
+                token_type: TokenType::Identifier
+            } == Token {
+                location: location.clone(),
+                content: "test".to_owned(),
+                token_type: TokenType::Identifier
+            }
+        );
+        assert!(
+            DummyToken {
+                content: "test".to_owned(),
+                token_type: TokenType::Identifier
+            } != Token {
+                location,
+                content: "not test".to_owned(),
+                token_type: TokenType::Identifier
+            }
+        );
     }
 }
