@@ -69,7 +69,6 @@ must_use_candidate = "allow"
 print_stderr = "allow"
 print_stdout = "allow"
 redundant_type_annotations = "allow"
-std_instead_of_core = "allow" # Doesn't work until rust-lang/cargo/12918 is fixed
 
 # [workspace.lints.rustdoc]
 # missing_crate_level_docs = "warn"
