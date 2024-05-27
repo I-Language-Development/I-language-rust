@@ -27,10 +27,16 @@
 // IMPORTS //
 /////////////
 
+use core::sync::atomic::{AtomicBool, Ordering};
+use std::sync::{LazyLock, Mutex};
+
+use env_logger::Builder;
+use log::{set_boxed_logger, set_max_level, LevelFilter, Log, Metadata, Record};
+
 #[cfg(feature = "cli")]
 use clap_verbosity_flag::LogLevel;
-use env_logger;
-use log;
+#[cfg(feature = "cli")]
+use log::Level;
 
 
 ///////////////
@@ -38,45 +44,10 @@ use log;
 ///////////////
 
 /// Buffer of all log messages, even if they were disabled in the CLI.
-static mut BUFFER: Vec<String> = Vec::new();
+pub static BUFFER: LazyLock<Mutex<Vec<String>>> = LazyLock::new(|| Mutex::new(Vec::new()));
 
 /// Whether or not the logger already has been initialized.
-static mut INITIALIZED: bool = false;
-
-/// Returns a buffer of all log messages.
-///
-/// # Returns
-///
-/// A buffer of all log messages, even if they disabled in the CLI.
-///
-/// # Examples
-///
-/// ```rust
-///
-/// # use log::trace;
-/// # use tools::logging;
-/// # logging::setup(log::LevelFilter::Error);
-/// trace!(target: "test", "My message!"); // This will not be send to stdout, but will be saved in the buffer
-/// println!("{:?}", logging::buffer()); // ["[timestamp TRACE test] My message!"]
-///
-/// ```
-///
-/// # Safety
-///
-/// Uses an `unsafe` block to access the contents of [`BUFFER`].
-///
-/// # See also
-///
-/// - [`BUFFER`]
-#[inline]
-#[allow(clippy::unnecessary_safety_doc)]
-pub fn buffer() -> &'static Vec<String> {
-    // SAFETY: Uses an `unsafe` block to access the contents of `BUFFER`.
-    #[allow(unsafe_code)]
-    unsafe {
-        &BUFFER
-    }
-}
+pub static INITIALIZED: LazyLock<AtomicBool> = LazyLock::new(|| AtomicBool::new(false));
 
 
 ////////////
@@ -87,7 +58,7 @@ pub fn buffer() -> &'static Vec<String> {
 #[derive(Debug)]
 pub struct Logger(pub env_logger::Logger);
 
-impl log::Log for Logger {
+impl Log for Logger {
     /// Whether the logger is enabled for this record or not.
     ///
     /// # Parameters
@@ -116,9 +87,9 @@ impl log::Log for Logger {
     /// # See also
     ///
     /// - [`Logger`]
-    /// - [`log::Metadata`]
+    /// - [`Metadata`]
     #[inline(always)]
-    fn enabled(&self, _: &log::Metadata) -> bool {
+    fn enabled(&self, _: &Metadata) -> bool {
         // Level can't be under trace, so just return true
         true
     }
@@ -142,32 +113,25 @@ impl log::Log for Logger {
     ///
     /// ```
     ///
-    /// # Safety
-    ///
-    /// Uses an `unsafe` block to write to [`BUFFER`].
-    ///
     /// # See also
     ///
     /// - [`Logger`]
-    /// - [`log::Record`]
+    /// - [`Record`]
     /// - [`BUFFER`]
     #[inline]
-    fn log(&self, record: &log::Record) {
+    #[allow(clippy::unwrap_used)] // Using `.unwrap()` because providing an Error is not possible and panicking would not make sense.
+    fn log(&self, record: &Record) {
         if self.0.enabled(record.metadata()) {
             self.0.log(&record.clone());
         }
 
-        // SAFETY: Uses an `unsafe` block to write to `BUFFER`.
-        #[allow(unsafe_code)]
-        unsafe {
-            BUFFER.push(format!(
-                "[{} {} {}] {}",
-                chrono::offset::Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Secs, true),
-                record.level(),
-                record.target(),
-                record.args()
-            ));
-        }
+        BUFFER.lock().unwrap().push(format!(
+            "[{} {} {}] {}",
+            chrono::offset::Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Secs, true),
+            record.level(),
+            record.target(),
+            record.args()
+        ));
     }
 
     /// Flushes the inner logger.
@@ -218,6 +182,7 @@ impl LogLevel for OffLevel {
     /// ```rust
     ///
     /// # use tools::logging;
+    /// # use clap_verbosity_flag::LogLevel as _;
     /// assert_eq!(logging::OffLevel::default(), None);
     ///
     /// ```
@@ -225,9 +190,9 @@ impl LogLevel for OffLevel {
     /// # See also
     ///
     /// - [`OffLevel`]
-    /// - [`log::Level`]
+    /// - [`Level`]
     #[inline(always)]
-    fn default() -> Option<log::Level> {
+    fn default() -> Option<Level> {
         None
     }
 }
@@ -239,7 +204,7 @@ impl LogLevel for OffLevel {
 
 /// Sets up logging globally.
 ///
-/// Unlike [`log::set_boxed_logger`], this method can be called multiple times
+/// Unlike [`set_boxed_logger`], this method can be called multiple times
 /// without panicking, due to the check if [`INITIALIZED`] is `true` or not.
 ///
 /// # Parameters
@@ -248,7 +213,7 @@ impl LogLevel for OffLevel {
 ///
 /// # Panics
 ///
-/// Panics if the logger could not be set using [`log::set_boxed_logger`].
+/// Panics if the logger could not be set using [`set_boxed_logger`].
 ///
 /// # Examples
 ///
@@ -261,36 +226,18 @@ impl LogLevel for OffLevel {
 ///
 /// ```
 ///
-/// # Safety
-///
-/// Uses two `unsafe` blocks to read from and write to [`INITIALIZED`].
-///
 /// # See also
 ///
 /// - [`Logger`]
-/// - [`log::LevelFilter`]
+/// - [`LevelFilter`]
 #[inline]
 #[allow(clippy::unnecessary_safety_doc)]
-pub fn setup(level: log::LevelFilter) {
-    let initialized: bool;
+pub fn setup(level: LevelFilter) {
+    if !INITIALIZED.load(Ordering::Relaxed) {
+        set_boxed_logger(Box::new(Logger(Builder::new().filter_level(level).build())))
+            .expect("Logger could not be initialized.");
+        set_max_level(LevelFilter::Trace);
 
-    // SAFETY: Uses an `unsafe` block to read from [`INITIALIZED`].
-    #[allow(unsafe_code)]
-    unsafe {
-        initialized = INITIALIZED;
-    };
-
-    if !initialized {
-        log::set_boxed_logger(Box::new(Logger(
-            env_logger::Builder::new().filter_level(level).build(),
-        )))
-        .expect("Logger could not be initialized.");
-        log::set_max_level(log::LevelFilter::Trace);
-
-        // SAFETY: Uses an `unsafe` block to write to [`INITIALIZED`].
-        #[allow(unsafe_code)]
-        unsafe {
-            INITIALIZED = true;
-        };
+        INITIALIZED.store(true, Ordering::Relaxed);
     }
 }
