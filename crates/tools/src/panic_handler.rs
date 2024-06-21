@@ -25,6 +25,7 @@
 // IMPORTS //
 /////////////
 
+use core::panic::{Location, PanicInfo};
 use std;
 
 use crate::logging;
@@ -129,7 +130,7 @@ use crate::logging;
 /// - [`setup_handler`]
 #[inline(always)]
 pub fn generate_report(
-    location: Option<&std::panic::Location<'_>>,
+    location: Option<&Location<'_>>,
     payload: Option<String>,
 ) -> Option<std::path::PathBuf> {
     let path: std::path::PathBuf = std::env::temp_dir().join("icomp_crash.txt");
@@ -188,7 +189,7 @@ pub fn generate_report(
 /// Inspired by [human-panic](https://crates.io/crates/human-panic).
 #[inline(always)]
 pub fn setup_handler() {
-    let panic_handler = |panic_info: &std::panic::PanicInfo| {
+    let panic_handler = |panic_info: &PanicInfo| {
         eprintln!("Well, this is embarrassing...");
         eprintln!("The compiler had a problem and crashed. You can help us fix the error by voluntarily reporting the problem to us.");
 

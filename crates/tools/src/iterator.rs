@@ -25,7 +25,7 @@
 // IMPORTS //
 /////////////
 
-use std::iter::{Iterator, Peekable};
+use core::iter::{Iterator, Peekable};
 
 
 //////////////////////////
