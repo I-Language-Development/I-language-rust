@@ -28,7 +28,7 @@
 use core::panic::{Location, PanicInfo};
 use std;
 
-use crate::logging;
+use crate::logging::BUFFER;
 
 
 ///////////////////
@@ -147,7 +147,13 @@ pub fn generate_report(
         String::new()
     };
 
-    let log_buffer: String = format!("Log:\n{}\n", logging::buffer().join("\n"));
+    let log_buffer: String = format!(
+        "Log:\n{}\n",
+        match BUFFER.lock() {
+            Ok(value) => value.join("\n"),
+            Err(_) => String::new(),
+        }
+    );
     let content: String = format!("Backtrace:\n{}", std::backtrace::Backtrace::force_capture());
 
     let mut file_content: String = String::new();
