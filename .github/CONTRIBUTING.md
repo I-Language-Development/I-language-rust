@@ -21,7 +21,7 @@ and a pull request. See below for making changes on your own.
 
 1. Create a new issue with a summary of your proposed changes and more.
 2. Fork the repository from your issue branch, for issue 8, it would be `issue-8`, etc.
-3. Implement your changes. Please follow ILEP ([list here](https://github.com/I-Language-Development/I-Language-Enhancement-Proposals)) `002`, `003`, `007`, `008` and `009` and [the rust API guidelines](https://rust-lang.github.io/api-guidelines/). The API guidelines only apply to rust code, but you should not need to follow rule [`C-QUESTION-MARK`](https://rust-lang.github.io/api-guidelines/documentation.html#c-question-mark) (use `.unwrap()`) or [`C-LINK`](https://rust-lang.github.io/api-guidelines/documentation.html#c-link) (as we are using our own documentation generator).
+3. Implement your changes. Please follow ILEP ([list here](https://github.com/I-Language-Development/I-Language-Enhancement-Proposals)) `002`, `003`, `007`, `008` and `009` and [the rust API guidelines](https://rust-lang.github.io/api-guidelines/). You should not follow rule [`C-QUESTION-MARK`](https://rust-lang.github.io/api-guidelines/documentation.html#c-question-mark) (use `.unwrap()` in examples) or [`C-LINK`](https://rust-lang.github.io/api-guidelines/documentation.html#c-link) (use links, but don't put them at the end).
 4. Test your changes. Run `just f` and `just l` to verify it works.
 5. Create a pull request from your fork to the branch you forked from.
 6. If it gets accepted, your changes will be in the next release.
