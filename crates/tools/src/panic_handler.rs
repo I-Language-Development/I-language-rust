@@ -25,8 +25,14 @@
 // IMPORTS //
 /////////////
 
-use core::panic::{Location, PanicInfo};
-use std;
+use core::panic::Location;
+use std::{
+    backtrace::Backtrace,
+    env::temp_dir,
+    fs::write,
+    panic::{set_hook, PanicInfo},
+    path::PathBuf,
+};
 
 use crate::logging::BUFFER;
 
@@ -128,12 +134,12 @@ use crate::logging::BUFFER;
 /// # See also
 ///
 /// - [`setup_handler`]
-#[inline(always)]
+#[inline(always)] // Suggesting inlining due to rare calls to the function
 pub fn generate_report(
     location: Option<&Location<'_>>,
     payload: Option<String>,
-) -> Option<std::path::PathBuf> {
-    let path: std::path::PathBuf = std::env::temp_dir().join("icomp_crash.txt");
+) -> Option<PathBuf> {
+    let path: PathBuf = temp_dir().join("icomp_crash.txt");
 
     let header: String = "Crash report\n============\n".to_owned();
     let reason: String = if let Some(value) = payload {
@@ -154,7 +160,7 @@ pub fn generate_report(
             Err(_) => String::new(),
         }
     );
-    let content: String = format!("Backtrace:\n{}", std::backtrace::Backtrace::force_capture());
+    let content: String = format!("Backtrace:\n{}", Backtrace::force_capture());
 
     let mut file_content: String = String::new();
     file_content.push_str(&header);
@@ -167,7 +173,7 @@ pub fn generate_report(
     });
     file_content.push_str(&content);
 
-    match std::fs::write(path.clone(), file_content) {
+    match write(path.clone(), file_content) {
         Ok(()) => Some(path),
         Err(error) => {
             eprintln!("Crash report generation failed.");
@@ -193,7 +199,7 @@ pub fn generate_report(
 /// # Admonition
 ///
 /// Inspired by [human-panic](https://crates.io/crates/human-panic).
-#[inline(always)]
+#[inline(always)] // Suggesting inlining due to rare calls to the function
 pub fn setup_handler() {
     let panic_handler = |panic_info: &PanicInfo| {
         eprintln!("Well, this is embarrassing...");
@@ -214,5 +220,5 @@ pub fn setup_handler() {
         println!(" - Our GitHub issue tracker: https://github.com/I-Language-Development/I-language-rust/issues/new/choose");
         println!(" - Our discord server: https://discord.gg/JVyyDukQqV");
     };
-    std::panic::set_hook(Box::new(panic_handler));
+    set_hook(Box::new(panic_handler));
 }
