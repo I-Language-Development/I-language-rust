@@ -2,6 +2,7 @@
 alias a := audit
 alias b := build
 alias c := clean
+alias d := doc
 alias f := format
 alias i := install-binary
 alias l := lint
@@ -39,6 +40,9 @@ build *ARGUMENTS:
 	cargo clean
 	-{{remove_dir}} {{join("Tools", "__pycache__")}}
 	git gc
+
+doc *ARGUMENTS:
+	@cargo doc --no-deps --all-features --workspace {{ARGUMENTS}}
 
 # Format all source files
 format *ARGUMENTS:
