@@ -17,4 +17,4 @@ jobs:
               with:
                   toolchain: nightly
             - name: Run tests
-              run: cargo +nighly test --workspace
+              run: cargo +nightly test --workspace
