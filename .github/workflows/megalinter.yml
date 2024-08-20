@@ -32,7 +32,7 @@ jobs:
                   fetch-depth: 0
             - name: MegaLinter
               id: ml
-              uses: oxsecurity/megalinter@v7
+              uses: oxsecurity/megalinter@v8
               env:
                   VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
