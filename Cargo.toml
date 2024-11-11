@@ -13,7 +13,7 @@ authors = [
 	"Ranastra"
 ]
 edition = "2021"
-rust-version = "1.69"
+rust-version = "1.70"
 documentation = "https://i-language.readthedocs.io/"
 readme = ".github/README.md"
 homepage = "https://i-language-development.github.io/"
