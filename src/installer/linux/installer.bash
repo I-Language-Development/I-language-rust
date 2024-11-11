@@ -89,6 +89,11 @@ else
 	python=python3
 fi
 
+# Get sudo permission
+echo ""
+sudo -k
+sudo -p "    Enter sudo password for %p: " true
+
 # Ask where to install the I programming language
 while :; do
 	echo ""
@@ -113,14 +118,15 @@ while :; do
 done
 
 # Install latest release
+echo ""
 echo -e "\033[32;1mInstalling\033[0m"
 
 cargoTomlUrl="https://raw.githubusercontent.com/I-Language-Development/I-language-rust/main/Cargo.toml"
-latestRelease="https://raw.githubusercontent.com/I-Language-Development/I-language-rust/releases/$($python -c "exec(\"import tomllib\nfrom urllib import request\nwith request.urlopen('$cargoTomlUrl') as file: print(tomllib.loads(file.read().decode())['package']['version'])\")")"
+latestRelease="https://raw.githubusercontent.com/I-Language-Development/I-language-rust/releases/download/v$($python -c "exec(\"import tomllib\nfrom urllib import request\nwith request.urlopen('$cargoTomlUrl') as file: print(tomllib.loads(file.read().decode())['package']['version'])\")")/ilang"
 
 echo -e -n "    [\033[34;1m...\033[0m] Installing latest release from $latestRelease (v$($python -c "exec(\"import tomllib\nfrom urllib import request\nwith request.urlopen('$cargoTomlUrl') as file: print(tomllib.loads(file.read().decode())['package']['version'])\")"))"
 
 cd "$installLocation" || error "Can not navigate to $installLocation." 3
-curl -s "https://raw.githubusercontent.com/I-Language-Development/I-language-rust/releases/$latestRelease" > ilang
+sudo curl -s $latestRelease -o ilang
 echo -e -n "\e[2K\r"
 echo -e "    [\033[32;1m✓\033[0m] Installing latest release from $latestRelease (v$($python -c "exec(\"import tomllib\nfrom urllib import request\nwith request.urlopen('$cargoTomlUrl') as file: print(tomllib.loads(file.read().decode())['package']['version'])\")"))"
