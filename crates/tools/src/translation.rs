@@ -25,17 +25,17 @@
 // IMPORTS //
 /////////////
 
-use current_locale;
-use localizer_rs;
+use current_locale::current_locale;
+use localizer_rs::Config;
 
 
 ////////////////
 // GET CONFIG //
 ////////////////
 
-#[inline(always)]
-pub fn get_config() -> localizer_rs::Config {
-    let locale: String = match current_locale::current_locale() {
+#[inline(always)] // Suggesting inlining due to rare calls to the function
+pub fn get_config() -> Config {
+    let locale: String = match current_locale() {
         Ok(value) => {
             let return_value: String = value;
             return_value
@@ -44,5 +44,5 @@ pub fn get_config() -> localizer_rs::Config {
     };
     let split_locale: Vec<&str> = locale.split('-').collect();
     #[allow(clippy::indexing_slicing)]
-    localizer_rs::Config::new("Translations", split_locale[0])
+    Config::new("Translations", split_locale[0])
 }

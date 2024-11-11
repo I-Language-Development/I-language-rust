@@ -1,6 +1,6 @@
-use lexer;
+use lexer::lex::lex;
 
 fn main() {
-    let output = lexer::lex::lex("1 + 1", "<stdin>").unwrap();
+    let output = lex("1 + 1", "<stdin>").unwrap();
     println!("{output:#?}");
 }

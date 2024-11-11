@@ -30,6 +30,7 @@
 use core::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{LazyLock, Mutex};
 
+use chrono::{offset::Utc, SecondsFormat};
 use env_logger::Builder;
 use log::{set_boxed_logger, set_max_level, LevelFilter, Log, Metadata, Record};
 
@@ -127,7 +128,7 @@ impl Log for Logger {
 
         BUFFER.lock().unwrap().push(format!(
             "[{} {} {}] {}",
-            chrono::offset::Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Secs, true),
+            Utc::now().to_rfc3339_opts(SecondsFormat::Secs, true),
             record.level(),
             record.target(),
             record.args()
@@ -165,6 +166,7 @@ impl Log for Logger {
 /// A log level that enables no message to be logged.
 /// Useful for applications that have other ways of displaying information than
 /// logging and use logging just to show what the program is doing.
+#[non_exhaustive]
 #[cfg(feature = "cli")]
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct OffLevel;
@@ -234,8 +236,9 @@ impl LogLevel for OffLevel {
 #[allow(clippy::unnecessary_safety_doc)]
 pub fn setup(level: LevelFilter) {
     if !INITIALIZED.load(Ordering::Relaxed) {
-        set_boxed_logger(Box::new(Logger(Builder::new().filter_level(level).build())))
-            .expect("Logger could not be initialized.");
+        if set_boxed_logger(Box::new(Logger(Builder::new().filter_level(level).build()))).is_err() {
+            eprintln!("Logger has already been initialized.");
+        }
         set_max_level(LevelFilter::Trace);
 
         INITIALIZED.store(true, Ordering::Relaxed);
