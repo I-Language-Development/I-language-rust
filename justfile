@@ -81,7 +81,7 @@ serve-docs *ARGUMENTS:
 
 # Runs the tests
 test *ARGUMENTS:
-	@cargo test --workspace {{ARGUMENTS}}
+	@cargo test --all-features --workspace {{ARGUMENTS}}
 
 # Updated the changelog using git-cliff
 update-changelog *ARGUMENTS:
