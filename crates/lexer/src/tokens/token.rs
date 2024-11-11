@@ -93,13 +93,13 @@ pub trait GetToken {
 }
 
 
-////////////////////////////////
-// TYPE DEFINITION TOKEN TYPE //
-////////////////////////////////
+////////////////////////
+// LITERAL TOKEN TYPE //
+////////////////////////
 
-/// Literal tokens representing a literal (`1`, `true`, etc.) in the lexer.
+/// Tokens representing a literal (`1`, `true`, etc.) in the lexer.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub enum TypeDefinition {
+pub enum Literal {
     /// The string literal. Examples: `'"'`, `"hello"`, `'world'`, `"\""`.
     String,
     /// The integer literal. Examples: `1`, `123`, `-10`, `1_000_000`
@@ -112,7 +112,7 @@ pub enum TypeDefinition {
     None,
 }
 
-impl core::fmt::Display for TypeDefinition {
+impl core::fmt::Display for Literal {
     #[inline]
     #[allow(clippy::match_ref_pats)]
     fn fmt(&self, formatter: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
@@ -126,7 +126,7 @@ impl core::fmt::Display for TypeDefinition {
     }
 }
 
-impl GetToken for TypeDefinition {
+impl GetToken for Literal {
     #[inline(always)]
     fn get_token(location: Location, buffer: &Vec<char>) -> Option<Token> {
         let content: &str = &buffer.iter().collect::<String>();
@@ -135,24 +135,24 @@ impl GetToken for TypeDefinition {
             "true" => Some(Token {
                 location,
                 content: "true".to_owned(),
-                token_type: TokenType::TypeDefinition(TypeDefinition::True),
+                token_type: TokenType::Literal(Literal::True),
             }),
             "false" => Some(Token {
                 location,
                 content: "false".to_owned(),
-                token_type: TokenType::TypeDefinition(TypeDefinition::False),
+                token_type: TokenType::Literal(Literal::False),
             }),
             "none" => Some(Token {
                 location,
                 content: "none".to_owned(),
-                token_type: TokenType::TypeDefinition(TypeDefinition::None),
+                token_type: TokenType::Literal(Literal::None),
             }),
             _ => None,
         }
     }
 }
 
-impl TypeDefinition {
+impl Literal {
     /// Lexes a string into a token of that string.
     ///
     /// # Parameters
@@ -175,7 +175,7 @@ impl TypeDefinition {
     /// ```rust
     ///
     /// # use std;
-    /// # use lexer::tokens::token::{Location, Token, TokenType, TypeDefinition};
+    /// # use lexer::tokens::token::{Location, Token, TokenType, Literal};
     /// let input: &str = "my string'"; // For lexing, the first quote has to be removed
     /// let mut iterator: std::iter::Peekable<std::iter::Enumerate<std::str::Chars>> = input.chars().enumerate().peekable();
     /// # let location: Location = Location {
@@ -183,10 +183,10 @@ impl TypeDefinition {
     /// #    line: 1,
     /// #    column: 1,
     /// # };
-    /// assert_eq!(TypeDefinition::lex_string(&mut iterator, input, location.clone(), '\''), Ok(Token {
+    /// assert_eq!(Literal::lex_string(&mut iterator, input, location.clone(), '\''), Ok(Token {
     ///     location,
     ///     content: "my string".to_owned(),
-    ///     token_type: TokenType::TypeDefinition(TypeDefinition::String)
+    ///     token_type: TokenType::Literal(Literal::String)
     /// }));
     ///
     ///
@@ -195,8 +195,8 @@ impl TypeDefinition {
     /// # See also
     ///
     /// - [`Token`]
-    /// - [`TypeDefinition`]
-    /// - [`TypeDefinition::String`]
+    /// - [`Literal`]
+    /// - [`Literal::String`]
     #[inline(always)]
     pub fn lex_string(
         iterator: &mut std::iter::Peekable<std::iter::Enumerate<std::str::Chars>>,
@@ -288,7 +288,7 @@ impl TypeDefinition {
         Ok(Token {
             location,
             content: buffer.iter().collect::<String>(),
-            token_type: TokenType::TypeDefinition(TypeDefinition::String),
+            token_type: TokenType::Literal(Literal::String),
         })
     }
 }
@@ -305,7 +305,7 @@ pub enum TokenType {
     /// A token representing a type **name**, e.g. `str`.
     Type(Type),
     /// A token representing a literal, e.g. `1`.
-    TypeDefinition(TypeDefinition),
+    Literal(Literal),
     /// A token representing a keyword, e.g. `break`.
     Keyword(Keyword),
     /// A token representing a mark, e.g. `==`.
@@ -324,7 +324,7 @@ impl core::fmt::Display for TokenType {
     fn fmt(&self, formatter: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         match self {
             Self::Type(type_name) => type_name.fmt(formatter),
-            Self::TypeDefinition(type_definition) => type_definition.fmt(formatter),
+            Self::Literal(literal) => literal.fmt(formatter),
             Self::Keyword(keyword) => keyword.fmt(formatter),
             Self::Mark(mark) => mark.fmt(formatter),
             Self::Identifier => write!(formatter, "identifier"),

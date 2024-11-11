@@ -39,8 +39,8 @@ mod tests {
                         column: 1,
                     },
                     content: "1".to_owned(),
-                    token_type: lexer::tokens::token::TokenType::TypeDefinition(
-                        lexer::tokens::token::TypeDefinition::Integer,
+                    token_type: lexer::tokens::token::TokenType::Literal(
+                        lexer::tokens::token::Literal::Integer,
                     ),
                 },
                 lexer::tokens::token::Token {
@@ -61,8 +61,8 @@ mod tests {
                         column: 5,
                     },
                     content: "1".to_owned(),
-                    token_type: lexer::tokens::token::TokenType::TypeDefinition(
-                        lexer::tokens::token::TypeDefinition::Integer,
+                    token_type: lexer::tokens::token::TokenType::Literal(
+                        lexer::tokens::token::Literal::Integer,
                     ),
                 },
             ])

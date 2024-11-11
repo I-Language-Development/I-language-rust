@@ -29,7 +29,7 @@
 use crate::error::LexerError;
 use crate::tokens::constant::Type;
 use crate::tokens::keyword::Keyword;
-use crate::tokens::token::{GetToken, Location, Token, TokenType, TypeDefinition};
+use crate::tokens::token::{GetToken, Literal, Location, Token, TokenType};
 
 use tools::iterator::ConditionalPeeking;
 
@@ -71,8 +71,8 @@ use log::trace;
 ///             column: 1,
 ///         },
 ///         content: "1".to_owned(),
-///         token_type: token::TokenType::TypeDefinition(
-///             token::TypeDefinition::Integer,
+///         token_type: token::TokenType::Literal(
+///             token::Literal::Integer,
 ///         ),
 ///     },
 ///     token::Token {
@@ -93,8 +93,8 @@ use log::trace;
 ///             column: 5,
 ///         },
 ///         content: "1".to_owned(),
-///         token_type: token::TokenType::TypeDefinition(
-///             token::TypeDefinition::Integer,
+///         token_type: token::TokenType::Literal(
+///             token::Literal::Integer,
 ///         ),
 ///     },
 /// ]));
@@ -134,7 +134,7 @@ pub fn lex(input: &str, file: &str) -> Result<Vec<Token>, LexerError> {
             };
 
             if character == '"' || character == '\'' {
-                match TypeDefinition::lex_string(&mut iterator, line, location, character) {
+                match Literal::lex_string(&mut iterator, line, location, character) {
                     Ok(value) => result.push(value),
                     Err(error_value) => error = Some(error_value),
                 };
@@ -209,7 +209,7 @@ pub fn lex(input: &str, file: &str) -> Result<Vec<Token>, LexerError> {
                 result.push(Token {
                     location: location.clone(),
                     content: buffer.iter().collect::<String>(),
-                    token_type: TokenType::TypeDefinition(TypeDefinition::Integer),
+                    token_type: TokenType::Literal(Literal::Integer),
                 });
                 buffer.clear();
             } else if character.is_alphabetic() || character == '_' {
@@ -230,7 +230,7 @@ pub fn lex(input: &str, file: &str) -> Result<Vec<Token>, LexerError> {
                 } else if let Some(value) = Type::get_token(location.clone(), &buffer) {
                     result.push(value);
                     buffer.clear();
-                } else if let Some(value) = TypeDefinition::get_token(location.clone(), &buffer) {
+                } else if let Some(value) = Literal::get_token(location.clone(), &buffer) {
                     result.push(value);
                     buffer.clear();
                 } else {

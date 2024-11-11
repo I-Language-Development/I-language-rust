@@ -31,18 +31,18 @@ mod tests {
 
     #[test]
     fn test_literal_display() {
-        use lexer::tokens::token::TypeDefinition;
+        use lexer::tokens::token::Literal;
 
-        assert_eq!(&format!("{}", TypeDefinition::String), "string literal");
-        assert_eq!(&format!("{}", TypeDefinition::Integer), "integer literal");
-        assert_eq!(&format!("{}", TypeDefinition::True), "`true`");
-        assert_eq!(&format!("{}", TypeDefinition::False), "`false`");
-        assert_eq!(&format!("{}", TypeDefinition::None), "`none`");
+        assert_eq!(&format!("{}", Literal::String), "string literal");
+        assert_eq!(&format!("{}", Literal::Integer), "integer literal");
+        assert_eq!(&format!("{}", Literal::True), "`true`");
+        assert_eq!(&format!("{}", Literal::False), "`false`");
+        assert_eq!(&format!("{}", Literal::None), "`none`");
     }
 
     #[test]
     fn test_literal() {
-        use lexer::tokens::token::TypeDefinition;
+        use lexer::tokens::token::Literal;
 
         let location: Location = Location {
             file: "tests".to_owned(),
@@ -51,31 +51,31 @@ mod tests {
         };
 
         assert_eq!(
-            TypeDefinition::get_token(location.clone(), &"true".chars().collect::<Vec<char>>()),
+            Literal::get_token(location.clone(), &"true".chars().collect::<Vec<char>>()),
             Some(Token {
                 location: location.clone(),
                 content: "true".to_owned(),
-                token_type: TokenType::TypeDefinition(TypeDefinition::True),
+                token_type: TokenType::Literal(Literal::True),
             })
         );
         assert_eq!(
-            TypeDefinition::get_token(location.clone(), &"false".chars().collect::<Vec<char>>()),
+            Literal::get_token(location.clone(), &"false".chars().collect::<Vec<char>>()),
             Some(Token {
                 location: location.clone(),
                 content: "false".to_owned(),
-                token_type: TokenType::TypeDefinition(TypeDefinition::False),
+                token_type: TokenType::Literal(Literal::False),
             })
         );
         assert_eq!(
-            TypeDefinition::get_token(location.clone(), &"none".chars().collect::<Vec<char>>()),
+            Literal::get_token(location.clone(), &"none".chars().collect::<Vec<char>>()),
             Some(Token {
                 location: location.clone(),
                 content: "none".to_owned(),
-                token_type: TokenType::TypeDefinition(TypeDefinition::None),
+                token_type: TokenType::Literal(Literal::None),
             })
         );
         assert_eq!(
-            TypeDefinition::get_token(location.clone(), &"/".chars().collect::<Vec<char>>()),
+            Literal::get_token(location.clone(), &"/".chars().collect::<Vec<char>>()),
             None
         );
     }
@@ -84,7 +84,7 @@ mod tests {
     fn test_lex_string() {
         use std;
 
-        use lexer::tokens::token::TypeDefinition;
+        use lexer::tokens::token::Literal;
 
         let location: Location = Location {
             file: "tests".to_owned(),
@@ -97,11 +97,11 @@ mod tests {
             input.chars().enumerate().peekable();
 
         assert_eq!(
-            TypeDefinition::lex_string(&mut iterator, input, location.clone(), '\''),
+            Literal::lex_string(&mut iterator, input, location.clone(), '\''),
             Ok(Token {
                 location,
                 content: "my string".to_owned(),
-                token_type: TokenType::TypeDefinition(TypeDefinition::String)
+                token_type: TokenType::Literal(Literal::String)
             })
         );
     }
