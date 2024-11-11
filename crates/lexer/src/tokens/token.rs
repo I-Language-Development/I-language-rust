@@ -239,9 +239,7 @@ impl TypeDefinition {
                         label: "String starts here",
                         annotation_type: annotate_snippets::AnnotationType::Help,
                     },
-                    if buffer.get(
-                        TryInto::<usize>::try_into(buffer.len() - 2).unwrap_or(buffer.len() - 1),
-                    ) == Some(&'\\')
+                    if buffer.iter().rev().nth(1) == Some(&'\\')
                         && buffer.last() == Some(&quote_type)
                     {
                         annotate_snippets::SourceAnnotation {
@@ -267,22 +265,13 @@ impl TypeDefinition {
             }],
         };
 
-        if let Some((_, next_character)) = iterator.next() {
-            if next_character != quote_type {
+        if iterator.next().is_none() {
                 return Err(LexerError::UnterminatedString {
                     location,
                     error: annotate_snippets::Renderer::styled()
                         .render(snippet)
                         .to_string(),
                 });
-            }
-        } else {
-            return Err(LexerError::UnterminatedString {
-                location,
-                error: annotate_snippets::Renderer::styled()
-                    .render(snippet)
-                    .to_string(),
-            });
         }
 
         Ok(Token {
