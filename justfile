@@ -61,6 +61,11 @@ install-dev-dependencies:
 install-doc-requirements:
 	@pip install -r docs\.requirements.txt
 
+# Install pre-commit
+install-pre-commit:
+	@pip install -r dev-requirements.txt
+	@pre-commit install --install-hooks
+
 # See rust-lang/cargo/12918 for why `-A clippy::std-instead-of-core` is needed
 # Lints the rust source files
 lint *ARGUMENTS:
