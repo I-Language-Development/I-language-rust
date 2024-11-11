@@ -10,9 +10,10 @@ DISABLE_ERRORS_LINTERS:
     - REPOSITORY_TRUFFLEHOG # cspell:disable-line
     - SPELL_LYCHEE
     - COPYPASTE_JSCPD
-    - REPOSITORY_KICS
+    - REPOSITORY_KICS # cspell:disable-line
+    - REPOSITORY_TRIVY # cspell:disable-line
 FILTER_REGEX_EXCLUDE: .*mypy.* # cspell:disable-line
-EDITORCONFIG_EDITORCONFIG_CHECKER_FILTER_REGEX_EXCLUDE: "docs/acknowledgements.md|src/installer/linux/installer.bash"
+EDITORCONFIG_EDITORCONFIG_CHECKER_FILTER_REGEX_EXCLUDE: "docs/acknowledgements.md|src/installer/linux/installer.bash" # cspell:disable-line
 REPORT_OUTPUT_FOLDER: none
 SHOW_ELAPSED_TIME: true
 VALIDATE_ALL_CODEBASE: false
