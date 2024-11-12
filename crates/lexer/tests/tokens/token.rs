@@ -144,40 +144,86 @@ mod tests {
     }
 
     #[test]
-    fn test_dummy_token() {
+    fn test_dummy_token_eq() {
         let location: Location = Location {
             file: "tests".to_owned(),
             line: 1,
             column: 1,
         };
 
-        assert!(
+        assert_eq!(
             DummyToken {
                 content: String::new(),
                 token_type: TokenType::Comment
-            } == Token {
+            },
+            Token {
                 location: location.clone(),
                 content: String::new(),
                 token_type: TokenType::Comment
             }
         );
-        assert!(
+        assert_eq!(
             DummyToken {
                 content: "test".to_owned(),
                 token_type: TokenType::Identifier
-            } == Token {
+            },
+            Token {
                 location: location.clone(),
                 content: "test".to_owned(),
                 token_type: TokenType::Identifier
             }
         );
-        assert!(
+        assert_ne!(
             DummyToken {
                 content: "test".to_owned(),
                 token_type: TokenType::Identifier
-            } != Token {
+            },
+            Token {
                 location,
                 content: "not test".to_owned(),
+                token_type: TokenType::Identifier
+            }
+        );
+    }
+
+    #[test]
+    fn test_dummy_token_from() {
+        let location: Location = Location {
+            file: "tests".to_owned(),
+            line: 1,
+            column: 1,
+        };
+
+        assert_eq!(
+            DummyToken::from(Token {
+                location: location.clone(),
+                content: String::new(),
+                token_type: TokenType::Comment
+            }),
+            DummyToken {
+                content: String::new(),
+                token_type: TokenType::Comment
+            }
+        );
+        assert_eq!(
+            DummyToken::from(Token {
+                location: location.clone(),
+                content: "test".to_owned(),
+                token_type: TokenType::Identifier
+            }),
+            DummyToken {
+                content: "test".to_owned(),
+                token_type: TokenType::Identifier
+            }
+        );
+        assert_ne!(
+            DummyToken::from(Token {
+                location,
+                content: "not test".to_owned(),
+                token_type: TokenType::Identifier
+            }),
+            DummyToken {
+                content: "test".to_owned(),
                 token_type: TokenType::Identifier
             }
         );

@@ -535,3 +535,13 @@ impl PartialEq<Token> for DummyToken {
         }
     }
 }
+
+impl From<Token> for DummyToken {
+    #[inline]
+    fn from(value: Token) -> Self {
+        DummyToken {
+            content: value.content,
+            token_type: value.token_type,
+        }
+    }
+}
