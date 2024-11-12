@@ -66,7 +66,7 @@ pub trait GetToken {
     ///
     /// enum MyKeyword {
     ///     Foo,
-    /// };
+    /// }
     ///
     /// impl GetToken for MyKeyword {
     ///     fn get_token(location: Location, buffer: &Vec<char>) -> Option<Token> {
@@ -267,16 +267,7 @@ impl Literal {
             }],
         };
 
-        if let Some((_, next_character)) = iterator.next() {
-            if next_character != quote_type {
-                return Err(LexerError::UnterminatedString {
-                    location,
-                    error: annotate_snippets::Renderer::styled()
-                        .render(snippet)
-                        .to_string(),
-                });
-            }
-        } else {
+        if iterator.next().is_none() {
             return Err(LexerError::UnterminatedString {
                 location,
                 error: annotate_snippets::Renderer::styled()
@@ -503,8 +494,9 @@ impl Default for Location {
 
 impl core::fmt::Display for Location {
     #[inline]
-    fn fmt(&self, formatter: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        write!(formatter, "{}:{}:{}", self.file, self.line, self.column)
+    #[allow(clippy::min_ident_chars)]
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(f, "{}:{}:{}", self.file, self.line, self.column)
     }
 }
 
