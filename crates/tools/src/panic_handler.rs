@@ -45,7 +45,7 @@ use crate::logging::BUFFER;
 ///
 /// # Parameters
 ///
-/// - `location`: The panics location.
+/// - `crash_location`: The panics location.
 /// - `payload`: The downcasted panic payload.
 ///
 /// # Returns
@@ -136,7 +136,7 @@ use crate::logging::BUFFER;
 /// - [`setup_handler`]
 #[inline(always)] // Suggesting inlining due to rare calls to the function
 pub fn generate_report(
-    location: Option<&Location<'_>>,
+    crash_location: Option<&Location<'_>>,
     payload: Option<String>,
 ) -> Option<PathBuf> {
     let path: PathBuf = temp_dir().join("icomp_crash.txt");
@@ -147,33 +147,34 @@ pub fn generate_report(
     } else {
         String::new()
     };
-    let location_string: String = if let Some(value) = location {
-        format!("Location: {}:{}\n", value.file(), value.line())
+    let location: String = if let Some(value) = crash_location {
+        format!("Location: {}:{}\n\n", value.file(), value.line())
     } else {
         String::new()
     };
 
     let log_buffer: String = format!(
-        "Log:\n{}\n",
+        "Log:\n{}\n\n",
         match BUFFER.lock() {
             Ok(value) => value.join("\n"),
             Err(_) => String::new(),
         }
     );
-    let content: String = format!("Backtrace:\n{}", Backtrace::force_capture());
 
-    let mut file_content: String = String::new();
-    file_content.push_str(&header);
-    file_content.push_str(&reason);
-    file_content.push_str(&location_string);
-    file_content.push_str(if &log_buffer == "Log:\n\n" {
+    let backtrace: String = format!("Backtrace:\n{}", Backtrace::force_capture());
+
+    let mut content: String = String::new();
+    content.push_str(&header);
+    content.push_str(&reason);
+    content.push_str(&location);
+    content.push_str(if &log_buffer == "Log:\n\n" {
         ""
     } else {
         &log_buffer
     });
-    file_content.push_str(&content);
+    content.push_str(&backtrace);
 
-    match write(path.clone(), file_content) {
+    match write(path.clone(), content) {
         Ok(()) => Some(path),
         Err(error) => {
             eprintln!("Crash report generation failed.");
