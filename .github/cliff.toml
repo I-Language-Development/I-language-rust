@@ -59,6 +59,10 @@ commit_parsers = [
 	{ message = "^ci|\\[pre-commit\\.ci\\]", group = "<!-- K --> Continuous Integration"},
 	{ message = "^chore", group = "<!-- L -->Other" },
 
+	# Ignore merge conflict resolutions and revert commits
+	{ message = "^chore\\(merge\\)", skip = true },
+	{ message = "^chore\\(revert\\)", skip = true },
+
 	# Ignore bot commits
 	{ message = "^chore\\(release\\)", skip = true },
 	{ message = "^chore\\(deps\\)", skip = true },
