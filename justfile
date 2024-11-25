@@ -77,7 +77,7 @@ run *ARGUMENTS:
 
 # Serve documentation locally
 serve-docs *ARGUMENTS:
-	@mkdocs serve -f docs\.mkdocs.yml {{ARGUMENTS}}
+	@mkdocs serve -f {{join("docs", ".mkdocs.yml")}} {{ARGUMENTS}}
 
 # Runs the tests
 test *ARGUMENTS:
@@ -85,7 +85,7 @@ test *ARGUMENTS:
 
 # Updated the changelog using git-cliff
 update-changelog *ARGUMENTS:
-	@git cliff -c .github\cliff.toml -o docs\docs\CHANGELOG.md {{ARGUMENTS}}
+	@git cliff -c {{join(".github", "cliff.toml")}} -o {{join("docs", "docs", "CHANGELOG.md")}} {{ARGUMENTS}}
 	@echo Updated changelog.
 
 # Update all submodules
