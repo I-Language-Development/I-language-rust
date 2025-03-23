@@ -26,8 +26,8 @@ set windows-shell := ["cmd.exe", "/D", "/C"]
 # Rust backtrace
 export RUST_BACKTRACE := "1"
 
-# for line 27: See rustsec/rustsec#696
-# Audit the whole project (check for vulnerable dependencies)
+# Read rustsec/rustsec#696 for why '--ignore RUSTSEC-2020-0138' is needed
+# Audits the whole project (check for vulnerable dependencies)
 audit *ARGUMENTS:
 	@cargo audit --ignore RUSTSEC-2020-0138 {{ARGUMENTS}}
 
