@@ -1,3 +1,4 @@
+//! The build script for the tools crate.
 // I Language tools build script.
 // Version: 1.0.0
 
@@ -21,11 +22,14 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+#![allow(unused_must_use)]
+
 /////////////
 // IMPORTS //
 /////////////
 
-use std::{env, fmt::Write as _, fs, path::Path, process::exit};
+use core::fmt::Write as _;
+use std::{env, fs, path::Path, process::exit};
 
 use cargo_metadata::MetadataCommand;
 use glob::glob;
@@ -37,7 +41,9 @@ use glob::glob;
 
 // Helper function for just returning an empty list of dependencies, so that the panic handler can still run.
 fn empty_list() {
-    let path = Path::new(&env::var("OUT_DIR").unwrap()).join("dependencies.rs");
+    let path =
+        Path::new(&env::var("OUT_DIR").expect("Cargo environment variable `OUT_DIR` is not set. This is an issue with cargo itself, not with I-Language."))
+            .join("dependencies.rs");
     fs::write(
         &path,
         "pub const DEPENDENCIES: &[(&str, &[(&str, &str)])] = &[];",
@@ -98,7 +104,7 @@ fn main() {
         }
 
         if metadata.workspace_members.contains(&package.id) {
-            dependency_list.push_str(&format!("    (\"{}\", &[\n", package.name));
+            writeln!(dependency_list, "    (\"{}\", &[", package.name);
             for dependency in &package.dependencies {
                 writeln!(
                     dependency_list,
@@ -112,13 +118,14 @@ fn main() {
 
     writeln!(dependency_list, "];");
 
-    let path = Path::new(&env::var("OUT_DIR").unwrap()).join("dependencies.rs");
+    let path = Path::new(&env::var("OUT_DIR").expect("Cargo environment variable `OUT_DIR` is not set. This is an issue with cargo itself, not with I-Language.")).join("dependencies.rs");
     fs::write(&path, dependency_list).expect("Failed to write dependency information");
 
     println!("cargo:rerun-if-changed=../../Cargo.toml");
-    for entry in glob("../../crates/*/Cargo.toml").unwrap_or_else(|_| exit(0)) {
-        if let Ok(path) = entry {
-            println!("cargo:rerun-if-changed={}", path.display());
-        }
+    for cargo_toml_path in glob("../../crates/*/Cargo.toml")
+        .unwrap_or_else(|_| exit(0))
+        .flatten()
+    {
+        println!("cargo:rerun-if-changed={}", cargo_toml_path.display());
     }
 }
