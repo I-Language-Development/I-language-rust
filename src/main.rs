@@ -81,7 +81,7 @@ fn main() {
     } else if std::path::Path::new("main.il").exists() {
         file_name = "main.il".to_owned();
     } else {
-        eprintln!("No file was specified and neither `src/mail.il` nor `main.il` exist.");
+        eprintln!("No file was specified and neither `src/main.il` nor `main.il` exist.");
         error!("No file was specified and neither `src/main.il` nor `main.il` exist.");
         std::process::exit(1);
     }
