@@ -41,14 +41,15 @@ build *ARGUMENTS:
 	-{{remove_dir}} {{join("Tools", "__pycache__")}}
 	git gc
 
+# Creates code-documentation (not to be confused with mkdocs documentation) using cargo
 doc *ARGUMENTS:
 	@cargo doc --no-deps --all-features --workspace {{ARGUMENTS}}
 
-# Format all source files
+# Formats all source files
 format *ARGUMENTS:
 	@cargo +nightly fmt --all {{ARGUMENTS}}
 
-# Install the `icomp` binary
+# Installs the `icomp` binary
 install-binary:
 	@cargo install --path .
 
@@ -57,11 +58,11 @@ install-dev-dependencies:
 	@cargo install git-cliff
 	@cargo install cargo-audit
 
-# Install documentation dependencies
+# Installs documentation dependencies
 install-doc-requirements:
 	@pip install -r docs\.requirements.txt
 
-# Install pre-commit
+# Installs pre-commit
 install-pre-commit:
 	@pip install -r dev-requirements.txt
 	@pre-commit install --install-hooks
@@ -75,7 +76,7 @@ lint *ARGUMENTS:
 run *ARGUMENTS:
 	@cargo run --features cli {{ARGUMENTS}}
 
-# Serve documentation locally
+# Serves project-documentation (not to be confused with rust code documentation) locally
 serve-docs *ARGUMENTS:
 	@mkdocs serve -f {{join("docs", ".mkdocs.yml")}} {{ARGUMENTS}}
 
@@ -83,12 +84,12 @@ serve-docs *ARGUMENTS:
 test *ARGUMENTS:
 	@cargo test --all-features --workspace {{ARGUMENTS}}
 
-# Updated the changelog using git-cliff
+# Updates the changelog using git-cliff
 update-changelog *ARGUMENTS:
 	@git cliff -c {{join(".github", "cliff.toml")}} -o {{join("docs", "docs", "CHANGELOG.md")}} {{ARGUMENTS}}
 	@echo Updated changelog.
 
-# Update all submodules
+# Updates all submodules
 update-submodules:
 	@git submodule update --init --recursive --remote
 	@echo Updated submodules.
