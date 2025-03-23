@@ -30,7 +30,7 @@ use std::{
     backtrace::Backtrace,
     env::{consts::ARCH, temp_dir},
     fs::write,
-    panic::{set_hook, PanicInfo},
+    panic::{set_hook, PanicHookInfo},
     path::PathBuf,
     thread::sleep,
 };
@@ -180,18 +180,12 @@ include!(concat!(env!("OUT_DIR"), "/dependencies.rs"));
 ///
 /// - [`setup_handler`]
 #[inline(always)] // Suggesting inlining due to rare calls to the function
-#[allow(
-    clippy::as_conversions,
-    clippy::cast_precision_loss,
-    clippy::float_arithmetic
-)] // Allowing for the byte --> GiB conversion
 pub fn generate_report(
     crash_location: Option<&Location<'_>>,
     payload: Option<String>,
 ) -> Option<PathBuf> {
     let path: PathBuf = temp_dir().join("icomp_crash.txt");
 
-    let header: String = "Crash report\n============\n".to_owned();
     let reason: String = if let Some(value) = payload {
         format!("Reason: {value}\n")
     } else {
@@ -203,8 +197,7 @@ pub fn generate_report(
         String::new()
     };
 
-    let version: String = format!("\nVersion: {}\n", env!("CARGO_PKG_VERSION"));
-
+    #[allow(clippy::const_is_empty)]
     let mut dependencies: String = if DEPENDENCIES.is_empty() {
         String::new()
     } else {
@@ -231,20 +224,7 @@ pub fn generate_report(
         }
     }
 
-    let log_buffer: String = format!(
-        "\nLog:\n{}\n",
-        match BUFFER.lock() {
-            Ok(value) => value.join("\n"),
-            Err(_) => String::new(),
-        }
-    );
-
     let mut system: System = System::new_all();
-    let os_info: String = format!(
-        "\nOS: {} ({})\n",
-        System::long_os_version().unwrap_or("unknown".to_owned()),
-        System::kernel_version().unwrap_or("unknown".to_owned())
-    );
 
     // Wait for the CPU to update (see https://docs.rs/sysinfo/latest/sysinfo/constant.MINIMUM_CPU_UPDATE_INTERVAL.html)
     sleep(sysinfo::MINIMUM_CPU_UPDATE_INTERVAL);
@@ -261,32 +241,41 @@ pub fn generate_report(
             cpu.cpu_usage()
         );
     }
-    let memory_info: String = format!(
-        "- Memory: {:.2} / {:.2} GiB\n",
+
+    let mut log: String = match BUFFER.lock() {
+        Ok(value) => value.join("\n"),
+        Err(_) => String::new(),
+    };
+
+    if !log.is_empty() {
+        log = format!("\nLog:\n{log}\n");
+    }
+
+    #[allow(
+        clippy::as_conversions,
+        clippy::cast_precision_loss,
+        clippy::float_arithmetic
+    )]
+    let content = format!(
+        "Crash report\n\
+        ============\n\
+        {reason}{location}\n\
+        Version: {}\n\
+        {dependencies}\n\
+        Hardware:\n\
+        - OS: {} ({})\n\
+        {cpu_info}- Memory: {:.2} / {:.2} GiB\n\
+        - Architecture: {ARCH}\n\
+        {log}\n\
+        Backtrace:\n\
+        {}",
+        env!("CARGO_PKG_VERSION"),
+        System::long_os_version().unwrap_or("unknown".to_owned()),
+        System::kernel_version().unwrap_or("unknown".to_owned()),
         system.used_memory() as f64 / (1024_f64.powi(3)),
-        system.total_memory() as f64 / (1024_f64.powi(3))
+        system.total_memory() as f64 / (1024_f64.powi(3)),
+        Backtrace::force_capture()
     );
-    let architecture: String = format!("- Architecture: {ARCH}\n");
-
-    let backtrace: String = format!("\nBacktrace:\n{}", Backtrace::force_capture());
-
-    let mut content: String = String::new();
-    content.push_str(&header);
-    content.push_str(&reason);
-    content.push_str(&location);
-    content.push_str(&version);
-    content.push_str(&dependencies);
-    content.push_str(&os_info);
-    content.push_str("\nHardware:\n");
-    content.push_str(&cpu_info);
-    content.push_str(&memory_info);
-    content.push_str(&architecture);
-    content.push_str(if &log_buffer == "Log:\n\n" {
-        ""
-    } else {
-        &log_buffer
-    });
-    content.push_str(&backtrace);
 
     match write(path.clone(), content) {
         Ok(()) => Some(path),
@@ -316,7 +305,7 @@ pub fn generate_report(
 /// Inspired by [human-panic](https://crates.io/crates/human-panic).
 #[inline(always)] // Suggesting inlining due to rare calls to the function
 pub fn setup_handler() {
-    let panic_handler = |panic_info: &PanicInfo| {
+    let panic_handler = |panic_info: &PanicHookInfo| {
         eprintln!("Well, this is embarrassing...");
         eprintln!("The compiler had a problem and crashed. You can help us fix the error by voluntarily reporting the problem to us.");
 
